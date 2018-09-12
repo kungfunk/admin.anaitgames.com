@@ -8,8 +8,14 @@ class DashboardAction
 {
     protected $responder;
 
+    public function __construct(DashboardResponder $responder)
+    {
+        $this->responder = $responder;
+    }
+
     public function __invoke(Request $request, Response $response)
     {
-        echo "hola";
+        $data = [];
+        $this->responder->success($response, $data);
     }
 }

@@ -5,7 +5,7 @@
         </svg>
     </div>
     <ul class="side-menu__items">
-        <li class="side-menu__item {{ Request::is('/') ? 'side-menu__item--selected' : '' }}">
+        <li class="side-menu__item side-menu__item--selected">
             <a href="/" class="side-menu__link" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -15,7 +15,7 @@
                 </svg>
             </a>
         </li>
-        <li class="side-menu__item {{ Request::is('layout') ? 'side-menu__item--selected' : '' }}">
+        <li class="side-menu__item">
             <a href="/" class="side-menu__link" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -25,7 +25,7 @@
                 </svg>
             </a>
         </li>
-        <li class="side-menu__item {{ Request::is('posts') ? 'side-menu__item--selected' : '' }}">
+        <li class="side-menu__item">
             <a href="/posts" class="side-menu__link" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -37,7 +37,7 @@
                 </svg>
             </a>
         </li>
-        <li class="side-menu__item {{ Request::is('users') ? 'side-menu__item--selected' : '' }}">
+        <li class="side-menu__item">
             <a class="side-menu__link" href="">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -48,7 +48,7 @@
                 </svg>
             </a>
         </li>
-        <li class="side-menu__item {{ Request::is('comments') ? 'side-menu__item--selected' : '' }}">
+        <li class="side-menu__item">
             <a class="side-menu__link" href="">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -56,7 +56,7 @@
                 </svg>
             </a>
         </li>
-        <li class="side-menu__item {{ Request::is('reports') ? 'side-menu__item--selected' : '' }}">
+        <li class="side-menu__item">
             <a class="side-menu__link" href="">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -65,7 +65,7 @@
                 </svg>
             </a>
         </li>
-        <li class="side-menu__item {{ Request::is('logs') ? 'side-menu__item--selected' : '' }}">
+        <li class="side-menu__item">
             <a class="side-menu__link" href="">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">

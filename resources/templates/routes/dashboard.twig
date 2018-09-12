@@ -1,4 +1,4 @@
-{% extends "../shared/layout.twig" %}
+{% extends '/shared/layout.twig' %}
 
 {% block title %}Dashboard{% endblock %}
 
@@ -6,7 +6,7 @@
     <div class="main__container">
         <section class="dashboard-statistics">
             {% for statistic in statistics %}
-                {{ include('components/statistics.twig', { statistic }, with_context = false) }}
+                {{ include('components/statistics.twig', { 'statistic' : statistic }, with_context = false) }}
             {% endfor %}
         </section>
         <section class="dashboard-boxes">
@@ -101,7 +101,6 @@
                     </ul>
                 </div>
             </div>
-
         </section>
         <section class="dashboard-comments">
             <div class="box">
@@ -114,7 +113,7 @@
                 <div class="box__content">
                     <ul class="comments">
                         {% for comment in comments %}
-                            {{ include('components/comment.twig', { comment }, with_context = false) }}
+                            {{ include('components/comment.twig', { 'comment': comment }, with_context = false) }}
                         {% endfor %}
                     </ul>
                 </div>
