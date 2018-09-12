@@ -9,10 +9,10 @@ const BASE_PATH = __DIR__ . '/..';
 $dotenv = new Dotenv(BASE_PATH);
 $dotenv->load();
 
-$config = include "config.php";
+$config = include 'config.php';
 
 $app = new App($config);
 
-include "routes.php";
+include 'routes.php';
 
 $app->run();
