@@ -1,7 +1,7 @@
 <?php
 namespace App\Definitions;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use Monolog\Logger as Logger;
 use Monolog\Handler\StreamHandler as StreamHandler;
 
