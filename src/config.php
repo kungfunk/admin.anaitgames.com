@@ -2,17 +2,17 @@
 return [
     'settings.displayErrorDetails' => getenv('DEBUG'),
     'settings.db' => [
-        'driver' => 'mysql',
-        'host' => getenv('SQL_HOST'),
-        'database' => getenv('SQL_DB'),
-        'username' => getenv('SQL_USER'),
-        'password' => getenv('SQL_PASS'),
-        'charset' => getenv('SQL_CHARSET'),
-        'collation' => getenv('SQL_COLLATION')
+        'driver' => getenv('DB_DRIVER'),
+        'host' => getenv('DB_HOST'),
+        'database' => getenv('DB_NAME'),
+        'username' => getenv('DB_USER'),
+        'password' => getenv('DB_PASS'),
+        'charset' => getenv('DB_CHARSET'),
+        'collation' => getenv('DB_COLLATION')
     ],
     'settings.logger' => [
         'name' => 'my_logger',
-        'path' => '../logs/app.log'
+        'path' => BASE_PATH . '/logs/app.log'
     ],
     'settings.twig' => [
         'path' => BASE_PATH . '/resources/templates',
