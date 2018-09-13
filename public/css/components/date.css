@@ -1,0 +1,5 @@
+.date {
+  color: var(--color-subtext);
+  font-weight: bold;
+  font-size: var(--font-size-small);
+}

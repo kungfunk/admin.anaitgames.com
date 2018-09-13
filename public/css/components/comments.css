@@ -1,0 +1,79 @@
+.comments {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 1px;
+    background-color: var(--color-lightgrey);
+}
+
+.comment {
+    position: relative;
+    font-size: var(--font-size-medium);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-gap: 10px;
+    padding: 15px;
+    background-color: var(--color-white);
+    overflow: hidden;
+}
+
+.comment--reported:after {
+    position: absolute;
+    content: 'Reportado';
+    background-color: var(--color-warning);
+    color: var(--color-white);
+    font-size: var(--font-size-small);
+    font-weight: bold;
+    transform: rotate(-45deg);
+    padding: 5px 25px;
+    left: -25px;
+    top: 18px;
+}
+
+.comment__header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+}
+
+.comment__realname {
+    font-weight: bold;
+}
+
+.comment__username {
+    color: var(--color-subtext);
+}
+
+.comment__postlink {
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.comment__postlink:hover {
+    text-decoration: underline;
+}
+
+.comment__container {
+    position: relative;
+}
+
+.comment__body {
+    margin-top: 5px;
+    line-height: 1.4;
+    font-size: var(--font-size-small);
+    margin-bottom: 40px;
+}
+
+.comment__text-break {
+    font-style: italic;
+    color: var(--color-hardgrey);
+}
+
+.comment__actions {
+    position: absolute;
+    text-align: right;
+    font-size: var(--font-size-small);
+    bottom: 0;
+    right: 0;
+}

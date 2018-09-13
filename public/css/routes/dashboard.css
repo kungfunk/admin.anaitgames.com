@@ -1,0 +1,54 @@
+.dashboard-statistics {
+  background-color: $color-white;
+  border-bottom: 1px solid $color-lightgrey;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 160px;
+  align-items: center;
+  justify-items: center;
+}
+
+.dashboard-boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 15px;
+  padding: 30px;
+}
+
+.dashboard-comments {
+  padding: 0 30px 30px;
+}
+
+.simplelist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.simplelist__item {
+  padding: 0 10px;
+  border-bottom: 1px solid $color-lightgrey;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-gap: 10px;
+  font-size: $font-size-medium;
+  min-height: 40px;
+  align-items: center;
+}
+
+.simplelist__item--three-colums {
+  grid-template-columns: auto 1fr auto;
+}
+
+.simplelist__item-link {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.simplelist__item-link:hover {
+  text-decoration: underline;
+}
+
+.simplelist__item:last-child {
+  border: 0;
+}
