@@ -4,6 +4,8 @@ namespace App\Definitions;
 use Psr\Container\ContainerInterface;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
+use Twig\Extensions\TextExtension;
+use Twig\Extensions\DateExtension;
 
 class TwigDefinition extends AbstractContainerDefinition
 {
@@ -22,6 +24,8 @@ class TwigDefinition extends AbstractContainerDefinition
                     $container->get('router'),
                     $container->get('request')->getUri()
                 ));
+                $twig->addExtension(new TextExtension);
+                $twig->addExtension(new DateExtension);
 
                 return $twig;
             }
