@@ -8,11 +8,10 @@
                 <div class="comment__realname">{{ comment.user.name }}</div>
                 <div class="comment__username">@{{ comment.user.username }}</div>
             </div>
-            <div class="date">{{ comment.created_at }}</div>
+            <div class="date">{{ comment.created_at|time_diff }}</div>
         </div>
         <div class="comment__body">
             {{ comment.body|truncate(150) }}
-            <span class="comment__text-break">(continua)</span>
         </div>
         <div class="comment__actions">
             <a class="button button--small" href="/comments/{{ comment.id }}">Ver comentario</a>

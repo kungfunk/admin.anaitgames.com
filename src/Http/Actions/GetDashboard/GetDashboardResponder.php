@@ -45,6 +45,36 @@ class GetDashboardResponder extends Responder
         $this->data['comments'] = $comments;
     }
 
+    public function setNumberOfPostToday(int $count)
+    {
+        $this->data['number_of_posts_today'] = $count;
+    }
+
+    public function setNumberOfPostYesterday(int $count)
+    {
+        $this->data['number_of_posts_yesterday'] = $count;
+    }
+
+    public function setNumberOfUsersToday(int $count)
+    {
+        $this->data['number_of_users_today'] = $count;
+    }
+
+    public function setNumberOfUsersYesterday(int $count)
+    {
+        $this->data['number_of_users_yesterday'] = $count;
+    }
+
+    public function setNumberOfCommentsToday(int $count)
+    {
+        $this->data['number_of_comments_today'] = $count;
+    }
+
+    public function setNumberOfCommentsYesterday(int $count)
+    {
+        $this->data['number_of_comments_yesterday'] = $count;
+    }
+
     public function success(Response $response)
     {
         return $this->twig->render(

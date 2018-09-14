@@ -42,6 +42,12 @@ class GetDashboardAction
         $this->responder->setLastPendingPosts($this->lastPendingPosts->load());
         $this->responder->setLastDraftPosts($this->lastDraftPosts->load());
         $this->responder->setLastComments($this->lastComments->load());
+        $this->responder->setNumberOfPostToday(23);
+        $this->responder->setNumberOfPostYesterday(15);
+        $this->responder->setNumberOfUsersToday(100);
+        $this->responder->setNumberOfUsersYesterday(30);
+        $this->responder->setNumberOfCommentsToday(154);
+        $this->responder->setNumberOfCommentsYesterday(13);
         $this->responder->success($response);
     }
 }

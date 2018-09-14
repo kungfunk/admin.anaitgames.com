@@ -5,16 +5,37 @@
 {% block content %}
     <div class="main__container">
         <section class="dashboard-statistics">
-            {% for statistic in statistics %}
-                {{ include('components/statistics.twig', { 'statistic' : statistic }, with_context = false) }}
-            {% endfor %}
+            <div class="statistics-box">
+                <h3 class="statistics-box__big-number">{{ number_of_posts_today }}
+                    <sup class="statistics-box__small-number statistics-box__small-number--color-positive">
+                        ({{ number_of_posts_today - number_of_posts_yesterday }})
+                    </sup>
+                </h3>
+                <span class="statistics-box__sub-text">Entradas hoy</span>
+            </div>
+            <div class="statistics-box">
+                <h3 class="statistics-box__big-number">{{ number_of_users_today }}
+                    <sup class="statistics-box__small-number statistics-box__small-number--color-positive">
+                        ({{ number_of_users_today - number_of_users_yesterday }})
+                    </sup>
+                </h3>
+                <span class="statistics-box__sub-text">Usuarios registrados hoy</span>
+            </div>
+            <div class="statistics-box">
+                <h3 class="statistics-box__big-number">{{ number_of_comments_today }}
+                    <sup class="statistics-box__small-number statistics-box__small-number--color-positive">
+                        ({{ number_of_comments_today - number_of_comments_yesterday }})
+                    </sup>
+                </h3>
+                <span class="statistics-box__sub-text">Comentarios hoy</span>
+            </div>
         </section>
         <section class="dashboard-boxes">
             <div class="box">
                 <div class="box__header">
                     <h3 class="box__title">Artículos pendientes</h3>
                     <div class="box__action">
-                        <a href="/posts">Ver todos</a>
+                        <a class="button" href="/posts">Ver todos</a>
                     </div>
                 </div>
                 <div class="box__content">
@@ -37,18 +58,21 @@
                 <div class="box__header">
                     <h3 class="box__title">Ultimos usuarios registrados</h3>
                     <div class="box__action">
-                        <a href="/users">Ver todos</a>
+                        <a class="button" href="/users">Ver todos</a>
                     </div>
                 </div>
                 <div class="box__content">
                     <ul class="simplelist">
                         {% for last_user in last_users %}
-                            <li class="simplelist__item">
-                                <a href="/posts/{{ last_user.id }}" class="simplelist__item  simplelist__item--three-colums">
+                            <li class="simplelist__item simplelist__item--three-colums">
+                                <span class="avatar">
+                                    <img src="{{ last_user.avatar }}" alt="Avatar de {{ last_user.name }}">
+                                </span>
+                                <a href="/posts/{{ last_user.id }}" class="simplelist__item-link">
                                     {{ last_user.name }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
-                                    <span class="date">{{ last_user.created_at }}</span>
+                                    <span class="date">{{ last_user.created_at|time_diff }}</span>
                                 </div>
                             </li>
                         {% endfor %}
@@ -60,7 +84,7 @@
                 <div class="box__header">
                     <h3 class="box__title">Drafts</h3>
                     <div class="box__action">
-                        <a href="/posts">Ver todos</a>
+                        <a class="button" href="/posts">Ver todos</a>
                     </div>
                 </div>
                 <div class="box__content">
@@ -83,7 +107,7 @@
                 <div class="box__header">
                     <h3 class="box__title">Ultimas noticias</h3>
                     <div class="box__action">
-                        <a href="/posts">Ver todos</a>
+                        <a class="button" href="/posts">Ver todos</a>
                     </div>
                 </div>
                 <div class="box__content">
