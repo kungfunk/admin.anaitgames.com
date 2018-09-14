@@ -3,9 +3,15 @@
 
 @import url('base.css');
 
+@import url('components/avatar.css');
 @import url('components/box.css');
+@import url('components/button.css');
 @import url('components/comments.css');
+@import url('components/datatable.css');
 @import url('components/date.css');
+@import url('components/filters.css');
+@import url('components/label.css');
+@import url('components/pagination.css');
 @import url('components/sidemenu.css');
 @import url('components/statistics.css');
 @import url('components/tag.css');
