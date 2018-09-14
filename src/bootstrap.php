@@ -4,9 +4,7 @@ use App\SlimApp as App;
 
 require '../vendor/autoload.php';
 
-const BASE_PATH = __DIR__ . '/..';
-
-$dotenv = new Dotenv(BASE_PATH);
+$dotenv = new Dotenv(__DIR__ . '/..');
 $dotenv->load();
 
 $config = include 'config.php';

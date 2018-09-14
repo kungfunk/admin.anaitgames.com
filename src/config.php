@@ -12,12 +12,12 @@ return [
     ],
     'settings.logger' => [
         'name' => 'my_logger',
-        'path' => BASE_PATH . '/logs/app.log'
+        'path' => __DIR__ . '/../logs/app.log'
     ],
     'settings.twig' => [
-        'path' => BASE_PATH . '/resources/templates',
+        'path' => __DIR__ . '/../resources/templates',
         'settings' => [
-            'cache_path' => BASE_PATH . '/cache',
+            'cache_path' => __DIR__ . '/../cache',
             'debug' => getenv('DEBUG'),
             'auto_reload' => getenv('DEBUG')
         ]
