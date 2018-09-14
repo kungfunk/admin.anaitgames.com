@@ -1,7 +1,7 @@
 <?php
-use Http\Actions\Dashboard\DashboardAction as Dashboard;
+use Http\Actions\GetDashboard\GetDashboardAction as GetDashboard;
 
-$app->get('/', Dashboard::class);
+$app->get('/', GetDashboard::class);
 // $app->get('/posts', \Http\Actions\GetPosts\GetPostsAction::class);
 // $app->get('/posts/{id}', \Http\Actions\GetPostById\GetPostByIdAction::class);
 // $app->get('/posts/{id}/comments', \Http\Actions\GetCommentsFromPost\GetCommentsFromPostAction::class);

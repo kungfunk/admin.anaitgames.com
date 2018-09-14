@@ -3,39 +3,28 @@ namespace Domain\User;
 
 class UsersRepository
 {
-    const OPERATOR_LIKE = 'like';
-    const LIKE_BOUNDERS = '%';
-
     private $user_model;
 
-    public function __construct() {
-        $this->user_model = new User;
+    public function __construct(User $user)
+    {
+        $this->user_model = $user;
     }
 
-    public function getUserById($id) {
+    public function getUserById(int $id): User
+    {
         return $this->user_model->find($id);
     }
 
-    public function getUsersPaginated($options) {
-        // TODO: add type and tags to the filters
-        $query = $this->user_model->query();
-
-        if(!is_null($options['username'])) {
-            $query = $query->where('username', $options['username']);
-        }
-
-        if(!is_null($options['search'])) {
-            $query = $query->where(
-                User::SEARCHABLE_FIELD,
-                $this::OPERATOR_LIKE,
-                $this::LIKE_BOUNDERS . $options['search'] . $this::LIKE_BOUNDERS
-            );
-        }
-
-        return $query
-            ->orderBy($options['order_by'], $options['order'])
-            ->offset($options['offset'])
-            ->limit($options['limit'])
+    public function getUsersPaginated(
+        string $order_field = User::DEFAULT_ORDER_FIELD,
+        string $order_direction = User::DEFAULT_ORDER_DIRECTION,
+        int $limit = User::DEFAULT_LIMIT,
+        int $offset = 0
+    ) {
+        return $this->user_model
+            ->orderBy($order_field, $order_direction)
+            ->offset($offset)
+            ->limit($limit)
             ->get();
     }
 }
