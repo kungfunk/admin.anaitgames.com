@@ -5,13 +5,20 @@ use Illuminate\Database\Eloquent\Model as Model;
 
 class Comment extends Model
 {
-    const CREATED_AT = 'creation_date';
-    const UPDATED_AT = 'modification_date';
+    protected $fillable = [
+        'post_id',
+        'user_id',
+        'body',
+        'formatted_body'
+    ];
 
-    const DEFAULT_LIMIT = 50;
-    const FIXED_ORDER = 'creation_date';
-
-    public function post() {
+    public function post()
+    {
         return $this->belongsTo('Domain\Post\Post');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('Domain\Post\User');
     }
 }

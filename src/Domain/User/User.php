@@ -25,8 +25,6 @@ class User extends Model
 
     protected $hidden = ['password'];
 
-    public $timestamps = true;
-
     public function posts()
     {
         return $this->hasMany('Domain\Posts\Posts');

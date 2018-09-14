@@ -5,11 +5,13 @@ class TagsRepository
 {
     private $tags_model;
 
-    public function __construct() {
-        $this->tags_model = new Tag;
+    public function __construct(Tag $tag)
+    {
+        $this->tags_model = $tag;
     }
 
-    public function getAll() {
+    public function getAll()
+    {
         return $this->tags_model->all();
     }
 }
