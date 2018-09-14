@@ -29,7 +29,7 @@ class SlimApp extends App
     protected function getContainerDefinitions()
     {
         return [
-            new IlluminateDefinition,
+            new IlluminateDefinition($this->config),
             new LoggerDefinition,
             new TwigDefinition,
         ];

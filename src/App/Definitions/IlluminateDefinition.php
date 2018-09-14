@@ -1,11 +1,18 @@
 <?php
 namespace App\Definitions;
 
-use Psr\Container\ContainerInterface;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 class IlluminateDefinition extends AbstractContainerDefinition
 {
+
+    private $config;
+
+    public function __construct(Array $config)
+    {
+        $this->config = $config;
+    }
+
     public function getSettingsKey()
     {
         return 'settings.db';
@@ -13,14 +20,13 @@ class IlluminateDefinition extends AbstractContainerDefinition
 
     public function __invoke()
     {
-        return [
-            Capsule::class => function (ContainerInterface $container) {
-                $settings = $this->getSettings($container);
-                $capsule = new Capsule;
-                $capsule->addConnection($settings);
-                $capsule->setAsGlobal();
-                $capsule->bootEloquent();
+        $capsule = new Capsule;
+        $capsule->addConnection($this->config[$this->getSettingsKey()]);
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
 
+        return [
+            Capsule::class => function () use ($capsule) {
                 return $capsule;
             }
         ];
