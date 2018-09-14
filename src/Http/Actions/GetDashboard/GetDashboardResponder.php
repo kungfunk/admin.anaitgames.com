@@ -30,6 +30,21 @@ class GetDashboardResponder extends Responder
         $this->data['last_posts'] = $posts;
     }
 
+    public function setLastPendingPosts(Collection $posts)
+    {
+        $this->data['pending_posts'] = $posts;
+    }
+
+    public function setLastDraftPosts(Collection $posts)
+    {
+        $this->data['draft_posts'] = $posts;
+    }
+
+    public function setLastComments(Collection $comments)
+    {
+        $this->data['comments'] = $comments;
+    }
+
     public function success(Response $response)
     {
         return $this->twig->render(

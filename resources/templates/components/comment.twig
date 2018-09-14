@@ -1,21 +1,21 @@
-<li class="comment {{ comment['reported'] ? 'comment--reported' : '' }}">
+<li class="comment {{ comment.isReported() ? 'comment--reported' : '' }}">
     <span class="avatar avatar--big">
-        <img src="{{ comment['avatar'] }}" alt="">
+        <img src="{{ comment.user.avatar }}" alt="">
     </span>
     <div class="comment__container">
         <div class="comment__header">
             <div class="comment__identity">
-                <span class="comment__realname">{{ comment['name'] }}</span>
-                <span class="comment__username">{{ comment['username'] }}</span>
+                <div class="comment__realname">{{ comment.user.name }}</div>
+                <div class="comment__username">@{{ comment.user.username }}</div>
             </div>
-            <div class="date">{{ comment['created_at'] }}</div>
+            <div class="date">{{ comment.created_at }}</div>
         </div>
         <div class="comment__body">
-            {{ comment['body'] }}
+            {{ comment.body|truncate(150) }}
             <span class="comment__text-break">(continua)</span>
         </div>
         <div class="comment__actions">
-            <a class="button button--small" href="/comments/{{ comment['id'] }}">Ver comentario</a>
+            <a class="button button--small" href="/comments/{{ comment.id }}">Ver comentario</a>
         </div>
     </div>
 </li>

@@ -4,7 +4,7 @@ namespace Domain\Post\Commands;
 use Domain\Post\PostsRepository;
 use Domain\Post\Post;
 
-class GetLastPosts
+class GetLastDraftPosts
 {
     private $repository;
     private static $order_field = Post::DEFAULT_ORDER_FIELD;
@@ -18,7 +18,7 @@ class GetLastPosts
 
     public function load()
     {
-        return $this->repository->getPostsPaginated(
+        return $this->repository->getDraftPostsPaginated(
             self::$order_field,
             self::$order_direction,
             self::$limit
