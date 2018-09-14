@@ -4,7 +4,7 @@ namespace Domain\User\Commands;
 use Domain\User\UsersRepository;
 use Domain\User\User;
 
-class GetLastFiveRegisteredUsers
+class GetLastRegisteredUsers
 {
     private $repository;
     private static $order_field = User::DEFAULT_ORDER_FIELD;

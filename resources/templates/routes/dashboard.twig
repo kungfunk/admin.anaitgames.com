@@ -21,11 +21,11 @@
                     <ul class="simplelist">
                         {% for pending_post in pending_posts %}
                             <li class="simplelist__item">
-                                <a href="/posts/{{ pending_post['id'] }}" class="simplelist__item-link">
-                                    {{ pending_post['title'] }}
+                                <a href="/posts/{{ pending_post.id }}" class="simplelist__item-link">
+                                    {{ pending_post.title }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
-                                    <span class="tag">{{ pending_post['type'] }}</span>
+                                    <span class="tag">{{ pending_post.category.name }}</span>
                                 </div>
                             </li>
                         {% endfor %}
@@ -44,11 +44,11 @@
                     <ul class="simplelist">
                         {% for last_user in last_users %}
                             <li class="simplelist__item">
-                                <a href="/posts/{{ last_user['id'] }}" class="simplelist__item  simplelist__item--three-colums">
-                                    {{ last_user['name'] }}
+                                <a href="/posts/{{ last_user.id }}" class="simplelist__item  simplelist__item--three-colums">
+                                    {{ last_user.name }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
-                                    <span class="date">{{ last_user['created_at'] }}</span>
+                                    <span class="date">{{ last_user.created_at. }}</span>
                                 </div>
                             </li>
                         {% endfor %}
@@ -67,11 +67,11 @@
                     <ul class="simplelist">
                         {% for draft_post in draft_posts %}
                             <li class="simplelist__item">
-                                <a href="/posts/{{ draft_post['id'] }}" class="simplelist__item-link">
-                                    {{ draft_post['title'] }}
+                                <a href="/posts/{{ draft_post.id }}" class="simplelist__item-link">
+                                    {{ draft_post.title }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
-                                    <span class="tag">{{ draft_post['type'] }}</span>
+                                    <span class="tag">{{ draft_post.category.name }}</span>
                                 </div>
                             </li>
                         {% endfor %}
@@ -90,11 +90,11 @@
                     <ul class="simplelist">
                         {% for last_post in last_posts %}
                             <li class="simplelist__item">
-                                <a href="/posts/{{ last_post['id'] }}" class="simplelist__item-link">
-                                    {{ last_post['title'] }}
+                                <a href="/posts/{{ last_post.id }}" class="simplelist__item-link">
+                                    {{ last_post.title }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
-                                    <span class="tag">{{ last_post['type'] }}</span>
+                                    <span class="tag">{{ last_post.category.name }}</span>
                                 </div>
                             </li>
                         {% endfor %}

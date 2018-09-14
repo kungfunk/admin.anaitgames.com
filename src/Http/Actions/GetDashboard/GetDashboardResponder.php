@@ -20,9 +20,14 @@ class GetDashboardResponder extends Responder
         $this->data = [];
     }
 
-    public function setLastFiveRegisteredUsers(Collection $users)
+    public function setLastRegisteredUsers(Collection $users)
     {
         $this->data['last_users'] = $users;
+    }
+
+    public function setLastPosts(Collection $posts)
+    {
+        $this->data['last_posts'] = $posts;
     }
 
     public function success(Response $response)
