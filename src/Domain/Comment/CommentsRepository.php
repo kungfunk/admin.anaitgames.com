@@ -1,6 +1,8 @@
 <?php
 namespace Domain\Comment;
 
+use Carbon\Carbon;
+
 class CommentsRepository
 {
     private $comment_model;
@@ -21,5 +23,12 @@ class CommentsRepository
             ->offset($offset)
             ->limit($limit)
             ->get();
+    }
+
+    public function countCommentsFromDate(Carbon $startDate, Carbon $endDate)
+    {
+        return $this->comment_model
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
     }
 }

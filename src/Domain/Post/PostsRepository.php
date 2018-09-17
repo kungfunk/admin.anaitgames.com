@@ -79,6 +79,13 @@ class PostsRepository
         return $query->get();
     }
 
+    public function countPostsFromDate(Carbon $startDate, Carbon $endDate)
+    {
+        return $this->post_model
+            ->whereBetween('publish_date', [$startDate, $endDate])
+            ->count();
+    }
+
 //    public function getPostsPaginated($options)
 //    {
 //        // TODO: add type and tags to the filters

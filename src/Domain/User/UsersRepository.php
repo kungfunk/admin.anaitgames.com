@@ -1,6 +1,8 @@
 <?php
 namespace Domain\User;
 
+use Carbon\Carbon;
+
 class UsersRepository
 {
     private $user_model;
@@ -26,5 +28,12 @@ class UsersRepository
             ->offset($offset)
             ->limit($limit)
             ->get();
+    }
+
+    public function countUsersFromDate(Carbon $startDate, Carbon $endDate)
+    {
+        return $this->user_model
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->count();
     }
 }
