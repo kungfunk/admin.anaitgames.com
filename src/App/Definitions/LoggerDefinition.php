@@ -2,8 +2,9 @@
 namespace App\Definitions;
 
 use Psr\Container\ContainerInterface;
-use Monolog\Logger as Logger;
-use Monolog\Handler\StreamHandler as StreamHandler;
+use Monolog\Logger;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Formatter\LineFormatter;
 
 class LoggerDefinition extends AbstractContainerDefinition
 {
@@ -18,9 +19,16 @@ class LoggerDefinition extends AbstractContainerDefinition
             Logger::class => function (ContainerInterface $container) {
                 $settings = $this->getSettings($container);
                 $logger = new Logger($settings['name']);
-                $file_handler = new StreamHandler($settings['path']);
-                $logger->pushHandler($file_handler);
+                $formatter = new LineFormatter(
+                    "[%datetime%] [%level_name%]: %message% %context%\n",
+                    null,
+                    true,
+                    true
+                );
 
+                $rotating = new RotatingFileHandler($settings['path'], 0, Logger::DEBUG);
+                $rotating->setFormatter($formatter);
+                $logger->pushHandler($rotating);
                 return $logger;
             }
         ];

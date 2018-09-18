@@ -6,6 +6,7 @@ use DI\ContainerBuilder;
 use App\Definitions\IlluminateDefinition;
 use App\Definitions\LoggerDefinition;
 use App\Definitions\TwigDefinition;
+use App\Definitions\ErrorHandlerDefinition;
 
 class SlimApp extends App
 {
@@ -29,9 +30,10 @@ class SlimApp extends App
     protected function getContainerDefinitions()
     {
         return [
-            new IlluminateDefinition($this->config),
             new LoggerDefinition,
+            new IlluminateDefinition($this->config),
             new TwigDefinition,
+            new ErrorHandlerDefinition,
         ];
     }
 }
