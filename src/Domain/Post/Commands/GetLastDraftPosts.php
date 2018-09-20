@@ -1,24 +1,25 @@
 <?php
 namespace Domain\Post\Commands;
 
+use App\Commands\CommandInterface;
 use Domain\Post\PostsRepository;
 use Domain\Post\Post;
 
-class GetLastDraftPosts
+class GetLastDraftPosts implements CommandInterface
 {
-    private $repository;
+    private $postsRepository;
     private static $order_field = Post::DEFAULT_ORDER_FIELD;
     private static $order_direction = Post::DEFAULT_ORDER_DIRECTION;
     private static $limit = 10;
 
-    public function __construct(PostsRepository $repository)
+    public function __construct(PostsRepository $postsRepository)
     {
-        $this->repository = $repository;
+        $this->postsRepository = $postsRepository;
     }
 
-    public function load()
+    public function run()
     {
-        return $this->repository->getDraftPostsPaginated(
+        return $this->postsRepository->getDraftPostsPaginated(
             self::$order_field,
             self::$order_direction,
             self::$limit

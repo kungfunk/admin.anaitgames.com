@@ -1,0 +1,183 @@
+{% extends '/shared/layout.twig' %}
+
+{% block title %}Entradas{% endblock %}
+
+{% block content %}
+    <div class="main__container">
+        <section class="statistics">
+            <div class="statistics-box">
+                <h3 class="statistics-box__big-number">3
+                    <sup class="statistics-box__small-number statistics-box__small-number--color-positive">(+1)</sup>
+                </h3>
+                <span class="statistics-box__sub-text">Publicados hoy</span>
+            </div>
+            <div class="statistics-box">
+                <h3 class="statistics-box__big-number">53
+                    <sup class="statistics-box__small-number statistics-box__small-number--color-positive">(+5)</sup>
+                </h3>
+                <span class="statistics-box__sub-text">Publicados esta semana</span>
+            </div>
+            <div class="statistics-box">
+                <h3 class="statistics-box__big-number">231
+                    <sup class="statistics-box__small-number statistics-box__small-number--color-negative">(-11)</sup>
+                </h3>
+                <span class="statistics-box__sub-text">Publicados este mes</span>
+            </div>
+        </section>
+        <div class="posts">
+            <div class="filters-pannel">
+                <div class="filters">
+                    <h4 class="filters__title">
+                        Filtrar por tipo
+                        <svg class="filters__title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </h4>
+                    <ul class="filters__list">
+                        {% for category in categories %}
+                            <li class="filter filter--selected">
+                                <a class="filter__name" href="{{ category.id }}">{{ category.name }}</a>
+                                <span class="filter__number">{{ category.posts_count }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <hr class="filters-pannel__separator">
+                <div class="filters">
+                    <h4 class="filters__title">
+                        Filtrar por estado
+                        <svg class="filters__title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </h4>
+                    <ul class="filters__list">
+                        <li class="filter filter--selected">
+                            <a class="filter__name" href="">Publicado</a>
+                            <span class="filter__number">20001</span>
+                        </li>
+                        <li class="filter">
+                            <a class="filter__name" href="">Borrador</a>
+                            <span class="filter__number">310</span>
+                        </li>
+                        <li class="filter">
+                            <a class="filter__name" href="">Papelera</a>
+                            <span class="filter__number">11</span>
+                        </li>
+                    </ul>
+                </div>
+                <hr class="filters-pannel__separator">
+                <div class="filters">
+                    <h4 class="filters__title">
+                        Filtrar por autor
+                        <svg class="filters__title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </h4>
+                    <ul class="filters__list">
+                        <li class="filter">
+                            <a class="filter__name" href="">Solo los mios</a>
+                            <span class="filter__number">1123</span>
+                        </li>
+                        <li class="filter">
+                            <a class="filter__name" href="">Solo redactores</a>
+                            <span class="filter__number">42341</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="posts__results">
+                <div class="box">
+                    <div class="box__header">
+                        <h3 class="box__title">Mostrando {{ posts|length }} de {{ total_posts_number }} resultados</h3>
+                        <div class="box__action">
+                            <a href="" class="button">
+                                <svg class="button__icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                Busqueda avanzada
+                            </a>
+                        </div>
+                    </div>
+                    <div class="box__body">
+                        <table class="datatable">
+                            <thead class="datatable__header">
+                            <tr class="datatable__row">
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">
+                                        Titular
+                                        <svg class="datatable__sort-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Tipo</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Estado</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Autor</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Visitas</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Comentarios</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Publicada</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Creada</a>
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for post in posts %}
+                                    <tr class="datatable__row">
+                                        <td class="datatable__cell">
+                                            <a class="datatable__link" href="/posts/{{ post.id }}">{{ post.title }}</a>
+                                        </td>
+                                        <td class="datatable__cell">{{ post.category.name }}</td>
+                                        <td class="datatable__cell">{{ post.status }}</td>
+                                        <td class="datatable__cell">{{ post.user.name }}</td>
+                                        <td class="datatable__cell">{{ post.num_views }}</td>
+                                        <td class="datatable__cell">{{ post.comments_count }}</td>
+                                        <td class="datatable__cell">{{ post.publish_date }}</td>
+                                        <td class="datatable__cell">{{ post.created_at }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box__footer">
+                        <ul class="pagination">
+                            <li class="pagination__page">
+                                <a href="" class="pagination__link">1</a>
+                            </li>
+                            <li class="pagination__gap">...</li>
+                            <li class="pagination__page">
+                                <a href="" class="pagination__link">6</a>
+                            </li>
+                            <li class="pagination__page pagination__page--selected">7</li>
+                            <li class="pagination__page">
+                                <a href="" class="pagination__link">8</a>
+                            </li>
+                            <li class="pagination__page">
+                                <a href="" class="pagination__link">Siguente</a>
+                            </li>
+                            <li class="pagination__page">
+                                <a href="" class="pagination__link">Última</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

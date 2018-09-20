@@ -1,10 +1,11 @@
 <?php
 namespace Domain\User\Commands;
 
+use App\Commands\CommandInterface;
 use Domain\User\UsersRepository;
 use Domain\User\User;
 
-class GetLastRegisteredUsers
+class GetLastRegisteredUsers implements CommandInterface
 {
     private $repository;
     private static $order_field = User::DEFAULT_ORDER_FIELD;
@@ -16,8 +17,12 @@ class GetLastRegisteredUsers
         $this->repository = $repository;
     }
 
-    public function load()
+    public function run()
     {
-        return $this->repository->getUsersPaginated(self::$order_field, self::$order_direction, self::$limit);
+        return $this->repository->getUsersPaginated(
+            self::$order_field,
+            self::$order_direction,
+            self::$limit
+        );
     }
 }

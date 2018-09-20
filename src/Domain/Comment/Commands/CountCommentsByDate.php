@@ -1,18 +1,19 @@
 <?php
 namespace Domain\Comment\Commands;
 
+use App\Commands\CommandInterface;
 use Domain\Comment\CommentsRepository;
 use Carbon\Carbon;
 
-class CountCommentsByDate
+class CountCommentsByDate implements CommandInterface
 {
-    private $repository;
+    private $commentsRepository;
     private $startDate;
     private $endDate;
 
-    public function __construct(CommentsRepository $repository)
+    public function __construct(CommentsRepository $commentsRepository)
     {
-        $this->repository = $repository;
+        $this->commentsRepository = $commentsRepository;
     }
 
     public function setStartDate(Carbon $date)
@@ -25,8 +26,8 @@ class CountCommentsByDate
         $this->endDate = $date;
     }
 
-    public function load()
+    public function run()
     {
-        return $this->repository->countCommentsFromDate($this->startDate, $this->endDate);
+        return $this->commentsRepository->countCommentsFromDate($this->startDate, $this->endDate);
     }
 }

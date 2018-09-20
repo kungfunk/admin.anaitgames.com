@@ -3,37 +3,46 @@ namespace Http\Actions\GetPosts;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Domain\Post\PostsRepository as PostsRepository;
-use Http\Actions\GetPosts\GetPostsResponder as Responder;
 use Http\Actions\GetPosts\GetPostsInput as Input;
+use Domain\Post\Commands\CountTotalPosts;
+use Domain\Post\Commands\GetPostsFilteredPaginated;
+use Domain\Post\CategoriesRepository;
 
 class GetPostsAction
 {
-    private $posts_repository;
     private $responder;
     private $input;
+    private $countTotalPosts;
+    private $getPostsFilteredPaginated;
+    private $categoriesRepository;
 
-    function __construct() {
-        $this->posts_repository = new PostsRepository;
-        $this->responder = new Responder;
+    public function __construct(
+        GetPostsResponder $responder,
+        CategoriesRepository $categoriesRepository,
+        CountTotalPosts $countTotalPosts,
+        GetPostsFilteredPaginated $getPostsFilteredPaginated
+    ) {
+        $this->responder = $responder;
+        $this->categoriesRepository = $categoriesRepository;
+        $this->countTotalPosts = $countTotalPosts;
+        $this->getPostsFilteredPaginated = $getPostsFilteredPaginated;
     }
 
-    function __invoke(Request $request, Response $response) {
+    public function __invoke(Request $request, Response $response)
+    {
         $this->input = new Input($request);
 
-        $posts = $this->posts_repository->getPostsPaginated(
-            [
-                'search' => $this->input->search,
-                'type' => $this->input->type,
-                'slug' => $this->input->slug,
-                'status' => $this->input->status,
-                'order_by' => $this->input->order_by,
-                'order' => $this->input->order,
-                'limit' => $this->input->limit,
-                'offset' => $this->input->offset
-            ]
-        );
+        $this->getPostsFilteredPaginated->setSearch($this->input->search);
+        $this->getPostsFilteredPaginated->setStatus($this->input->status);
+        $this->getPostsFilteredPaginated->setCategoryId($this->input->categoryId);
+        $this->getPostsFilteredPaginated->setOrderField($this->input->orderField);
+        $this->getPostsFilteredPaginated->setOrderDirection($this->input->orderDirection);
+        $this->getPostsFilteredPaginated->setOffset($this->input->offset);
 
-        return $this->responder->success($response, $posts);
+        $this->responder->setCategories($this->categoriesRepository->getAllWithPostCount());
+        $this->responder->setPosts($this->getPostsFilteredPaginated->run());
+        $this->responder->setTotalPostsNumber($this->countTotalPosts->run());
+
+        return $this->responder->success($response);
     }
 }

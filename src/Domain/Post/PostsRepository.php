@@ -5,11 +5,11 @@ use Carbon\Carbon;
 
 class PostsRepository
 {
-    private $post_model;
+    private $postModel;
 
     public function __construct(Post $post)
     {
-        $this->post_model = $post;
+        $this->postModel = $post;
     }
 
     private function addRelationShips($query)
@@ -21,97 +21,114 @@ class PostsRepository
             ->with('tags');
     }
 
-    private function addOrder($query, $order_field, $order_direction, $limit, $offset)
+    private function addOrder($query, $orderField, $orderDirection, $limit, $offset)
     {
         return $query
-            ->orderBy($order_field, $order_direction)
+            ->orderBy($orderField, $orderDirection)
             ->offset($offset)
             ->limit($limit);
     }
 
     public function getPostById($id)
     {
-        return $this->post_model->find($id);
+        return $this->postModel->find($id);
     }
 
     public function getDraftPostsPaginated(
-        string $order_field = Post::DEFAULT_ORDER_FIELD,
-        string $order_direction = Post::DEFAULT_ORDER_DIRECTION,
+        string $orderField = Post::DEFAULT_ORDER_FIELD,
+        string $orderDirection = Post::DEFAULT_ORDER_DIRECTION,
         int $limit = Post::DEFAULT_LIMIT,
         int $offset = 0
     ) {
-        $query = $this->post_model
+        $query = $this->postModel
             ->where('status', Post::STATUS_DRAFT);
 
         $query = $this->addRelationShips($query);
-        $query = $this->addOrder($query, $order_field, $order_direction, $limit, $offset);
+        $query = $this->addOrder($query, $orderField, $orderDirection, $limit, $offset);
 
         return $query->get();
     }
 
     public function getNotPublishedPostsPaginated(
-        string $order_field = Post::DEFAULT_ORDER_FIELD,
-        string $order_direction = Post::DEFAULT_ORDER_DIRECTION,
+        string $orderField = Post::DEFAULT_ORDER_FIELD,
+        string $orderDirection = Post::DEFAULT_ORDER_DIRECTION,
         int $limit = Post::DEFAULT_LIMIT,
         int $offset = 0
     ) {
 
-        $query = $this->post_model
+        $query = $this->postModel
             ->where('status', Post::STATUS_PUBLISHED)
             ->where('publish_date', '>', Carbon::now()->toDateTimeString());
 
         $query = $this->addRelationShips($query);
-        $query = $this->addOrder($query, $order_field, $order_direction, $limit, $offset);
+        $query = $this->addOrder($query, $orderField, $orderDirection, $limit, $offset);
 
         return $query->get();
     }
 
     public function getPostsPaginated(
-        string $order_field = Post::DEFAULT_ORDER_FIELD,
-        string $order_direction = Post::DEFAULT_ORDER_DIRECTION,
+        string $orderField = Post::DEFAULT_ORDER_FIELD,
+        string $orderDirection = Post::DEFAULT_ORDER_DIRECTION,
         int $limit = Post::DEFAULT_LIMIT,
         int $offset = 0
     ) {
-        $query = $this->post_model;
+        $query = $this->postModel;
         $query = $this->addRelationShips($query);
-        $query = $this->addOrder($query, $order_field, $order_direction, $limit, $offset);
+        $query = $this->addOrder($query, $orderField, $orderDirection, $limit, $offset);
 
         return $query->get();
     }
 
+    public function countPosts()
+    {
+        return $this->postModel->count();
+    }
+
+    public function countPostsByCategoryId(int $categoryId)
+    {
+        return $this->postModel
+            ->where('category_id', $categoryId)
+            ->count();
+    }
+
+
     public function countPostsFromDate(Carbon $startDate, Carbon $endDate)
     {
-        return $this->post_model
+        return $this->postModel
             ->whereBetween('publish_date', [$startDate, $endDate])
             ->count();
     }
 
-//    public function getPostsPaginated($options)
-//    {
-//        // TODO: add type and tags to the filters
-//        $query = $this->post_model->query();
-//
-//        if (!is_null($options['search'])) {
-//            $query = $query->where(
-//                Post::SEARCHABLE_FIELD,
-//                'like',
-//                '%' . $options['search'] . '%'
-//            );
-//        }
-//
-//        if (!is_null($options['slug'])) {
-//            $query = $query->where(Post::SLUG, $options['slug']);
-//        }
-//
-//        return $query
-//            ->where('status', $options['status'])
-//            ->withCount('comments')
-//            ->with('category')
-//            ->with('user')
-//            ->with('tags')
-//            ->orderBy($options['order_by'], $options['order'])
-//            ->offset($options['offset'])
-//            ->limit($options['limit'])
-//            ->get();
-//    }
+    public function getPostsFilteredPaginated(
+        string $search = null,
+        int $categoryId = null,
+        string $status = null,
+        string $orderField = Post::DEFAULT_ORDER_FIELD,
+        string $orderDirection = Post::DEFAULT_ORDER_DIRECTION,
+        int $limit = Post::DEFAULT_LIMIT,
+        int $offset = 0
+    ) {
+        $query = $this->postModel->query();
+
+        if (!is_null($search)) {
+            $query = $query->where(
+                'title',
+                'like',
+                '%' . $search . '%'
+            );
+        }
+
+        if (!is_null($categoryId)) {
+            $query = $query->where('category_id', $categoryId);
+        }
+
+        if (!is_null($status)) {
+            $query = $query->where('status', $status);
+        }
+
+        $query = $this->addRelationShips($query);
+        $query = $this->addOrder($query, $orderField, $orderDirection, $limit, $offset);
+
+        return $query->get();
+    }
 }

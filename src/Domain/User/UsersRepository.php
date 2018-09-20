@@ -5,26 +5,26 @@ use Carbon\Carbon;
 
 class UsersRepository
 {
-    private $user_model;
+    private $userModel;
 
     public function __construct(User $user)
     {
-        $this->user_model = $user;
+        $this->userModel = $user;
     }
 
     public function getUserById(int $id): User
     {
-        return $this->user_model->find($id);
+        return $this->userModel->find($id);
     }
 
     public function getUsersPaginated(
-        string $order_field = User::DEFAULT_ORDER_FIELD,
-        string $order_direction = User::DEFAULT_ORDER_DIRECTION,
+        string $orderField = User::DEFAULT_ORDER_FIELD,
+        string $orderDirection = User::DEFAULT_ORDER_DIRECTION,
         int $limit = User::DEFAULT_LIMIT,
         int $offset = 0
     ) {
-        return $this->user_model
-            ->orderBy($order_field, $order_direction)
+        return $this->userModel
+            ->orderBy($orderField, $orderDirection)
             ->offset($offset)
             ->limit($limit)
             ->get();
@@ -32,7 +32,7 @@ class UsersRepository
 
     public function countUsersFromDate(Carbon $startDate, Carbon $endDate)
     {
-        return $this->user_model
+        return $this->userModel
             ->whereBetween('created_at', [$startDate, $endDate])
             ->count();
     }

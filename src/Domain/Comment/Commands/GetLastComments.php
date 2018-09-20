@@ -1,24 +1,25 @@
 <?php
 namespace Domain\Comment\Commands;
 
+use App\Commands\CommandInterface;
 use Domain\Comment\CommentsRepository;
 use Domain\Comment\Comment;
 
-class GetLastComments
+class GetLastComments implements CommandInterface
 {
-    private $repository;
+    private $commentsRepository;
     private static $order_field = Comment::DEFAULT_ORDER_FIELD;
     private static $order_direction = Comment::DEFAULT_ORDER_DIRECTION;
     private static $limit = 12;
 
-    public function __construct(CommentsRepository $repository)
+    public function __construct(CommentsRepository $commentsRepository)
     {
-        $this->repository = $repository;
+        $this->commentsRepository = $commentsRepository;
     }
 
-    public function load()
+    public function run()
     {
-        return $this->repository->getCommentsPaginated(
+        return $this->commentsRepository->getCommentsPaginated(
             self::$order_field,
             self::$order_direction,
             self::$limit

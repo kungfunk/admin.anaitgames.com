@@ -14,4 +14,9 @@ class CategoriesRepository
     {
         return $this->categories_model->all();
     }
+
+    public function getAllWithPostCount()
+    {
+        return $this->categories_model->withCount('posts')->get();
+    }
 }

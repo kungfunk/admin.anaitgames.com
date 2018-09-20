@@ -21,28 +21,29 @@ class GetDashboardAction
     protected $lastPosts;
     protected $lastPendingPosts;
     protected $lastDraftPosts;
-    protected $lastComments;
+    protected $countCommentsByDate;
+    protected $countPostsByDate;
 
     public function __construct(
         GetDashboardResponder $responder,
         GetLastRegisteredUsers $lastRegisteredUsers,
-        CountUsersByDate $usersByDate,
+        CountUsersByDate $countUsersByDate,
         GetLastPosts $lastPosts,
         GetLastPendingPosts $lastPendingPosts,
         GetLastDraftPosts $lastDraftPosts,
-        CountPostsByDate $postsByDate,
+        CountPostsByDate $countPostsByDate,
         GetLastComments $lastComments,
-        CountCommentsByDate $commentsByDate
+        CountCommentsByDate $countCommentsByDate
     ) {
         $this->responder = $responder;
         $this->lastRegisteredUsers = $lastRegisteredUsers;
-        $this->usersByDate = $usersByDate;
+        $this->countUsersByDate = $countUsersByDate;
         $this->lastPosts = $lastPosts;
         $this->lastPendingPosts = $lastPendingPosts;
         $this->lastDraftPosts = $lastDraftPosts;
-        $this->postsByDate = $postsByDate;
+        $this->countPostsByDate = $countPostsByDate;
         $this->lastComments = $lastComments;
-        $this->commentsByDate = $commentsByDate;
+        $this->countCommentsByDate = $countCommentsByDate;
     }
 
     public function __invoke(Request $request, Response $response)
@@ -55,35 +56,35 @@ class GetDashboardAction
         $endOfYesterday = new Carbon('yesterday');
         $endOfYesterday->modify('+1 day');
 
-        $this->postsByDate->setStartDate($startOfToday);
-        $this->postsByDate->setEndDate($endOfToday);
-        $number_of_posts_today = $this->postsByDate->load();
+        $this->countPostsByDate->setStartDate($startOfToday);
+        $this->countPostsByDate->setEndDate($endOfToday);
+        $number_of_posts_today = $this->countPostsByDate->run();
 
-        $this->postsByDate->setStartDate($startOfYesterday);
-        $this->postsByDate->setEndDate($endOfYesterday);
-        $number_of_posts_yesterday = $this->postsByDate->load();
+        $this->countPostsByDate->setStartDate($startOfYesterday);
+        $this->countPostsByDate->setEndDate($endOfYesterday);
+        $number_of_posts_yesterday = $this->countPostsByDate->run();
 
-        $this->usersByDate->setStartDate($startOfToday);
-        $this->usersByDate->setEndDate($endOfToday);
-        $number_of_users_today = $this->usersByDate->load();
+        $this->countUsersByDate->setStartDate($startOfToday);
+        $this->countUsersByDate->setEndDate($endOfToday);
+        $number_of_users_today = $this->countUsersByDate->run();
 
-        $this->usersByDate->setStartDate($startOfYesterday);
-        $this->usersByDate->setEndDate($endOfYesterday);
-        $number_of_users_yesterday = $this->usersByDate->load();
+        $this->countUsersByDate->setStartDate($startOfYesterday);
+        $this->countUsersByDate->setEndDate($endOfYesterday);
+        $number_of_users_yesterday = $this->countUsersByDate->run();
 
-        $this->commentsByDate->setStartDate($startOfToday);
-        $this->commentsByDate->setEndDate($endOfToday);
-        $number_of_comments_today = $this->commentsByDate->load();
+        $this->countCommentsByDate->setStartDate($startOfToday);
+        $this->countCommentsByDate->setEndDate($endOfToday);
+        $number_of_comments_today = $this->countCommentsByDate->run();
 
-        $this->commentsByDate->setStartDate($startOfYesterday);
-        $this->commentsByDate->setEndDate($endOfYesterday);
-        $number_of_comments_yesterday = $this->commentsByDate->load();
+        $this->countCommentsByDate->setStartDate($startOfYesterday);
+        $this->countCommentsByDate->setEndDate($endOfYesterday);
+        $number_of_comments_yesterday = $this->countCommentsByDate->run();
 
-        $this->responder->setLastRegisteredUsers($this->lastRegisteredUsers->load());
-        $this->responder->setLastPosts($this->lastPosts->load());
-        $this->responder->setLastPendingPosts($this->lastPendingPosts->load());
-        $this->responder->setLastDraftPosts($this->lastDraftPosts->load());
-        $this->responder->setLastComments($this->lastComments->load());
+        $this->responder->setLastRegisteredUsers($this->lastRegisteredUsers->run());
+        $this->responder->setLastPosts($this->lastPosts->run());
+        $this->responder->setLastPendingPosts($this->lastPendingPosts->run());
+        $this->responder->setLastDraftPosts($this->lastDraftPosts->run());
+        $this->responder->setLastComments($this->lastComments->run());
         $this->responder->setNumberOfPostToday($number_of_posts_today);
         $this->responder->setNumberOfPostYesterday($number_of_posts_yesterday);
         $this->responder->setNumberOfUsersToday($number_of_users_today);

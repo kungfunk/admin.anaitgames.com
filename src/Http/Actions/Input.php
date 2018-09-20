@@ -11,7 +11,7 @@ abstract class Input
     const PARAM_ORDER = 'order';
     const PARAM_ORDER_BY = 'order_by';
 
-    const ORDER_WHITELIST = [
+    const ORDER_DIRECTION_WHITELIST = [
         'desc',
         'asc'
     ];

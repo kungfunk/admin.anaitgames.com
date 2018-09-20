@@ -1,24 +1,25 @@
 <?php
 namespace Domain\Post\Commands;
 
+use App\Commands\CommandInterface;
 use Domain\Post\PostsRepository;
 use Domain\Post\Post;
 
-class GetLastPendingPosts
+class GetLastPendingPosts implements CommandInterface
 {
-    private $repository;
+    private $postsRepository;
     private static $order_field = Post::DEFAULT_ORDER_FIELD;
     private static $order_direction = Post::DEFAULT_ORDER_DIRECTION;
     private static $limit = 10;
 
-    public function __construct(PostsRepository $repository)
+    public function __construct(PostsRepository $postRepository)
     {
-        $this->repository = $repository;
+        $this->postsRepository = $postRepository;
     }
 
-    public function load()
+    public function run()
     {
-        return $this->repository->getNotPublishedPostsPaginated(
+        return $this->postsRepository->getNotPublishedPostsPaginated(
             self::$order_field,
             self::$order_direction,
             self::$limit

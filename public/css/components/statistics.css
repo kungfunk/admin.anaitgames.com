@@ -1,3 +1,13 @@
+.statistics {
+    background-color: var(--color-white);
+    border-bottom: 1px solid var(--color-lightgrey);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 160px;
+    align-items: center;
+    justify-items: center;
+}
+
 .statistics-box {
   text-align: center;
 }

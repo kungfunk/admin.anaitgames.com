@@ -3,14 +3,16 @@ namespace Domain\User;
 
 class LogsRepository
 {
-    private $logs_model;
+    private $logsModel;
 
-    public function __construct() {
-        $this->logs_model = new Log;
+    public function __construct()
+    {
+        $this->logsModel = new Log;
     }
 
-    public function getLogsFromUserIdPaginated($user_id, $options) {
-        return $this->logs_model
+    public function getLogsFromUserIdPaginated($user_id, $options)
+    {
+        return $this->logsModel
             ->where('user_id', $user_id)
             ->orderBy(Log::FIXED_ORDER, $options['order'])
             ->offset($options['offset'])

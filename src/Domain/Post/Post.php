@@ -16,6 +16,13 @@ class Post extends Model
     const DEFAULT_ORDER_FIELD = 'created_at';
     const DEFAULT_ORDER_DIRECTION = 'desc';
 
+    const ORDER_FIELD_WHITELIST = [
+        'created_at',
+        'publish_date',
+        'title',
+        'num_views'
+    ];
+
     protected $fillable = [
         'user_id',
         'category_id',

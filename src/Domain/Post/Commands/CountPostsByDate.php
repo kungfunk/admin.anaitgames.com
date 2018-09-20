@@ -1,18 +1,19 @@
 <?php
 namespace Domain\Post\Commands;
 
+use App\Commands\CommandInterface;
 use Domain\Post\PostsRepository;
 use Carbon\Carbon;
 
-class CountPostsByDate
+class CountPostsByDate implements CommandInterface
 {
-    private $repository;
+    private $postsRepository;
     private $startDate;
     private $endDate;
 
-    public function __construct(PostsRepository $repository)
+    public function __construct(PostsRepository $postsRepository)
     {
-        $this->repository = $repository;
+        $this->postsRepository = $postsRepository;
     }
 
     public function setStartDate(Carbon $date)
@@ -25,8 +26,8 @@ class CountPostsByDate
         $this->endDate = $date;
     }
 
-    public function load()
+    public function run()
     {
-        return $this->repository->countPostsFromDate($this->startDate, $this->endDate);
+        return $this->postsRepository->countPostsFromDate($this->startDate, $this->endDate);
     }
 }
