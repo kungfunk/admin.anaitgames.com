@@ -35,6 +35,26 @@ class GetPostsResponder extends Responder
         $this->data['categories'] = $categories;
     }
 
+    public function setDraftPostsNumber(int $count)
+    {
+        $this->data['draft_posts_number'] = $count;
+    }
+
+    public function setPublishedPostsNumber(int $count)
+    {
+        $this->data['published_posts_number'] = $count;
+    }
+
+    public function setTrashPostsNumber(int $count)
+    {
+        $this->data['trash_posts_number'] = $count;
+    }
+
+    public function setWriters(Collection $users)
+    {
+        $this->data['writers'] = $users;
+    }
+
     public function success(Response $response)
     {
         return $this->twig->render(

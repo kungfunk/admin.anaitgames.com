@@ -53,15 +53,15 @@
                     <ul class="filters__list">
                         <li class="filter filter--selected">
                             <a class="filter__name" href="">Publicado</a>
-                            <span class="filter__number">20001</span>
+                            <span class="filter__number">{{ published_posts_number }}</span>
                         </li>
                         <li class="filter">
                             <a class="filter__name" href="">Borrador</a>
-                            <span class="filter__number">310</span>
+                            <span class="filter__number">{{ draft_posts_number }}</span>
                         </li>
                         <li class="filter">
                             <a class="filter__name" href="">Papelera</a>
-                            <span class="filter__number">11</span>
+                            <span class="filter__number">{{ trash_posts_number }}</span>
                         </li>
                     </ul>
                 </div>
@@ -75,14 +75,12 @@
                         </svg>
                     </h4>
                     <ul class="filters__list">
-                        <li class="filter">
-                            <a class="filter__name" href="">Solo los mios</a>
-                            <span class="filter__number">1123</span>
-                        </li>
-                        <li class="filter">
-                            <a class="filter__name" href="">Solo redactores</a>
-                            <span class="filter__number">42341</span>
-                        </li>
+                        {% for writer in writers %}
+                            <li class="filter">
+                                <a class="filter__name" href="{{ writer.id }}">{{ writer.name }}</a>
+                                <span class="filter__number">{{ writer.posts_count }}</span>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>

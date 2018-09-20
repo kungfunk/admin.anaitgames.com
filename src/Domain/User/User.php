@@ -9,6 +9,10 @@ class User extends Model
     const DEFAULT_ORDER_FIELD = 'created_at';
     const DEFAULT_ORDER_DIRECTION = 'desc';
 
+    const ROLE_USER = 1;
+    const ROLE_EDITOR = 2;
+    const ROLE_ADMIN = 3;
+
     protected $fillable = [
         'name',
         'email',
@@ -27,7 +31,7 @@ class User extends Model
 
     public function posts()
     {
-        return $this->hasMany('Domain\Posts\Posts');
+        return $this->hasMany('Domain\Post\Post');
     }
 
     public function logs()

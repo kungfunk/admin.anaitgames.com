@@ -17,6 +17,18 @@ class UsersRepository
         return $this->userModel->find($id);
     }
 
+    public function getUserByRoles($roles)
+    {
+        if (!is_array($roles)) {
+            $roles = [$roles];
+        }
+        return $this->userModel
+            ->withCount('posts')
+            ->whereIn('role', $roles)
+            ->get();
+    }
+
+
     public function getUsersPaginated(
         string $orderField = User::DEFAULT_ORDER_FIELD,
         string $orderDirection = User::DEFAULT_ORDER_DIRECTION,

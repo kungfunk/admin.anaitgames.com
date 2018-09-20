@@ -91,6 +91,13 @@ class PostsRepository
             ->count();
     }
 
+    public function countPostsByStatus(string $status)
+    {
+        return $this->postModel
+            ->where('status', $status)
+            ->count();
+    }
+
 
     public function countPostsFromDate(Carbon $startDate, Carbon $endDate)
     {
