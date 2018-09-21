@@ -10,6 +10,10 @@
     <link rel="stylesheet" type="text/css" href="/css/app.css" />
 </head>
 <body>
-    <p class="general-error">{{ error }}</p>
+    <p class="general-error">{{ message }}</p>
+    {% if isDebug == true %}
+        <h4>{{ error }}</h4>
+        <pre>{{ stack }}</pre>
+    {% endif %}
 </body>
 </html>

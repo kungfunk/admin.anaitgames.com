@@ -26,11 +26,11 @@ final class ErrorHandler extends AbstractError
 
     public function __invoke(Request $request, Response $response, Throwable $throwable)
     {
-        $this->logger->critical($throwable->getMessage());
-        $error = self::DEFAULT_ERROR_TEXT;
+        $this->logger->critical($throwable->getMessage() . "\n" . $throwable->getTraceAsString());
+        $message = self::DEFAULT_ERROR_TEXT;
 
         if ($throwable instanceof \PDOException) {
-            $error = self::DATABASE_ERROR_TEXT;
+            $message = self::DATABASE_ERROR_TEXT;
         }
 
         $response->withStatus(500);
@@ -39,7 +39,10 @@ final class ErrorHandler extends AbstractError
             $response,
             self::ERROR_TEMPLATE,
             [
-                'error' => $error
+                'message' => $message,
+                'error' => $throwable->getMessage(),
+                'stack' => $throwable->getTraceAsString(),
+                'isDebug' => getenv('DEBUG')
             ]
         );
     }
