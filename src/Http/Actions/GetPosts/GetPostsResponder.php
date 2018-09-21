@@ -13,7 +13,7 @@ class GetPostsResponder extends Responder
     private $twig;
     private $data;
 
-    public const POSTS_PER_PAGE = 2;
+    public const POSTS_PER_PAGE = 10;
 
     private const DASHBOARD_TEMPLATE_ROUTE = 'routes/posts.twig';
 

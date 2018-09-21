@@ -28,6 +28,11 @@ class CountPostsByDate implements CommandInterface
 
     public function run()
     {
-        return $this->postsRepository->countPostsFromDate($this->startDate, $this->endDate);
+        $this->postsRepository->newQuery();
+
+        $this->postsRepository->setPublishDateMoreThan($this->startDate);
+        $this->postsRepository->setPublishDateLessThan($this->endDate);
+
+        return $this->postsRepository->count();
     }
 }

@@ -4,16 +4,12 @@ namespace Domain\Post\Commands;
 use App\Commands\CommandInterface;
 use Domain\Post\PostsRepository;
 
-class GetPostsFilteredPaginated implements CommandInterface
+class CountPostsFiltered implements CommandInterface
 {
     private $postsRepository;
-    private $search;
     private $categoryId;
+    private $search;
     private $status;
-    private $orderField;
-    private $orderDirection;
-    private $limit;
-    private $page;
     private $userId;
 
     public function __construct(PostsRepository $postsRepository)
@@ -36,26 +32,6 @@ class GetPostsFilteredPaginated implements CommandInterface
         $this->status = $status;
     }
 
-    public function setOrderField(string $orderField = null)
-    {
-        $this->orderField = $orderField;
-    }
-
-    public function setOrderDirection(string $orderDirection = null)
-    {
-        $this->orderDirection = $orderDirection;
-    }
-
-    public function setPage(int $page = 0)
-    {
-        $this->page = $page;
-    }
-
-    public function setLimit(int $limit = 100)
-    {
-        $this->limit = $limit;
-    }
-
     public function setUserId(int $userId = null)
     {
         $this->userId = $userId;
@@ -63,8 +39,6 @@ class GetPostsFilteredPaginated implements CommandInterface
 
     public function run()
     {
-        $offset = ($this->page - 1) * $this->limit;
-
         $this->postsRepository->newQuery();
 
         $this->postsRepository->setFilters(
@@ -74,15 +48,6 @@ class GetPostsFilteredPaginated implements CommandInterface
             $this->status
         );
 
-        $this->postsRepository->setOrderAndPagination(
-            $this->orderField,
-            $this->orderDirection,
-            $this->limit,
-            $offset
-        );
-
-        $this->postsRepository->addRelationShips();
-
-        return $this->postsRepository->get();
+        return $this->postsRepository->count();
     }
 }

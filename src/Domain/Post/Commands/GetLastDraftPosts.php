@@ -19,10 +19,21 @@ class GetLastDraftPosts implements CommandInterface
 
     public function run()
     {
-        return $this->postsRepository->getDraftPostsPaginated(
+        $this->postsRepository->newQuery();
+
+        $this->postsRepository->setOrderAndPagination(
             self::$order_field,
             self::$order_direction,
             self::$limit
         );
+
+        $this->postsRepository->setFilters(
+            null,
+            null,
+            null,
+            Post::STATUS_DRAFT
+        );
+
+        return $this->postsRepository->get();
     }
 }

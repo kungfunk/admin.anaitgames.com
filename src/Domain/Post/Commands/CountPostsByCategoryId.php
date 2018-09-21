@@ -21,6 +21,13 @@ class CountPostsByCategoryId implements CommandInterface
 
     public function run()
     {
-        return $this->postsRepository->countPostsByCategoryId($this->categoryId);
+        $this->postsRepository->newQuery();
+
+        $this->postsRepository->setFilters(
+            null,
+            $this->categoryId
+        );
+
+        return $this->postsRepository->count();
     }
 }

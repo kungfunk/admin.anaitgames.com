@@ -5,7 +5,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\Responder as Responder;
 
 use Slim\Views\Twig;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class GetDashboardResponder extends Responder
 {

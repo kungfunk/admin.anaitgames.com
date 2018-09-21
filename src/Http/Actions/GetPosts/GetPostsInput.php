@@ -8,7 +8,8 @@ use Domain\Post\Post as Post;
 
 class GetPostsInput extends Input
 {
-    const PARAM_TYPE = 'categoryId';
+    const PARAM_TYPE = 'category_id';
+    const PARAM_AUTHOR = 'user_id';
     const PARAM_STATUS = 'status';
     const PARAM_TAGS = 'tags';
 
@@ -28,6 +29,7 @@ class GetPostsInput extends Input
     public $page;
     public $search;
     public $categoryId;
+    public $userId;
     public $status;
     public $tags;
     public $orderField;
@@ -38,6 +40,7 @@ class GetPostsInput extends Input
         $this->page = $request->getQueryParam($this::PARAM_PAGE, $default = 1);
         $this->search = $request->getQueryParam($this::PARAM_SEARCH, $default = null);
         $this->categoryId = $request->getQueryParam($this::PARAM_TYPE, $default = null);
+        $this->userId = $request->getQueryParam($this::PARAM_AUTHOR, $default = null);
         $this->status = $request->getQueryParam($this::PARAM_STATUS, $default = null);
         $this->orderField = $request->getQueryParam($this::PARAM_ORDER_FIELD, $default = $this::DEFAULT_ORDER_FIELD);
         $this->orderDirection = $request->getQueryParam($this::PARAM_ORDER_DIRECTION, $default = $this::DEFAULT_ORDER_DIRECTION);

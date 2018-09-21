@@ -21,6 +21,15 @@ class CountPostsByStatus implements CommandInterface
 
     public function run()
     {
-        return $this->postsRepository->countPostsByStatus($this->status);
+        $this->postsRepository->newQuery();
+
+        $this->postsRepository->setFilters(
+            null,
+            null,
+            null,
+            $this->status
+        );
+
+        return $this->postsRepository->count();
     }
 }

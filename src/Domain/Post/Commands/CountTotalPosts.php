@@ -15,6 +15,8 @@ class CountTotalPosts implements CommandInterface
 
     public function run()
     {
-        return $this->postsRepository->countPosts();
+        $this->postsRepository->newQuery();
+
+        return $this->postsRepository->count();
     }
 }

@@ -6,7 +6,7 @@ use Domain\Post\Post;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetPosts\GetPostsInput as Input;
-use Domain\Post\Commands\CountTotalPosts;
+use Domain\Post\Commands\CountPostsFiltered;
 use Domain\Post\Commands\GetPostsFilteredPaginated;
 use Domain\Post\Commands\GetCategoriesWithPostCount;
 use Domain\Post\Commands\CountPostsByStatus;
@@ -16,7 +16,7 @@ class GetPostsAction
 {
     private $responder;
     private $input;
-    private $countTotalPosts;
+    private $countPostsFiltered;
     private $getPostsFilteredPaginated;
     private $getCategoriesWithPostCount;
     private $countPostsByStatus;
@@ -24,14 +24,14 @@ class GetPostsAction
 
     public function __construct(
         GetPostsResponder $responder,
-        CountTotalPosts $countTotalPosts,
+        CountPostsFiltered $countPostsFiltered,
         GetPostsFilteredPaginated $getPostsFilteredPaginated,
         GetCategoriesWithPostCount $getCategoriesWithPostCount,
         CountPostsByStatus $countPostsByStatus,
         GetUsersByRole $getUsersByRole
     ) {
         $this->responder = $responder;
-        $this->countTotalPosts = $countTotalPosts;
+        $this->countPostsFiltered = $countPostsFiltered;
         $this->getPostsFilteredPaginated = $getPostsFilteredPaginated;
         $this->getCategoriesWithPostCount = $getCategoriesWithPostCount;
         $this->countPostsByStatus = $countPostsByStatus;
@@ -45,11 +45,18 @@ class GetPostsAction
         $this->getPostsFilteredPaginated->setSearch($this->input->search);
         $this->getPostsFilteredPaginated->setStatus($this->input->status);
         $this->getPostsFilteredPaginated->setCategoryId($this->input->categoryId);
+        $this->getPostsFilteredPaginated->setUserId($this->input->userId);
         $this->getPostsFilteredPaginated->setOrderField($this->input->orderField);
         $this->getPostsFilteredPaginated->setOrderDirection($this->input->orderDirection);
         $this->getPostsFilteredPaginated->setLimit($this->responder::POSTS_PER_PAGE);
         $this->getPostsFilteredPaginated->setPage($this->input->page);
         $this->responder->setPosts($this->getPostsFilteredPaginated->run());
+
+        $this->countPostsFiltered->setSearch($this->input->search);
+        $this->countPostsFiltered->setStatus($this->input->status);
+        $this->countPostsFiltered->setCategoryId($this->input->categoryId);
+        $this->countPostsFiltered->setUserId($this->input->userId);
+        $this->responder->setTotalPostsNumber($this->countPostsFiltered->run());
 
         $this->countPostsByStatus->setStatus(Post::STATUS_DRAFT);
         $this->responder->setDraftPostsNumber($this->countPostsByStatus->run());
@@ -61,8 +68,6 @@ class GetPostsAction
         $this->responder->setTrashPostsNumber($this->countPostsByStatus->run());
 
         $this->responder->setCategories($this->getCategoriesWithPostCount->run());
-        $this->responder->setTotalPostsNumber($this->countTotalPosts->run());
-
         $this->getUsersByRole->setRoles([User::ROLE_EDITOR, User::ROLE_ADMIN]);
         $this->responder->setWriters($this->getUsersByRole->run());
 

@@ -19,10 +19,14 @@ class GetLastPosts implements CommandInterface
 
     public function run()
     {
-        return $this->postsRepository->getPostsPaginated(
+        $this->postsRepository->newQuery();
+
+        $this->postsRepository->setOrderAndPagination(
             self::$order_field,
             self::$order_direction,
             self::$limit
         );
+
+        return $this->postsRepository->get();
     }
 }
