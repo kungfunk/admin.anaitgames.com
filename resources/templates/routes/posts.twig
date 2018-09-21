@@ -53,15 +53,15 @@
                     <ul class="filters__list">
                         <li class="filter filter--selected">
                             <a class="filter__name" href="">Publicado</a>
-                            <span class="filter__number">{{ published_posts_number }}</span>
+                            <span class="filter__number">{{ publishedPostsNumber }}</span>
                         </li>
                         <li class="filter">
                             <a class="filter__name" href="">Borrador</a>
-                            <span class="filter__number">{{ draft_posts_number }}</span>
+                            <span class="filter__number">{{ draftPostsNumber }}</span>
                         </li>
                         <li class="filter">
                             <a class="filter__name" href="">Papelera</a>
-                            <span class="filter__number">{{ trash_posts_number }}</span>
+                            <span class="filter__number">{{ trashPostsNumber }}</span>
                         </li>
                     </ul>
                 </div>
@@ -87,7 +87,7 @@
             <div class="posts__results">
                 <div class="box">
                     <div class="box__header">
-                        <h3 class="box__title">Mostrando {{ posts|length }} de {{ total_posts_number }} resultados</h3>
+                        <h3 class="box__title">Mostrando {{ posts|length }} de {{ totalPostsNumber }} resultados</h3>
                         <div class="box__action">
                             <a href="" class="button">
                                 <svg class="button__icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"

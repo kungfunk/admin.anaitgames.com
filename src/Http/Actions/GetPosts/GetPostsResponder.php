@@ -11,7 +11,16 @@ use Illuminate\Database\Eloquent\Collection;
 class GetPostsResponder extends Responder
 {
     private $twig;
-    private $data;
+
+    private $posts;
+    private $totalPostsNumber;
+    private $categories;
+    private $draftPostsNumber;
+    private $publishedPostsNumber;
+    private $trashPostsNumber;
+    private $writers;
+    private $page;
+    private $pagination;
 
     public const POSTS_PER_PAGE = 10;
 
@@ -20,55 +29,54 @@ class GetPostsResponder extends Responder
     public function __construct(Twig $twig)
     {
         $this->twig = $twig;
-        $this->data = [];
     }
 
     public function setPosts(Collection $posts)
     {
-        $this->data['posts'] = $posts;
+        $this->posts = $posts;
     }
 
-    public function setTotalPostsNumber(int $number)
+    public function setTotalPostsNumber(int $totalPostsNumber)
     {
-        $this->data['total_posts_number'] = $number;
+        $this->totalPostsNumber = $totalPostsNumber;
     }
 
     public function setCategories(Collection $categories)
     {
-        $this->data['categories'] = $categories;
+        $this->categories = $categories;
     }
 
-    public function setDraftPostsNumber(int $count)
+    public function setDraftPostsNumber(int $draftPostsNumber)
     {
-        $this->data['draft_posts_number'] = $count;
+        $this->draftPostsNumber = $draftPostsNumber;
     }
 
-    public function setPublishedPostsNumber(int $count)
+    public function setPublishedPostsNumber(int $publishedPostsNumber)
     {
-        $this->data['published_posts_number'] = $count;
+        $this->publishedPostsNumber = $publishedPostsNumber;
     }
 
-    public function setTrashPostsNumber(int $count)
+    public function setTrashPostsNumber(int $trashPostsNumber)
     {
-        $this->data['trash_posts_number'] = $count;
+        $this->trashPostsNumber = $trashPostsNumber;
     }
 
-    public function setWriters(Collection $users)
+    public function setWriters(Collection $writers)
     {
-        $this->data['writers'] = $users;
+        $this->writers = $writers;
     }
 
     public function setPage(int $page)
     {
-        $this->data['page'] = $page;
+        $this->page = $page;
     }
 
     public function setPostsPagination()
     {
-        $this->data['pagination'] = new Paginator(
-            $this->data['total_posts_number'],
+        $this->pagination = new Paginator(
+            $this->totalPostsNumber,
             self::POSTS_PER_PAGE,
-            $this->data['page'],
+            $this->page,
             '/posts?page=(:num)'
         );
     }
@@ -78,7 +86,17 @@ class GetPostsResponder extends Responder
         return $this->twig->render(
             $response,
             self::DASHBOARD_TEMPLATE_ROUTE,
-            $this->data
+            [
+                'posts' => $this->posts,
+                'totalPostsNumber' => $this->totalPostsNumber,
+                'categories' => $this->categories,
+                'draftPostsNumber' => $this->draftPostsNumber,
+                'publishedPostsNumber' => $this->publishedPostsNumber,
+                'trashPostsNumber' => $this->trashPostsNumber,
+                'writers' => $this->writers,
+                'page' => $this->page,
+                'pagination' => $this->pagination
+            ]
         );
     }
 }
