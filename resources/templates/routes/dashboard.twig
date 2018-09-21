@@ -6,25 +6,25 @@
     <div class="main__container">
         <section class="statistics">
             <div class="statistics-box">
-                <h3 class="statistics-box__big-number">{{ number_of_posts_today }}
+                <h3 class="statistics-box__big-number">{{ numberOfPostsToday }}
                     <sup class="statistics-box__small-number statistics-box__small-number--color-positive">
-                        ({{ number_of_posts_yesterday }})
+                        ({{ numberOfPostsYesterday }})
                     </sup>
                 </h3>
                 <span class="statistics-box__sub-text">Entradas hoy y (ayer)</span>
             </div>
             <div class="statistics-box">
-                <h3 class="statistics-box__big-number">{{ number_of_users_today }}
+                <h3 class="statistics-box__big-number">{{ numberOfUsersToday }}
                     <sup class="statistics-box__small-number statistics-box__small-number--color-positive">
-                        ({{ number_of_users_yesterday }})
+                        ({{ numberOfUsersYesterday }})
                     </sup>
                 </h3>
                 <span class="statistics-box__sub-text">Usuarios registrados hoy y (ayer)</span>
             </div>
             <div class="statistics-box">
-                <h3 class="statistics-box__big-number">{{ number_of_comments_today }}
+                <h3 class="statistics-box__big-number">{{ numberOfCommentsToday }}
                     <sup class="statistics-box__small-number statistics-box__small-number--color-positive">
-                        ({{ number_of_comments_yesterday }})
+                        ({{ numberOfCommentsYesterday }})
                     </sup>
                 </h3>
                 <span class="statistics-box__sub-text">Comentarios hoy y (ayer)</span>
@@ -40,13 +40,13 @@
                 </div>
                 <div class="box__content">
                     <ul class="simplelist">
-                        {% for pending_post in pending_posts %}
+                        {% for post in lastPendingPosts %}
                             <li class="simplelist__item">
-                                <a href="/posts/{{ pending_post.id }}" class="simplelist__item-link">
-                                    {{ pending_post.title }}
+                                <a href="/posts/{{ post.id }}" class="simplelist__item-link">
+                                    {{ post.title }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
-                                    <span class="tag">{{ pending_post.category.name }}</span>
+                                    <span class="tag">{{ post.category.name }}</span>
                                 </div>
                             </li>
                         {% endfor %}
@@ -63,16 +63,16 @@
                 </div>
                 <div class="box__content">
                     <ul class="simplelist">
-                        {% for last_user in last_users %}
+                        {% for user in lastRegisteredUsers %}
                             <li class="simplelist__item simplelist__item--three-colums">
                                 <span class="avatar">
-                                    <img src="{{ last_user.avatar }}" alt="Avatar de {{ last_user.name }}">
+                                    <img src="{{ user.avatar }}" alt="Avatar de {{ user.name }}">
                                 </span>
-                                <a href="/posts/{{ last_user.id }}" class="simplelist__item-link">
-                                    {{ last_user.name }}
+                                <a href="/posts/{{ user.id }}" class="simplelist__item-link">
+                                    {{ user.name }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
-                                    <span class="date">{{ last_user.created_at|time_diff }}</span>
+                                    <span class="date">{{ user.created_at|time_diff }}</span>
                                 </div>
                             </li>
                         {% endfor %}
@@ -89,13 +89,13 @@
                 </div>
                 <div class="box__content">
                     <ul class="simplelist">
-                        {% for draft_post in draft_posts %}
+                        {% for post in lastDraftPosts %}
                             <li class="simplelist__item">
-                                <a href="/posts/{{ draft_post.id }}" class="simplelist__item-link">
-                                    {{ draft_post.title }}
+                                <a href="/posts/{{ post.id }}" class="simplelist__item-link">
+                                    {{ post.title }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
-                                    <span class="tag">{{ draft_post.category.name }}</span>
+                                    <span class="tag">{{ post.category.name }}</span>
                                 </div>
                             </li>
                         {% endfor %}
@@ -112,13 +112,13 @@
                 </div>
                 <div class="box__content">
                     <ul class="simplelist">
-                        {% for last_post in last_posts %}
+                        {% for post in lastPosts %}
                             <li class="simplelist__item">
-                                <a href="/posts/{{ last_post.id }}" class="simplelist__item-link">
-                                    {{ last_post.title }}
+                                <a href="/posts/{{ post.id }}" class="simplelist__item-link">
+                                    {{ post.title }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
-                                    <span class="tag">{{ last_post.category.name }}</span>
+                                    <span class="tag">{{ post.category.name }}</span>
                                 </div>
                             </li>
                         {% endfor %}
@@ -136,7 +136,7 @@
                 </div>
                 <div class="box__content">
                     <ul class="comments">
-                        {% for comment in comments %}
+                        {% for comment in lastComments %}
                             {{ include('components/comment.twig', { 'comment': comment }, with_context = false) }}
                         {% endfor %}
                     </ul>

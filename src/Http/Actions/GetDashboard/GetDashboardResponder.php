@@ -10,69 +10,79 @@ use Illuminate\Support\Collection;
 class GetDashboardResponder extends Responder
 {
     private $twig;
-    private $data;
+
+    private $lastRegisteredUsers;
+    private $lastPosts;
+    private $lastPendingPosts;
+    private $lastDraftPosts;
+    private $lastComments;
+    private $numberOfPostsToday;
+    private $numberOfPostsYesterday;
+    private $numberOfUsersToday;
+    private $numberOfUsersYesterday;
+    private $numberOfCommentsToday;
+    private $numberOfCommentsYesterday;
 
     private const DASHBOARD_TEMPLATE_ROUTE = 'routes/dashboard.twig';
 
     public function __construct(Twig $twig)
     {
         $this->twig = $twig;
-        $this->data = [];
     }
 
-    public function setLastRegisteredUsers(Collection $users)
+    public function setLastRegisteredUsers(Collection $lastRegisteredUsers)
     {
-        $this->data['last_users'] = $users;
+        $this->lastRegisteredUsers = $lastRegisteredUsers;
     }
 
-    public function setLastPosts(Collection $posts)
+    public function setLastPosts(Collection $lastPosts)
     {
-        $this->data['last_posts'] = $posts;
+        $this->lastPosts = $lastPosts;
     }
 
-    public function setLastPendingPosts(Collection $posts)
+    public function setLastPendingPosts(Collection $lastPendingPosts)
     {
-        $this->data['pending_posts'] = $posts;
+        $this->lastPendingPosts = $lastPendingPosts;
     }
 
-    public function setLastDraftPosts(Collection $posts)
+    public function setLastDraftPosts(Collection $lastDraftPosts)
     {
-        $this->data['draft_posts'] = $posts;
+        $this->lastDraftPosts = $lastDraftPosts;
     }
 
-    public function setLastComments(Collection $comments)
+    public function setLastComments(Collection $lastComments)
     {
-        $this->data['comments'] = $comments;
+        $this->lastComments = $lastComments;
     }
 
-    public function setNumberOfPostToday(int $count)
+    public function setNumberOfPostsToday(int $numberOfPostsToday)
     {
-        $this->data['number_of_posts_today'] = $count;
+        $this->numberOfPostsToday = $numberOfPostsToday;
     }
 
-    public function setNumberOfPostYesterday(int $count)
+    public function setNumberOfPostsYesterday(int $numberOfPostsYesterday)
     {
-        $this->data['number_of_posts_yesterday'] = $count;
+        $this->numberOfPostsYesterday = $numberOfPostsYesterday;
     }
 
-    public function setNumberOfUsersToday(int $count)
+    public function setNumberOfUsersToday(int $numberOfUsersToday)
     {
-        $this->data['number_of_users_today'] = $count;
+        $this->numberOfUsersToday = $numberOfUsersToday;
     }
 
-    public function setNumberOfUsersYesterday(int $count)
+    public function setNumberOfUsersYesterday(int $numberOfUsersYesterday)
     {
-        $this->data['number_of_users_yesterday'] = $count;
+        $this->numberOfUsersYesterday = $numberOfUsersYesterday;
     }
 
-    public function setNumberOfCommentsToday(int $count)
+    public function setNumberOfCommentsToday(int $numberOfCommentsToday)
     {
-        $this->data['number_of_comments_today'] = $count;
+        $this->numberOfCommentsToday = $numberOfCommentsToday;
     }
 
-    public function setNumberOfCommentsYesterday(int $count)
+    public function setNumberOfCommentsYesterday(int $numberOfCommentsYesterday)
     {
-        $this->data['number_of_comments_yesterday'] = $count;
+        $this->numberOfCommentsYesterday = $numberOfCommentsYesterday;
     }
 
     public function success(Response $response)
@@ -80,7 +90,19 @@ class GetDashboardResponder extends Responder
         return $this->twig->render(
             $response,
             self::DASHBOARD_TEMPLATE_ROUTE,
-            $this->data
+            [
+                'lastRegisteredUsers' => $this->lastRegisteredUsers,
+                'lastPosts' => $this->lastPosts,
+                'lastPendingPosts' => $this->lastPendingPosts,
+                'lastDraftPosts' => $this->lastDraftPosts,
+                'lastComments' => $this->lastComments,
+                'numberOfPostsToday' => $this->numberOfPostsToday,
+                'numberOfPostsYesterday' => $this->numberOfPostsYesterday,
+                'numberOfUsersToday' => $this->numberOfUsersToday,
+                'numberOfUsersYesterday' => $this->numberOfUsersYesterday,
+                'numberOfCommentsToday' => $this->numberOfCommentsToday,
+                'numberOfCommentsYesterday' => $this->numberOfCommentsYesterday
+            ]
         );
     }
 }
