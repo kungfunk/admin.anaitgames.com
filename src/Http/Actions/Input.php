@@ -5,11 +5,11 @@ abstract class Input
 {
     const MINIMUM_ID = 1;
 
+    const PARAM_PAGE = 'page';
     const PARAM_SEARCH = 'search';
     const PARAM_LIMIT = 'limit';
-    const PARAM_OFFSET = 'offset';
-    const PARAM_ORDER = 'order';
-    const PARAM_ORDER_BY = 'order_by';
+    const PARAM_ORDER_DIRECTION = 'order';
+    const PARAM_ORDER_FIELD = 'order_by';
 
     const ORDER_DIRECTION_WHITELIST = [
         'desc',
@@ -17,6 +17,5 @@ abstract class Input
     ];
 
     const DEFAULT_LIMIT = 100;
-    const DEFAULT_ORDER = 'desc';
-    const DEFAULT_OFFSET = 0;
+    const DEFAULT_ORDER_DIRECTION = 'desc';
 }

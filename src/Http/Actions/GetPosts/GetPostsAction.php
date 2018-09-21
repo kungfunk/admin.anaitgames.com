@@ -47,7 +47,8 @@ class GetPostsAction
         $this->getPostsFilteredPaginated->setCategoryId($this->input->categoryId);
         $this->getPostsFilteredPaginated->setOrderField($this->input->orderField);
         $this->getPostsFilteredPaginated->setOrderDirection($this->input->orderDirection);
-        $this->getPostsFilteredPaginated->setOffset($this->input->offset);
+        $this->getPostsFilteredPaginated->setLimit($this->responder::POSTS_PER_PAGE);
+        $this->getPostsFilteredPaginated->setPage($this->input->page);
         $this->responder->setPosts($this->getPostsFilteredPaginated->run());
 
         $this->countPostsByStatus->setStatus(Post::STATUS_DRAFT);
@@ -64,6 +65,9 @@ class GetPostsAction
 
         $this->getUsersByRole->setRoles([User::ROLE_EDITOR, User::ROLE_ADMIN]);
         $this->responder->setWriters($this->getUsersByRole->run());
+
+        $this->responder->setPage($this->input->page);
+        $this->responder->setPostsPagination();
 
         return $this->responder->success($response);
     }

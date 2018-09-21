@@ -12,8 +12,8 @@ class GetPostsFilteredPaginated implements CommandInterface
     private $status;
     private $orderField;
     private $orderDirection;
-    private $offset;
-    private static $limit = 50;
+    private $limit;
+    private $page;
 
     public function __construct(PostsRepository $postsRepository)
     {
@@ -45,21 +45,28 @@ class GetPostsFilteredPaginated implements CommandInterface
         $this->orderDirection = $orderDirection;
     }
 
-    public function setOffset(int $offset = null)
+    public function setPage(int $page = 0)
     {
-        $this->offset = $offset;
+        $this->page = $page;
+    }
+
+    public function setLimit(int $limit = 100)
+    {
+        $this->limit = $limit;
     }
 
     public function run()
     {
+        $offset = ($this->page - 1) * $this->limit;
+
         return $this->postsRepository->getPostsFilteredPaginated(
             $this->search,
             $this->categoryId,
             $this->status,
             $this->orderField,
             $this->orderDirection,
-            self::$limit,
-            $this->offset
+            $this->limit,
+            $offset
         );
     }
 }

@@ -5,12 +5,15 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\Responder as Responder;
 
 use Slim\Views\Twig;
+use JasonGrimes\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 
 class GetPostsResponder extends Responder
 {
     private $twig;
     private $data;
+
+    public const POSTS_PER_PAGE = 2;
 
     private const DASHBOARD_TEMPLATE_ROUTE = 'routes/posts.twig';
 
@@ -53,6 +56,21 @@ class GetPostsResponder extends Responder
     public function setWriters(Collection $users)
     {
         $this->data['writers'] = $users;
+    }
+
+    public function setPage(int $page)
+    {
+        $this->data['page'] = $page;
+    }
+
+    public function setPostsPagination()
+    {
+        $this->data['pagination'] = new Paginator(
+            $this->data['total_posts_number'],
+            self::POSTS_PER_PAGE,
+            $this->data['page'],
+            '/posts?page=(:num)'
+        );
     }
 
     public function success(Response $response)
