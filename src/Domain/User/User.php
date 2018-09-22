@@ -13,6 +13,10 @@ class User extends Model
     const ROLE_EDITOR = 2;
     const ROLE_ADMIN = 3;
 
+    const PATREON_BRONZE_LEVEL = 1;
+    const PATREON_SILVER_LEVEL = 2;
+    const PATREON_GOLD_LEVEL = 3;
+
     protected $fillable = [
         'name',
         'email',
