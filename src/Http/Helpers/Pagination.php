@@ -12,6 +12,7 @@ class Pagination extends Paginator
     public function setup($totalItems, $itemsPerPage, $currentPage)
     {
         parent::__construct($totalItems, $itemsPerPage, $currentPage, '');
+        return $this;
     }
 
     public function getPages()

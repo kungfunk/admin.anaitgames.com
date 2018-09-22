@@ -1,11 +1,16 @@
 <?php
 namespace Http\Actions\GetPosts;
 
-use Domain\User\User;
-use Domain\Post\Post;
+use Http\Helpers\Pagination;
+
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetPosts\GetPostsInput as Input;
+use Http\Actions\GetPosts\GetPostsOutput as Output;
+use Http\Actions\GetPosts\GetPostsResponder as Responder;
+
+use Domain\User\User;
+use Domain\Post\Post;
 use Domain\Post\Commands\CountPostsFiltered;
 use Domain\Post\Commands\GetPostsFilteredPaginated;
 use Domain\Post\Commands\GetCategoriesWithPostCount;
@@ -13,21 +18,30 @@ use Domain\User\Commands\GetUsersByRole;
 
 class GetPostsAction
 {
+    public const POSTS_PER_PAGE = 20;
+    public const BASE_URL = '/posts';
+
     private $responder;
     private $input;
+    private $output;
+    private $pagination;
     private $countPostsFiltered;
     private $getPostsFilteredPaginated;
     private $getCategoriesWithPostCount;
     private $getUsersByRole;
 
     public function __construct(
-        GetPostsResponder $responder,
+        Responder $responder,
+        Output $output,
+        Pagination $pagination,
         CountPostsFiltered $countPostsFiltered,
         GetPostsFilteredPaginated $getPostsFilteredPaginated,
         GetCategoriesWithPostCount $getCategoriesWithPostCount,
         GetUsersByRole $getUsersByRole
     ) {
         $this->responder = $responder;
+        $this->output = $output;
+        $this->pagination = $pagination;
         $this->countPostsFiltered = $countPostsFiltered;
         $this->getPostsFilteredPaginated = $getPostsFilteredPaginated;
         $this->getCategoriesWithPostCount = $getCategoriesWithPostCount;
@@ -38,23 +52,21 @@ class GetPostsAction
     {
         $this->input = new Input($request);
 
-        $this->responder->setPaginationParameters($this->input);
-
         $this->getPostsFilteredPaginated->setSearch($this->input->search);
         $this->getPostsFilteredPaginated->setStatus($this->input->status);
         $this->getPostsFilteredPaginated->setCategoryId($this->input->categoryId);
         $this->getPostsFilteredPaginated->setUserId($this->input->userId);
         $this->getPostsFilteredPaginated->setOrderField($this->input->orderField);
         $this->getPostsFilteredPaginated->setOrderDirection($this->input->orderDirection);
-        $this->getPostsFilteredPaginated->setLimit($this->responder::POSTS_PER_PAGE);
+        $this->getPostsFilteredPaginated->setLimit(self::POSTS_PER_PAGE);
         $this->getPostsFilteredPaginated->setPage($this->input->page);
-        $this->responder->setPosts($this->getPostsFilteredPaginated->run());
+        $posts = $this->getPostsFilteredPaginated->run();
 
         $this->countPostsFiltered->setSearch($this->input->search);
         $this->countPostsFiltered->setStatus($this->input->status);
         $this->countPostsFiltered->setCategoryId($this->input->categoryId);
         $this->countPostsFiltered->setUserId($this->input->userId);
-        $this->responder->setTotalPostsNumber($this->countPostsFiltered->run());
+        $totalPosts = $this->countPostsFiltered->run();
 
         $this->countPostsFiltered->setStatus(Post::STATUS_DRAFT);
         $draftPostsNumber = $this->countPostsFiltered->run();
@@ -65,19 +77,76 @@ class GetPostsAction
         $this->countPostsFiltered->setStatus(Post::STATUS_TRASH);
         $trashPostsNumber = $this->countPostsFiltered->run();
 
-        $this->responder->setStatusFilters([
-            [ 'name' => Post::STATUS_PUBLISHED_NAME, 'slug' => Post::STATUS_PUBLISHED, 'count' => $publishedPostsNumber ],
-            [ 'name' => Post::STATUS_DRAFT_NAME, 'slug' => Post::STATUS_DRAFT, 'count' => $draftPostsNumber ],
-            [ 'name' => Post::STATUS_TRASH_NAME, 'slug' => Post::STATUS_TRASH, 'count' => $trashPostsNumber ],
-        ]);
-
-        $this->responder->setCategories($this->getCategoriesWithPostCount->run());
         $this->getUsersByRole->setRoles([User::ROLE_EDITOR, User::ROLE_ADMIN]);
-        $this->responder->setWriters($this->getUsersByRole->run());
+        $roles = $this->getUsersByRole->run();
 
-        $this->responder->setPage($this->input->page);
-        $this->responder->setPostsPagination();
+        $categories = $this->getCategoriesWithPostCount->run();
 
-        return $this->responder->toHtml($response);
+        $filters = [
+            [
+                'name' => Post::STATUS_PUBLISHED_NAME,
+                'slug' => Post::STATUS_PUBLISHED,
+                'count' => $publishedPostsNumber
+            ],
+            [
+                'name' => Post::STATUS_DRAFT_NAME,
+                'slug' => Post::STATUS_DRAFT,
+                'count' => $draftPostsNumber
+            ],
+            [
+                'name' => Post::STATUS_TRASH_NAME,
+                'slug' => Post::STATUS_TRASH,
+                'count' => $trashPostsNumber
+            ]
+        ];
+
+        $this->output->setStatusFilters($filters);
+        $this->output->setCategories($categories);
+        $this->output->setWriters($roles);
+        $this->output->setPosts($posts);
+        $this->output->setTotalPostsNumber($totalPosts);
+        $this->output->setBaseUrl(self::BASE_URL);
+        $this->output->setPage($this->input->page);
+        $this->output->setPagination($this->getPagination($totalPosts, $this->input->page));
+        $this->output->setPaginationParameters($this->getQueryParams());
+
+        $this->responder->setResponse($response);
+        $this->responder->setOutput($this->output);
+        return $this->responder->toHtml();
+    }
+
+    private function getQueryParams()
+    {
+        $queryParams = [
+            Input::PARAM_ORDER_FIELD => $this->input->orderField,
+            Input::PARAM_ORDER_DIRECTION => $this->input->orderDirection
+        ];
+
+        if (!is_null($this->input->search)) {
+            $queryParams[Input::PARAM_SEARCH] = $this->input->search;
+        }
+
+        if (!is_null($this->input->status)) {
+            $queryParams[Input::PARAM_STATUS] = $this->input->status;
+        }
+
+        if (!is_null($this->input->userId)) {
+            $queryParams[Input::PARAM_AUTHOR] = $this->input->userId;
+        }
+
+        if (!is_null($this->input->categoryId)) {
+            $queryParams[Input::PARAM_TYPE] = $this->input->categoryId;
+        }
+
+        return $queryParams;
+    }
+
+    private function getPagination($total, $page)
+    {
+        return $this->pagination->setup(
+            $total,
+            self::POSTS_PER_PAGE,
+            $page
+        );
     }
 }

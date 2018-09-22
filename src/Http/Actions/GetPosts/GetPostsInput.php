@@ -23,7 +23,6 @@ class GetPostsInput extends Input
     const DEFAULT_STATUS = Post::STATUS_PUBLISHED;
     const DEFAULT_ORDER_FIELD = Post::DEFAULT_ORDER_FIELD;
 
-    const MAX_LIMIT = 50;
     const TAG_DELIMITER = '|';
 
     public $page;
