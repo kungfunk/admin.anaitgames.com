@@ -12,6 +12,10 @@ class Post extends Model
     const STATUS_PUBLISHED = 'published';
     const STATUS_TRASH = 'trash';
 
+    const STATUS_DRAFT_NAME = 'Borrador';
+    const STATUS_PUBLISHED_NAME = 'Publicado';
+    const STATUS_TRASH_NAME = 'Papelera';
+
     const DEFAULT_LIMIT = 10;
     const DEFAULT_ORDER_FIELD = 'created_at';
     const DEFAULT_ORDER_DIRECTION = 'desc';

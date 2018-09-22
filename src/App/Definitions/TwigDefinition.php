@@ -6,6 +6,8 @@ use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use Twig\Extensions\TextExtension;
 use Twig\Extensions\DateExtension;
+use Twig\TwigFunction;
+use Twig_Markup;
 
 class TwigDefinition extends AbstractContainerDefinition
 {
@@ -26,6 +28,12 @@ class TwigDefinition extends AbstractContainerDefinition
                 ));
                 $twig->addExtension(new TextExtension);
                 $twig->addExtension(new DateExtension);
+                $twig->getEnvironment()->addFunction(
+                    new TwigFunction('path', function ($url, $parameters, $extraParameters = []) {
+                        $result = $url . '?' . http_build_query(array_merge($parameters, $extraParameters));
+                        return new Twig_Markup($result, 'utf-8');
+                    })
+                );
 
                 return $twig;
             }

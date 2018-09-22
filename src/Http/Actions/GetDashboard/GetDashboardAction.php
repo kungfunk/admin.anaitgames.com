@@ -91,6 +91,7 @@ class GetDashboardAction
         $this->responder->setNumberOfUsersYesterday($number_of_users_yesterday);
         $this->responder->setNumberOfCommentsToday($number_of_comments_today);
         $this->responder->setNumberOfCommentsYesterday($number_of_comments_yesterday);
-        $this->responder->success($response);
+
+        $this->responder->toHtml($response);
     }
 }

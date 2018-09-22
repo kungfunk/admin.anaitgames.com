@@ -9,7 +9,6 @@ use Http\Actions\GetPosts\GetPostsInput as Input;
 use Domain\Post\Commands\CountPostsFiltered;
 use Domain\Post\Commands\GetPostsFilteredPaginated;
 use Domain\Post\Commands\GetCategoriesWithPostCount;
-use Domain\Post\Commands\CountPostsByStatus;
 use Domain\User\Commands\GetUsersByRole;
 
 class GetPostsAction
@@ -19,7 +18,6 @@ class GetPostsAction
     private $countPostsFiltered;
     private $getPostsFilteredPaginated;
     private $getCategoriesWithPostCount;
-    private $countPostsByStatus;
     private $getUsersByRole;
 
     public function __construct(
@@ -27,20 +25,20 @@ class GetPostsAction
         CountPostsFiltered $countPostsFiltered,
         GetPostsFilteredPaginated $getPostsFilteredPaginated,
         GetCategoriesWithPostCount $getCategoriesWithPostCount,
-        CountPostsByStatus $countPostsByStatus,
         GetUsersByRole $getUsersByRole
     ) {
         $this->responder = $responder;
         $this->countPostsFiltered = $countPostsFiltered;
         $this->getPostsFilteredPaginated = $getPostsFilteredPaginated;
         $this->getCategoriesWithPostCount = $getCategoriesWithPostCount;
-        $this->countPostsByStatus = $countPostsByStatus;
         $this->getUsersByRole = $getUsersByRole;
     }
 
     public function __invoke(Request $request, Response $response)
     {
         $this->input = new Input($request);
+
+        $this->responder->setPaginationParameters($this->input);
 
         $this->getPostsFilteredPaginated->setSearch($this->input->search);
         $this->getPostsFilteredPaginated->setStatus($this->input->status);
@@ -58,14 +56,20 @@ class GetPostsAction
         $this->countPostsFiltered->setUserId($this->input->userId);
         $this->responder->setTotalPostsNumber($this->countPostsFiltered->run());
 
-        $this->countPostsByStatus->setStatus(Post::STATUS_DRAFT);
-        $this->responder->setDraftPostsNumber($this->countPostsByStatus->run());
+        $this->countPostsFiltered->setStatus(Post::STATUS_DRAFT);
+        $draftPostsNumber = $this->countPostsFiltered->run();
 
-        $this->countPostsByStatus->setStatus(Post::STATUS_PUBLISHED);
-        $this->responder->setPublishedPostsNumber($this->countPostsByStatus->run());
+        $this->countPostsFiltered->setStatus(Post::STATUS_PUBLISHED);
+        $publishedPostsNumber = $this->countPostsFiltered->run();
 
-        $this->countPostsByStatus->setStatus(Post::STATUS_TRASH);
-        $this->responder->setTrashPostsNumber($this->countPostsByStatus->run());
+        $this->countPostsFiltered->setStatus(Post::STATUS_TRASH);
+        $trashPostsNumber = $this->countPostsFiltered->run();
+
+        $this->responder->setStatusFilters([
+            [ 'name' => Post::STATUS_PUBLISHED_NAME, 'slug' => Post::STATUS_PUBLISHED, 'count' => $publishedPostsNumber ],
+            [ 'name' => Post::STATUS_DRAFT_NAME, 'slug' => Post::STATUS_DRAFT, 'count' => $draftPostsNumber ],
+            [ 'name' => Post::STATUS_TRASH_NAME, 'slug' => Post::STATUS_TRASH, 'count' => $trashPostsNumber ],
+        ]);
 
         $this->responder->setCategories($this->getCategoriesWithPostCount->run());
         $this->getUsersByRole->setRoles([User::ROLE_EDITOR, User::ROLE_ADMIN]);
@@ -74,6 +78,6 @@ class GetPostsAction
         $this->responder->setPage($this->input->page);
         $this->responder->setPostsPagination();
 
-        return $this->responder->success($response);
+        return $this->responder->toHtml($response);
     }
 }

@@ -85,7 +85,7 @@ class GetDashboardResponder extends Responder
         $this->numberOfCommentsYesterday = $numberOfCommentsYesterday;
     }
 
-    public function success(Response $response)
+    public function toHtml(Response $response)
     {
         return $this->twig->render(
             $response,

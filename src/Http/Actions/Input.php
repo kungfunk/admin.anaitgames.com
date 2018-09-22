@@ -8,8 +8,8 @@ abstract class Input
     const PARAM_PAGE = 'page';
     const PARAM_SEARCH = 'search';
     const PARAM_LIMIT = 'limit';
-    const PARAM_ORDER_DIRECTION = 'order';
-    const PARAM_ORDER_FIELD = 'order_by';
+    const PARAM_ORDER_DIRECTION = 'order_direction';
+    const PARAM_ORDER_FIELD = 'order_field';
 
     const ORDER_DIRECTION_WHITELIST = [
         'desc',

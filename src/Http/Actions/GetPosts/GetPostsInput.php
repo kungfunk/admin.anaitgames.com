@@ -43,7 +43,10 @@ class GetPostsInput extends Input
         $this->userId = $request->getQueryParam($this::PARAM_AUTHOR, $default = null);
         $this->status = $request->getQueryParam($this::PARAM_STATUS, $default = null);
         $this->orderField = $request->getQueryParam($this::PARAM_ORDER_FIELD, $default = $this::DEFAULT_ORDER_FIELD);
-        $this->orderDirection = $request->getQueryParam($this::PARAM_ORDER_DIRECTION, $default = $this::DEFAULT_ORDER_DIRECTION);
+        $this->orderDirection = $request->getQueryParam(
+            $this::PARAM_ORDER_DIRECTION,
+            $default = $this::DEFAULT_ORDER_DIRECTION
+        );
 
         $_tags = $request->getQueryParam($this::PARAM_TAGS, $default = null);
         $this->tags = !is_null($_tags) ? explode($this::TAG_DELIMITER, $_tags) : [];
