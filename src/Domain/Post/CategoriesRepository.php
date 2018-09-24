@@ -3,20 +3,26 @@ namespace Domain\Post;
 
 class CategoriesRepository
 {
-    private $categories_model;
+    private $categoryModel;
+    private $query;
 
-    public function __construct(Category $category)
+    public function __construct()
     {
-        $this->categories_model = $category;
+        $this->categoryModel = new Category;
     }
 
-    public function getAll()
+    public function newQuery()
     {
-        return $this->categories_model->all();
+        $this->query = $this->categoryModel->query();
     }
 
-    public function getAllWithPostCount()
+    public function get()
     {
-        return $this->categories_model->withCount('posts')->get();
+        return $this->query->get();
+    }
+
+    public function addRelationShips()
+    {
+        return $this->query->withCount('posts');
     }
 }

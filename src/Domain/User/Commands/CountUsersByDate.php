@@ -1,7 +1,7 @@
 <?php
 namespace Domain\User\Commands;
 
-use App\Commands\CommandInterface;
+use Infrastructure\Interfaces\CommandInterface;
 use Domain\User\UsersRepository;
 use Carbon\Carbon;
 
@@ -11,9 +11,9 @@ class CountUsersByDate implements CommandInterface
     private $startDate;
     private $endDate;
 
-    public function __construct(UsersRepository $repository)
+    public function __construct()
     {
-        $this->repository = $repository;
+        $this->repository = new UsersRepository;
     }
 
     public function setStartDate(Carbon $date)

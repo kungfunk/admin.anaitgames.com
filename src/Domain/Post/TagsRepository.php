@@ -5,9 +5,9 @@ class TagsRepository
 {
     private $tags_model;
 
-    public function __construct(Tag $tag)
+    public function __construct()
     {
-        $this->tags_model = $tag;
+        $this->tags_model = new Tag;
     }
 
     public function getAll()

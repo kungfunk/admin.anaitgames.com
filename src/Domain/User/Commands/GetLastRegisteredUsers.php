@@ -1,7 +1,7 @@
 <?php
 namespace Domain\User\Commands;
 
-use App\Commands\CommandInterface;
+use Infrastructure\Interfaces\CommandInterface;
 use Domain\User\UsersRepository;
 use Domain\User\User;
 
@@ -12,9 +12,9 @@ class GetLastRegisteredUsers implements CommandInterface
     private static $order_direction = User::DEFAULT_ORDER_DIRECTION;
     private static $limit = 10;
 
-    public function __construct(UsersRepository $repository)
+    public function __construct()
     {
-        $this->repository = $repository;
+        $this->repository = new UsersRepository;
     }
 
     public function run()

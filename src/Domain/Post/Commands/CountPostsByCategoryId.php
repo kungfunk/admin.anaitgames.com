@@ -1,7 +1,7 @@
 <?php
 namespace Domain\Post\Commands;
 
-use App\Commands\CommandInterface;
+use Infrastructure\Interfaces\CommandInterface;
 use Domain\Post\PostsRepository;
 
 class CountPostsByCategoryId implements CommandInterface
@@ -9,9 +9,9 @@ class CountPostsByCategoryId implements CommandInterface
     private $postsRepository;
     private $categoryId;
 
-    public function __construct(PostsRepository $postsRepository)
+    public function __construct()
     {
-        $this->postsRepository = $postsRepository;
+        $this->postsRepository = new PostsRepository;
     }
 
     public function setCategoryId(int $categoryId)

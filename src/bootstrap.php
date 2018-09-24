@@ -1,6 +1,7 @@
 <?php
-use Dotenv\Dotenv as Dotenv;
-use App\SlimApp as App;
+use Dotenv\Dotenv;
+use Slim\App;
+use Infrastructure\Database\EloquentConnector;
 
 require '../vendor/autoload.php';
 
@@ -11,6 +12,9 @@ $config = include 'config.php';
 
 $app = new App($config);
 
+include 'handlers.php';
 include 'routes.php';
+
+EloquentConnector::connect();
 
 $app->run();

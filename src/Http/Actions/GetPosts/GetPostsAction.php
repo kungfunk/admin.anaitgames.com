@@ -8,6 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetPosts\GetPostsInput as Input;
 use Http\Actions\GetPosts\GetPostsOutput as Output;
 use Http\Actions\GetPosts\GetPostsResponder as Responder;
+use Interop\Container\ContainerInterface;
 
 use Domain\User\User;
 use Domain\Post\Post;
@@ -30,22 +31,17 @@ class GetPostsAction
     private $getCategoriesWithPostCount;
     private $getUsersByRole;
 
-    public function __construct(
-        Responder $responder,
-        Output $output,
-        Pagination $pagination,
-        CountPostsFiltered $countPostsFiltered,
-        GetPostsFilteredPaginated $getPostsFilteredPaginated,
-        GetCategoriesWithPostCount $getCategoriesWithPostCount,
-        GetUsersByRole $getUsersByRole
-    ) {
-        $this->responder = $responder;
-        $this->output = $output;
-        $this->pagination = $pagination;
-        $this->countPostsFiltered = $countPostsFiltered;
-        $this->getPostsFilteredPaginated = $getPostsFilteredPaginated;
-        $this->getCategoriesWithPostCount = $getCategoriesWithPostCount;
-        $this->getUsersByRole = $getUsersByRole;
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+
+        $this->responder = new Responder($container['view']);
+        $this->output = new Output;
+        $this->pagination = new Pagination;
+        $this->countPostsFiltered = new CountPostsFiltered;
+        $this->getPostsFilteredPaginated = new GetPostsFilteredPaginated;
+        $this->getCategoriesWithPostCount = new GetCategoriesWithPostCount;
+        $this->getUsersByRole = new GetUsersByRole;
     }
 
     public function __invoke(Request $request, Response $response)

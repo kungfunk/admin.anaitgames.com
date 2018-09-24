@@ -7,9 +7,9 @@ class CommentsRepository
 {
     private $comment_model;
 
-    public function __construct(Comment $comment)
+    public function __construct()
     {
-        $this->comment_model = $comment;
+        $this->comment_model = new Comment;
     }
 
     public function getCommentsPaginated(

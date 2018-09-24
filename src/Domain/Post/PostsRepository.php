@@ -8,9 +8,9 @@ class PostsRepository
     private $postModel;
     private $query;
 
-    public function __construct(Post $post)
+    public function __construct()
     {
-        $this->postModel = $post;
+        $this->postModel = new Post;
     }
 
     public function newQuery()

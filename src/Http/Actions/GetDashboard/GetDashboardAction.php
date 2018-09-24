@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetDashboard\GetDashboardOutput as Output;
 use Http\Actions\GetDashboard\GetDashboardResponder as Responder;
+use Interop\Container\ContainerInterface;
 
 use Domain\User\Commands\GetLastRegisteredUsers;
 use Domain\User\Commands\CountUsersByDate;
@@ -19,6 +20,8 @@ use Domain\Comment\Commands\CountCommentsByDate;
 
 class GetDashboardAction
 {
+    protected $container;
+
     protected $responder;
     protected $output;
     protected $lastRegisteredUsers;
@@ -28,28 +31,20 @@ class GetDashboardAction
     protected $countCommentsByDate;
     protected $countPostsByDate;
 
-    public function __construct(
-        Responder $responder,
-        Output $output,
-        GetLastRegisteredUsers $lastRegisteredUsers,
-        CountUsersByDate $countUsersByDate,
-        GetLastPosts $lastPosts,
-        GetLastPendingPosts $lastPendingPosts,
-        GetLastDraftPosts $lastDraftPosts,
-        CountPostsByDate $countPostsByDate,
-        GetLastComments $lastComments,
-        CountCommentsByDate $countCommentsByDate
-    ) {
-        $this->responder = $responder;
-        $this->output = $output;
-        $this->lastRegisteredUsers = $lastRegisteredUsers;
-        $this->countUsersByDate = $countUsersByDate;
-        $this->lastPosts = $lastPosts;
-        $this->lastPendingPosts = $lastPendingPosts;
-        $this->lastDraftPosts = $lastDraftPosts;
-        $this->countPostsByDate = $countPostsByDate;
-        $this->lastComments = $lastComments;
-        $this->countCommentsByDate = $countCommentsByDate;
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+
+        $this->responder = new Responder($container['view']);
+        $this->output = new Output;
+        $this->lastRegisteredUsers = new GetLastRegisteredUsers;
+        $this->countUsersByDate = new CountUsersByDate;
+        $this->lastPosts = new GetLastPosts;
+        $this->lastPendingPosts = new GetLastPendingPosts;
+        $this->lastDraftPosts = new GetLastDraftPosts;
+        $this->countPostsByDate = new CountPostsByDate;
+        $this->lastComments = new GetLastComments;
+        $this->countCommentsByDate = new CountCommentsByDate;
     }
 
     public function __invoke(Request $request, Response $response)

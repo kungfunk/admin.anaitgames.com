@@ -1,15 +1,16 @@
 <?php
 namespace Domain\User;
 
+use Infrastructure\Database\EloquentConnector;
 use Carbon\Carbon;
 
 class UsersRepository
 {
     private $userModel;
 
-    public function __construct(User $user)
+    public function __construct()
     {
-        $this->userModel = $user;
+        $this->userModel = new User;
     }
 
     public function getUserById(int $id): User

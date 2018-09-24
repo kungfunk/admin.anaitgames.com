@@ -21,7 +21,7 @@ class Responder
     private $output;
     private $template;
 
-    public function __construct(Twig $twig)
+    public function __construct($twig)
     {
         $this->twig = $twig;
     }

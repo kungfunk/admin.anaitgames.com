@@ -1,7 +1,7 @@
 <?php
 namespace Domain\Post\Commands;
 
-use App\Commands\CommandInterface;
+use Infrastructure\Interfaces\CommandInterface;
 use Domain\Post\PostsRepository;
 
 class GetPostsFilteredPaginated implements CommandInterface
@@ -16,9 +16,9 @@ class GetPostsFilteredPaginated implements CommandInterface
     private $page;
     private $userId;
 
-    public function __construct(PostsRepository $postsRepository)
+    public function __construct()
     {
-        $this->postsRepository = $postsRepository;
+        $this->postsRepository = new PostsRepository;
     }
 
     public function setSearch(string $search = null)

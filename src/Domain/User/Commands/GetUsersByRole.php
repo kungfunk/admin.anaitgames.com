@@ -1,7 +1,7 @@
 <?php
 namespace Domain\User\Commands;
 
-use App\Commands\CommandInterface;
+use Infrastructure\Interfaces\CommandInterface;
 use Domain\User\UsersRepository;
 
 class GetUsersByRole implements CommandInterface
@@ -9,9 +9,9 @@ class GetUsersByRole implements CommandInterface
     private $usersRepository;
     private $roles;
 
-    public function __construct(UsersRepository $usersRepository)
+    public function __construct()
     {
-        $this->usersRepository = $usersRepository;
+        $this->usersRepository = new UsersRepository;
     }
 
     public function setRoles($roles)
