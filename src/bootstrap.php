@@ -1,4 +1,7 @@
 <?php
+session_start();
+date_default_timezone_set('Europe/Madrid');
+
 use Dotenv\Dotenv;
 use Slim\App;
 use Infrastructure\Database\EloquentConnector;

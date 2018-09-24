@@ -18,7 +18,7 @@ class Responder
 
     private $twig;
     private $response;
-    private $output;
+    private $output = [];
     private $template;
 
     public function __construct($twig)

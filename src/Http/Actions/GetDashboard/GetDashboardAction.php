@@ -3,11 +3,11 @@ namespace Http\Actions\GetDashboard;
 
 use Carbon\Carbon;
 
+use Http\Actions\Action;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetDashboard\GetDashboardOutput as Output;
 use Http\Actions\GetDashboard\GetDashboardResponder as Responder;
-use Interop\Container\ContainerInterface;
 
 use Domain\User\Commands\GetLastRegisteredUsers;
 use Domain\User\Commands\CountUsersByDate;
@@ -18,10 +18,8 @@ use Domain\Post\Commands\CountPostsByDate;
 use Domain\Comment\Commands\GetLastComments;
 use Domain\Comment\Commands\CountCommentsByDate;
 
-class GetDashboardAction
+class GetDashboardAction extends Action
 {
-    protected $container;
-
     protected $responder;
     protected $output;
     protected $lastRegisteredUsers;
@@ -31,11 +29,9 @@ class GetDashboardAction
     protected $countCommentsByDate;
     protected $countPostsByDate;
 
-    public function __construct(ContainerInterface $container)
+    public function __invoke(Request $request, Response $response)
     {
-        $this->container = $container;
-
-        $this->responder = new Responder($container['view']);
+        $this->responder = new Responder($this->view);
         $this->output = new Output;
         $this->lastRegisteredUsers = new GetLastRegisteredUsers;
         $this->countUsersByDate = new CountUsersByDate;
@@ -45,10 +41,7 @@ class GetDashboardAction
         $this->countPostsByDate = new CountPostsByDate;
         $this->lastComments = new GetLastComments;
         $this->countCommentsByDate = new CountCommentsByDate;
-    }
 
-    public function __invoke(Request $request, Response $response)
-    {
         $startOfToday = new Carbon('today');
         $endOfToday = new Carbon('today');
         $endOfToday->modify('+1 day');
