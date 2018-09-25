@@ -16,6 +16,7 @@ $config = include 'config.php';
 $app = new App($config);
 
 include 'handlers.php';
+include 'middleware.php';
 include 'routes.php';
 
 EloquentConnector::connect();
