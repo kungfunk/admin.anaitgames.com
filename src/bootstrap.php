@@ -3,7 +3,6 @@ date_default_timezone_set('Europe/Madrid');
 
 use Dotenv\Dotenv;
 use Slim\App;
-use Infrastructure\Database\EloquentConnector;
 
 require '../vendor/autoload.php';
 
@@ -16,8 +15,7 @@ $app = new App($config);
 
 include 'handlers.php';
 include 'middleware.php';
+include 'commands.php';
 include 'routes.php';
-
-EloquentConnector::connect();
 
 $app->run();

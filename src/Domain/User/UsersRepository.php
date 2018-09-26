@@ -1,7 +1,6 @@
 <?php
 namespace Domain\User;
 
-use Infrastructure\Database\EloquentConnector;
 use Carbon\Carbon;
 
 class UsersRepository
@@ -13,9 +12,14 @@ class UsersRepository
         $this->userModel = new User;
     }
 
-    public function getUserById(int $id): User
+    public function getUserById(int $id)
     {
         return $this->userModel->find($id);
+    }
+
+    public function getUserByUsername(string $username)
+    {
+        return $this->userModel->where('username', $username)->first();
     }
 
     public function getUserByRoles($roles)
