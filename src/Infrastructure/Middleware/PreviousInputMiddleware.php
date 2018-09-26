@@ -10,10 +10,12 @@ class PreviousInputMiddleware extends Middleware
 
     public function __invoke(Request $request, Response $response, $next)
     {
-        $previousInput = array_key_exists(self::INDEX_NAME, $_SESSION) ? $_SESSION[self::INDEX_NAME] : null;
+        $this->container->view->getEnvironment()->addGlobal(
+            self::INDEX_NAME,
+            $this->container->session->get(self::INDEX_NAME)
+        );
 
-        $this->container->view->getEnvironment()->addGlobal(self::INDEX_NAME, $previousInput);
-        $_SESSION['previousInput'] = $request->getParams();
+        $this->container->session->set(self::INDEX_NAME, $request->getParams());
 
         return $next($request, $response);
     }

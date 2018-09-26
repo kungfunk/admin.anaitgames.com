@@ -13,6 +13,11 @@ return [
                 'debug' => getenv('DEBUG'),
                 'auto_reload' => getenv('DEBUG')
             ]
+        ],
+        'session' => [
+            'name' => getenv('SESSION_NAME'),
+            'autorefresh' => true,
+            'lifetime' => getenv('SESSION_LIFETIME')
         ]
     ]
 ];

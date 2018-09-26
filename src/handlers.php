@@ -1,6 +1,7 @@
 <?php
 use Slim\Flash\Messages;
 use Slim\Csrf\Guard as CsrfGuard;
+use SlimSession\Helper as SessionHelper;
 
 use Infrastructure\Handlers\ErrorHandler;
 use Infrastructure\Handlers\LoggerHandler;
@@ -28,4 +29,8 @@ $container['flash'] = function () {
 
 $container['csrf'] = function () {
     return new CsrfGuard;
+};
+
+$container['session'] = function () {
+    return new SessionHelper;
 };
