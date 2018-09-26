@@ -20,7 +20,6 @@ use Domain\User\Commands\GetUsersByRole;
 class GetPostsAction extends Action
 {
     public const POSTS_PER_PAGE = 20;
-    public const BASE_URL = '/posts';
 
     private $responder;
     private $input;
@@ -95,40 +94,12 @@ class GetPostsAction extends Action
         $this->output->setWriters($roles);
         $this->output->setPosts($posts);
         $this->output->setTotalPostsNumber($totalPosts);
-        $this->output->setBaseUrl(self::BASE_URL);
         $this->output->setPage($this->input->page);
         $this->output->setPagination($this->getPagination($totalPosts, $this->input->page));
-        $this->output->setPaginationParameters($this->getQueryParams());
 
         $this->responder->setResponse($response);
         $this->responder->setOutput($this->output);
         return $this->responder->toHtml();
-    }
-
-    private function getQueryParams()
-    {
-        $queryParams = [
-            Input::PARAM_ORDER_FIELD => $this->input->orderField,
-            Input::PARAM_ORDER_DIRECTION => $this->input->orderDirection
-        ];
-
-        if (!is_null($this->input->search)) {
-            $queryParams[Input::PARAM_SEARCH] = $this->input->search;
-        }
-
-        if (!is_null($this->input->status)) {
-            $queryParams[Input::PARAM_STATUS] = $this->input->status;
-        }
-
-        if (!is_null($this->input->userId)) {
-            $queryParams[Input::PARAM_AUTHOR] = $this->input->userId;
-        }
-
-        if (!is_null($this->input->categoryId)) {
-            $queryParams[Input::PARAM_TYPE] = $this->input->categoryId;
-        }
-
-        return $queryParams;
     }
 
     private function getPagination($total, $page)

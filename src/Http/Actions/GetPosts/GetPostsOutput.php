@@ -12,9 +12,7 @@ class GetPostsOutput
     public $writers;
     public $page;
     public $pagination;
-    public $paginationParameters;
     public $statusFilters;
-    public $baseUrl;
 
     public function setPosts(Collection $posts)
     {
@@ -49,15 +47,5 @@ class GetPostsOutput
     public function setPagination(Pagination $pagination)
     {
         $this->pagination = $pagination;
-    }
-
-    public function setPaginationParameters(array $paginationParameters)
-    {
-        $this->paginationParameters = $paginationParameters;
-    }
-
-    public function setBaseUrl(string $baseUrl)
-    {
-        $this->baseUrl = $baseUrl;
     }
 }
