@@ -16,7 +16,8 @@
         "jasongrimes/paginator": "~1.0",
         "slim/flash": "^0.4.0",
         "slim/csrf": "^0.8.3",
-        "bryanjhv/slim-session": "~3.0"
+        "bryanjhv/slim-session": "~3.0",
+        "respect/validation": "^1.1"
     },
     "autoload": {
         "psr-4": {
