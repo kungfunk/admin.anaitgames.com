@@ -68,6 +68,26 @@ class Post extends Model
         return $this->belongsToMany('Domain\Post\Tag', Tag::JUNCTION_TABLE_NAME);
     }
 
+    public function getStatusName()
+    {
+        switch ($this->status) {
+            case self::STATUS_DRAFT:
+                $statusName = self::STATUS_DRAFT_NAME;
+                break;
+            case self::STATUS_PUBLISHED:
+                $statusName = self::STATUS_PUBLISHED_NAME;
+                break;
+            case self::STATUS_TRASH:
+                $statusName = self::STATUS_TRASH_NAME;
+                break;
+            default:
+                $statusName = null;
+                break;
+        }
+
+        return $statusName;
+    }
+
 //    protected $dispatchesEvents = [
 //        'created' => PostCreated::class,
 //        'deleted' => PostDeleted::class,

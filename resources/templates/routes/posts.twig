@@ -35,10 +35,10 @@
                     </h4>
                     <ul class="filters__list">
                         {% for category in categories %}
-                            {% set isSelected = paginationParameters.category_id == category.id %}
+                            {% set isSelected = queryStringParams.category_id == category.id %}
                             {% set parameter = isSelected ? null : category.id %}
                             <li class="filter {% if isSelected %}filter--selected{% endif %}">
-                                <a class="filter__name" href="{{ path(baseUrl, paginationParameters, {'category_id' : parameter}) }}">{{ category.name }}</a>
+                                <a class="filter__name" href="{{ path_for('posts', {}, queryStringParams|merge({'category_id' : parameter})) }}">{{ category.name }}</a>
                                 <span class="filter__number">{{ category.posts_count }}</span>
                             </li>
                         {% endfor %}
@@ -54,10 +54,10 @@
                     </h4>
                     <ul class="filters__list">
                         {% for status in statusFilters %}
-                            {% set isSelected = paginationParameters.status == status.slug %}
+                            {% set isSelected = queryStringParams.status == status.slug %}
                             {% set parameter = isSelected ? null : status.slug %}
                             <li class="filter {% if isSelected %}filter--selected{% endif %}">
-                                <a class="filter__name" href="{{ path(baseUrl, paginationParameters, {'status' : parameter}) }}">{{ status.name }}</a>
+                                <a class="filter__name" href="{{ path_for('posts', {}, queryStringParams|merge({'status' : parameter})) }}">{{ status.name }}</a>
                                 <span class="filter__number">{{ status.count }}</span>
                             </li>
                         {% endfor %}
@@ -74,10 +74,10 @@
                     </h4>
                     <ul class="filters__list">
                         {% for writer in writers %}
-                            {% set isSelected = paginationParameters.user_id == writer.id %}
+                            {% set isSelected = queryStringParams.user_id == writer.id %}
                             {% set parameter = isSelected ? null : writer.id %}
                             <li class="filter {% if isSelected %}filter--selected{% endif %}">
-                                <a class="filter__name" href="{{ path(baseUrl, paginationParameters, {'user_id' : parameter}) }}">{{ writer.name }}</a>
+                                <a class="filter__name" href="{{ path_for('posts', {}, queryStringParams|merge({'user_id' : parameter})) }}">{{ writer.name }}</a>
                                 <span class="filter__number">{{ writer.posts_count }}</span>
                             </li>
                         {% endfor %}
@@ -139,10 +139,10 @@
                                 {% for post in posts %}
                                     <tr class="datatable__row">
                                         <td class="datatable__cell">
-                                            <a class="datatable__link" href="{{ baseUrl }}/{{ post.id }}">{{ post.title }}</a>
+                                            <a class="datatable__link" href="{{ path_for('post', { 'id': post.id }) }}">{{ post.title }}</a>
                                         </td>
                                         <td class="datatable__cell">{{ post.category.name }}</td>
-                                        <td class="datatable__cell">{{ post.status }}</td>
+                                        <td class="datatable__cell">{{ post.getStatusName() }}</td>
                                         <td class="datatable__cell">{{ post.user.name }}</td>
                                         <td class="datatable__cell">{{ post.num_views }}</td>
                                         <td class="datatable__cell">{{ post.comments_count }}</td>
@@ -154,7 +154,7 @@
                         </table>
                     </div>
                     <div class="box__footer">
-                        {{ include('components/pagination.twig', { 'pagination': pagination, 'baseUrl': baseUrl, 'paginationParameters': paginationParameters }, with_context = false) }}
+                        {{ include('components/pagination.twig', { 'pagination': pagination, 'url': 'posts', 'queryStringParams': queryStringParams }, with_context = false) }}
                     </div>
                 </div>
             </div>

@@ -35,14 +35,14 @@
                 <div class="box__header">
                     <h3 class="box__title">Artículos pendientes</h3>
                     <div class="box__action">
-                        <a class="button" href="/posts">Ver todos</a>
+                        <a class="button" href="{{ path_for('posts') }}">Ver todos</a>
                     </div>
                 </div>
                 <div class="box__content">
                     <ul class="simplelist">
                         {% for post in lastPendingPosts %}
                             <li class="simplelist__item">
-                                <a href="/posts/{{ post.id }}" class="simplelist__item-link">
+                                <a href="{{ path_for('post', { 'id': post.id }) }}" class="simplelist__item-link">
                                     {{ post.title }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
@@ -58,7 +58,7 @@
                 <div class="box__header">
                     <h3 class="box__title">Ultimos usuarios registrados</h3>
                     <div class="box__action">
-                        <a class="button" href="/users">Ver todos</a>
+                        <a class="button" href="">Ver todos</a>
                     </div>
                 </div>
                 <div class="box__content">
@@ -68,7 +68,7 @@
                                 <span class="avatar">
                                     <img src="{{ user.avatar }}" alt="Avatar de {{ user.name }}">
                                 </span>
-                                <a href="/posts/{{ user.id }}" class="simplelist__item-link">
+                                <a href="" class="simplelist__item-link">
                                     {{ user.name }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
@@ -84,14 +84,14 @@
                 <div class="box__header">
                     <h3 class="box__title">Drafts</h3>
                     <div class="box__action">
-                        <a class="button" href="/posts">Ver todos</a>
+                        <a class="button" href="{{ path_for('posts') }}">Ver todos</a>
                     </div>
                 </div>
                 <div class="box__content">
                     <ul class="simplelist">
                         {% for post in lastDraftPosts %}
                             <li class="simplelist__item">
-                                <a href="/posts/{{ post.id }}" class="simplelist__item-link">
+                                <a href="{{ path_for('post', { 'id': post.id }) }}" class="simplelist__item-link">
                                     {{ post.title }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
@@ -107,14 +107,14 @@
                 <div class="box__header">
                     <h3 class="box__title">Ultimas noticias</h3>
                     <div class="box__action">
-                        <a class="button" href="/posts">Ver todos</a>
+                        <a class="button" href="{{ path_for('posts') }}">Ver todos</a>
                     </div>
                 </div>
                 <div class="box__content">
                     <ul class="simplelist">
                         {% for post in lastPosts %}
                             <li class="simplelist__item">
-                                <a href="/posts/{{ post.id }}" class="simplelist__item-link">
+                                <a href="{{ path_for('post', { 'id': post.id }) }}" class="simplelist__item-link">
                                     {{ post.title }}
                                 </a>
                                 <div class="simplelist__item-extra-info">
@@ -131,7 +131,7 @@
                 <div class="box__header">
                     <h3 class="box__title">Ultimos comentarios</h3>
                     <div class="box__action">
-                        <a href="/comments">Ver todos</a>
+                        <a href="">Ver todos</a>
                     </div>
                 </div>
                 <div class="box__content">
