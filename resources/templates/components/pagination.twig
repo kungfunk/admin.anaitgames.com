@@ -1,7 +1,7 @@
 <ul class="pagination">
     {% if pagination.getPrevUrl() %}
         <li class="pagination__page">
-            <a href="{{ path(baseUrl, paginationParameters, {'page' : pagination.getPrevUrl()}) }}"  class="pagination__link">&laquo; Anterior</a>
+            <a href="{{ path_for(url, {}, queryStringParams|merge({'page' : pagination.getPrevUrl()})) }}"  class="pagination__link">&laquo; Anterior</a>
         </li>
     {% endif %}
 
@@ -10,14 +10,14 @@
             <li class="pagination__gap">...</li>
         {% else %}
             <li class="pagination__page {% if page.isCurrent == true %}pagination__page--selected{% endif %}">
-                <a href="{{ path(baseUrl, paginationParameters, {'page' : page.num }) }}" class="pagination__link">{{ page.num }}</a>
+                <a href="{{ path_for(url, {}, queryStringParams|merge({'page' : page.num})) }}" class="pagination__link">{{ page.num }}</a>
             </li>
         {% endif %}
     {% endfor %}
 
     {% if pagination.getNextUrl() %}
         <li class="pagination__page">
-            <a href="{{ path(baseUrl, paginationParameters, {'page' : pagination.getNextPage()}) }}"  class="pagination__link">Siguiente &raquo;</a>
+            <a href="{{ path_for(url, {}, queryStringParams|merge({'page' : pagination.getNextPage()})) }}"  class="pagination__link">Siguiente &raquo;</a>
         </li>
     {% endif %}
 </ul>
