@@ -9,8 +9,7 @@ return [
         'twig' => [
             'path' => __DIR__ . '/../resources/templates',
             'settings' => [
-                'cache' => getenv('DEBUG'),
-                'cache_path' => __DIR__ . '/../cache',
+                'cache' => __DIR__ . '/../cache',
                 'debug' => getenv('DEBUG'),
                 'auto_reload' => getenv('DEBUG')
             ]
