@@ -1,5 +1,5 @@
 <?php
-namespace Http\Actions;
+namespace Infrastructure\Exceptions;
 
 class BadInputException extends \Exception
 {

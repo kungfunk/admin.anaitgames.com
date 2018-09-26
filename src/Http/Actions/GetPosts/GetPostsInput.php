@@ -3,8 +3,8 @@ namespace Http\Actions\GetPosts;
 
 use Http\Actions\Input;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Http\Actions\BadInputException as BadInputException;
-use Domain\Post\Post as Post;
+use Infrastructure\Exceptions\BadInputException;
+use Domain\Post\Post;
 
 class GetPostsInput extends Input
 {
