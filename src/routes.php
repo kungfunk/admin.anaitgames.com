@@ -1,9 +1,14 @@
 <?php
 use Http\Actions\GetDashboard\GetDashboardAction as GetDashboard;
 use Http\Actions\GetPosts\GetPostsAction as GetPosts;
+use Http\Actions\GetLogin\GetLoginAction as GetLogin;
+use Http\Actions\PostLogin\PostLoginAction as PostLogin;
 
-$app->get('/', GetDashboard::class);
-$app->get('/posts', GetPosts::class);
+$app->get('/', GetDashboard::class)->setName('dashboard');
+$app->get('/login', GetLogin::class)->setName('login');
+$app->post('/login', PostLogin::class);
+$app->get('/posts', GetPosts::class)->setName('posts');
+$app->get('/posts/{id}', '')->setName('post');
 // $app->get('/posts', \Http\Actions\GetPosts\GetPostsAction::class);
 // $app->get('/posts/{id}', \Http\Actions\GetPostById\GetPostByIdAction::class);
 // $app->get('/posts/{id}/comments', \Http\Actions\GetCommentsFromPost\GetCommentsFromPostAction::class);
