@@ -6,7 +6,6 @@ use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use Twig\Extensions\TextExtension;
 use Twig\Extensions\DateExtension;
-use Twig\TwigFunction;
 
 class TwigHandler
 {
@@ -21,12 +20,6 @@ class TwigHandler
         ));
         $twig->addExtension(new TextExtension);
         $twig->addExtension(new DateExtension);
-        $twig->getEnvironment()->addGlobal('queryStringParams', $container->request->getQueryParams());
-        $twig->getEnvironment()->addFunction(
-            new TwigFunction('dump', function ($data) {
-                return '<pre>' . print_r($data) . '</pre>';
-            })
-        );
 
         return $twig;
     }
