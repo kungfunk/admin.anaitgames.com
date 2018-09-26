@@ -10,10 +10,19 @@
     vertical-align: middle;
     line-height: 1.2;
     display: inline-block;
+    box-sizing: border-box;
 }
 
 .button--small {
     font-size: var(--font-size-small);
+}
+
+.button--big {
+    padding: 15px;
+}
+
+.button--full-width {
+    width: 100%;
 }
 
 .button:hover {
@@ -23,4 +32,10 @@
 .button__icon {
     margin: 0 1px -2px 0;
     color: var(--color-hardgrey)
+}
+
+.button--primary {
+    color: var(--color-white);
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-primary);
 }
