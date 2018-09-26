@@ -1,0 +1,35 @@
+{% if flash.getMessage('error') %}
+    <div class="message message--fail">
+        {% for msg in flash.getMessage('error') %}
+            <div>{{ msg }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if flash.getMessage('warning') %}
+    <div class="message message--warning">
+        {% for msg in flash.getMessage('warning') %}
+        <div>{{ msg }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if flash.getMessage('info') %}
+    <div class="message message--info">
+        {% for msg in flash.getMessage('info') %}
+        <div>{{ msg }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if flash.getMessage('success') %}
+    <div class="message message--success">
+        {% for msg in flash.getMessage('success') %}
+        <div>{{  msg }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+
+
