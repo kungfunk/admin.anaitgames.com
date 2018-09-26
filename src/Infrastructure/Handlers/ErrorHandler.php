@@ -1,11 +1,10 @@
 <?php
 namespace Infrastructure\Handlers;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Handlers\AbstractError;
-use Monolog\Logger;
-use Slim\Views\Twig;
 use Throwable;
 
 final class ErrorHandler extends AbstractError
@@ -17,10 +16,10 @@ final class ErrorHandler extends AbstractError
     private const DEFAULT_ERROR_TEXT = 'Error general';
     private const DATABASE_ERROR_TEXT = 'Error al conectar con la base de datos';
 
-    public function __construct(Logger $logger, Twig $twig)
+    public function __construct(ContainerInterface $container)
     {
-        $this->logger = $logger;
-        $this->twig = $twig;
+        $this->logger = $container->logger;
+        $this->twig = $container->twig;
         parent::__construct();
     }
 
