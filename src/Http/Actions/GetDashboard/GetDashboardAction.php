@@ -9,38 +9,14 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetDashboard\GetDashboardOutput as Output;
 use Http\Actions\GetDashboard\GetDashboardResponder as Responder;
 
-use Domain\User\Commands\GetLastRegisteredUsers;
-use Domain\User\Commands\CountUsersByDate;
-use Domain\Post\Commands\GetLastPosts;
-use Domain\Post\Commands\GetLastPendingPosts;
-use Domain\Post\Commands\GetLastDraftPosts;
-use Domain\Post\Commands\CountPostsByDate;
-use Domain\Comment\Commands\GetLastComments;
-use Domain\Comment\Commands\CountCommentsByDate;
-
 class GetDashboardAction extends Action
 {
     protected $responder;
     protected $output;
-    protected $lastRegisteredUsers;
-    protected $lastPosts;
-    protected $lastPendingPosts;
-    protected $lastDraftPosts;
-    protected $countCommentsByDate;
-    protected $countPostsByDate;
 
     public function __invoke(Request $request, Response $response)
     {
-        $this->responder = new Responder($this->view);
         $this->output = new Output;
-        $this->lastRegisteredUsers = new GetLastRegisteredUsers;
-        $this->countUsersByDate = new CountUsersByDate;
-        $this->lastPosts = new GetLastPosts;
-        $this->lastPendingPosts = new GetLastPendingPosts;
-        $this->lastDraftPosts = new GetLastDraftPosts;
-        $this->countPostsByDate = new CountPostsByDate;
-        $this->lastComments = new GetLastComments;
-        $this->countCommentsByDate = new CountCommentsByDate;
 
         $startOfToday = new Carbon('today');
         $endOfToday = new Carbon('today');
@@ -86,6 +62,7 @@ class GetDashboardAction extends Action
         $this->output->setNumberOfCommentsToday($number_of_comments_today);
         $this->output->setNumberOfCommentsYesterday($number_of_comments_yesterday);
 
+        $this->responder = new Responder($this->view);
         $this->responder->setResponse($response);
         $this->responder->setOutput($this->output);
         return $this->responder->toHtml();

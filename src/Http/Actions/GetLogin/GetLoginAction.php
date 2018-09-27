@@ -14,7 +14,6 @@ class GetLoginAction extends Action
     {
         $this->responder = new Responder($this->view);
         $this->responder->setResponse($response);
-        $this->responder->setOutput($this->output);
         return $this->responder->toHtml();
     }
 }

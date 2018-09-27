@@ -18,4 +18,11 @@ abstract class Input
 
     const DEFAULT_LIMIT = 100;
     const DEFAULT_ORDER_DIRECTION = 'desc';
+
+    protected $data = [];
+
+    public function __get($name)
+    {
+        return $this->data[$name];
+    }
 }

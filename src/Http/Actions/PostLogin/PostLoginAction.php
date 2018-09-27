@@ -25,6 +25,7 @@ class PostLoginAction extends Action
             return $response->withRedirect($this->router->pathFor('login'));
         }
 
+        // TODO: do actual log-in
         return $response->withRedirect($this->router->pathFor('dashboard'));
     }
 }

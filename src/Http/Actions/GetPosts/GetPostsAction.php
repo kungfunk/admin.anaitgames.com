@@ -12,10 +12,6 @@ use Http\Actions\GetPosts\GetPostsResponder as Responder;
 
 use Domain\User\User;
 use Domain\Post\Post;
-use Domain\Post\Commands\CountPostsFiltered;
-use Domain\Post\Commands\GetPostsFilteredPaginated;
-use Domain\Post\Commands\GetCategoriesWithPostCount;
-use Domain\User\Commands\GetUsersByRole;
 
 class GetPostsAction extends Action
 {
@@ -25,36 +21,28 @@ class GetPostsAction extends Action
     private $input;
     private $output;
     private $pagination;
-    private $countPostsFiltered;
-    private $getPostsFilteredPaginated;
-    private $getCategoriesWithPostCount;
-    private $getUsersByRole;
 
     public function __invoke(Request $request, Response $response)
     {
-        $this->responder = new Responder($this->view);
         $this->output = new Output;
         $this->pagination = new Pagination;
-        $this->countPostsFiltered = new CountPostsFiltered;
-        $this->getPostsFilteredPaginated = new GetPostsFilteredPaginated;
-        $this->getCategoriesWithPostCount = new GetCategoriesWithPostCount;
-        $this->getUsersByRole = new GetUsersByRole;
-        $this->input = new Input($request);
+
+        $data = $request->getQueryParams();
+        $this->input = new Input($data);
 
         $this->getPostsFilteredPaginated->setSearch($this->input->search);
         $this->getPostsFilteredPaginated->setStatus($this->input->status);
-        $this->getPostsFilteredPaginated->setCategoryId($this->input->categoryId);
-        $this->getPostsFilteredPaginated->setUserId($this->input->userId);
-        $this->getPostsFilteredPaginated->setOrderField($this->input->orderField);
-        $this->getPostsFilteredPaginated->setOrderDirection($this->input->orderDirection);
+        $this->getPostsFilteredPaginated->setUserId($this->input->user_id);
+        $this->getPostsFilteredPaginated->setOrderField($this->input->order_field);
+        $this->getPostsFilteredPaginated->setOrderDirection($this->input->order_direction);
         $this->getPostsFilteredPaginated->setLimit(self::POSTS_PER_PAGE);
         $this->getPostsFilteredPaginated->setPage($this->input->page);
         $posts = $this->getPostsFilteredPaginated->run();
 
         $this->countPostsFiltered->setSearch($this->input->search);
         $this->countPostsFiltered->setStatus($this->input->status);
-        $this->countPostsFiltered->setCategoryId($this->input->categoryId);
-        $this->countPostsFiltered->setUserId($this->input->userId);
+        $this->countPostsFiltered->setCategoryId($this->input->category_id);
+        $this->countPostsFiltered->setUserId($this->input->user_id);
         $totalPosts = $this->countPostsFiltered->run();
 
         $this->countPostsFiltered->setStatus(Post::STATUS_DRAFT);
@@ -97,6 +85,7 @@ class GetPostsAction extends Action
         $this->output->setPage($this->input->page);
         $this->output->setPagination($this->getPagination($totalPosts, $this->input->page));
 
+        $this->responder = new Responder($this->view);
         $this->responder->setResponse($response);
         $this->responder->setOutput($this->output);
         return $this->responder->toHtml();

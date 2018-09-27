@@ -1,18 +1,15 @@
 <?php
 namespace Http\Actions\PostLogin;
 
+use Http\Actions\Input;
 use Infrastructure\Exceptions\BadInputException;
 use Respect\Validation\Validator;
 
-class PostLoginInput
+class PostLoginInput extends Input
 {
-    public $username;
-    public $password;
-
     public function __construct($data)
     {
-        $this->username = $data['username'];
-        $this->password = $data['password'];
+        $this->data = $data;
     }
 
     public function validate()
