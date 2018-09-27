@@ -17,6 +17,8 @@ use Domain\Post\Commands\GetLastPendingPosts;
 use Domain\Post\Commands\GetLastPosts;
 use Domain\Post\Commands\GetPostsFilteredPaginated;
 
+global $app;
+
 $container = $app->getContainer();
 
 $container['checkUsernameAndPassword'] = function () {

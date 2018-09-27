@@ -20,12 +20,10 @@ class GetPostsAction extends Action
     private $responder;
     private $input;
     private $output;
-    private $pagination;
 
     public function __invoke(Request $request, Response $response)
     {
         $this->output = new Output;
-        $this->pagination = new Pagination;
 
         $data = $request->getQueryParams();
         $this->input = new Input($data);
@@ -83,20 +81,13 @@ class GetPostsAction extends Action
         $this->output->setPosts($posts);
         $this->output->setTotalPostsNumber($totalPosts);
         $this->output->setPage($this->input->page);
-        $this->output->setPagination($this->getPagination($totalPosts, $this->input->page));
+        $this->output->setPagination(
+            new Pagination($totalPosts, self::POSTS_PER_PAGE, $this->input->page)
+        );
 
         $this->responder = new Responder($this->view);
         $this->responder->setResponse($response);
         $this->responder->setOutput($this->output);
         return $this->responder->toHtml();
-    }
-
-    private function getPagination($total, $page)
-    {
-        return $this->pagination->setup(
-            $total,
-            self::POSTS_PER_PAGE,
-            $page
-        );
     }
 }

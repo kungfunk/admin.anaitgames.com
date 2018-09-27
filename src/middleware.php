@@ -6,6 +6,8 @@ use Infrastructure\Middleware\CsrfViewMiddleware;
 use Infrastructure\Middleware\DatabaseConnectorCheckMiddleware;
 use Infrastructure\Middleware\TwigGlobalsMiddleware;
 
+global $app;
+
 $container = $app->getContainer();
 
 $app->add(new PreviousInputMiddleware($container));

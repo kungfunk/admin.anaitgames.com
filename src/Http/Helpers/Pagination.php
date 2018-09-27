@@ -5,14 +5,9 @@ use JasonGrimes\Paginator;
 
 class Pagination extends Paginator
 {
-    public function __construct()
-    {
-    }
-
-    public function setup($totalItems, $itemsPerPage, $currentPage)
+    public function __construct($totalItems, $itemsPerPage, $currentPage)
     {
         parent::__construct($totalItems, $itemsPerPage, $currentPage, '');
-        return $this;
     }
 
     public function getPages()

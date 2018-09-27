@@ -4,6 +4,9 @@ use Http\Actions\GetPosts\GetPostsAction as GetPosts;
 use Http\Actions\GetLogin\GetLoginAction as GetLogin;
 use Http\Actions\PostLogin\PostLoginAction as PostLogin;
 
+global $app;
+
+
 $app->get('/', GetDashboard::class)->setName('dashboard');
 $app->get('/login', GetLogin::class)->setName('login');
 $app->post('/login', PostLogin::class);

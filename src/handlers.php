@@ -8,6 +8,8 @@ use Infrastructure\Handlers\LoggerHandler;
 use Infrastructure\Handlers\TwigHandler;
 use Infrastructure\Handlers\EloquentHandler;
 
+global $app;
+
 $container = $app->getContainer();
 
 $container['logger'] = function ($container) {

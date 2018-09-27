@@ -27,6 +27,7 @@
     "require-dev": {
         "phpstan/phpstan": "^0.10.1",
         "squizlabs/php_codesniffer": "3.*",
-        "fzaninotto/faker": "*"
+        "fzaninotto/faker": "*",
+        "phpmd/phpmd" : "@stable"
     }
 }
