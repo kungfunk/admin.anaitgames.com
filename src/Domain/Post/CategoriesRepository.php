@@ -9,20 +9,39 @@ class CategoriesRepository
     public function __construct()
     {
         $this->categoryModel = new Category;
+        $this->reset();
     }
 
-    public function newQuery()
+    private function reset()
     {
         $this->query = $this->categoryModel->query();
     }
 
-    public function get()
+    public function get($resetAfterQuery = true)
     {
-        return $this->query->get();
+        $result = $this->query->get();
+
+        if ($resetAfterQuery) {
+            $this->reset();
+        }
+
+        return $result;
+    }
+
+    public function count($resetAfterQuery = true)
+    {
+        $result = $this->query->count();
+
+        if ($resetAfterQuery) {
+            $this->reset();
+        }
+
+        return $result;
     }
 
     public function addRelationShips()
     {
-        return $this->query->withCount('posts');
+        $this->query->withCount('posts');
+        return $this;
     }
 }

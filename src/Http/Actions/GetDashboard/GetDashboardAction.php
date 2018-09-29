@@ -3,64 +3,53 @@ namespace Http\Actions\GetDashboard;
 
 use Carbon\Carbon;
 
+use Domain\Comment\Comment;
+use Domain\Post\Post;
+use Domain\User\User;
 use Http\Actions\Action;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use Http\Actions\GetDashboard\GetDashboardOutput as Output;
 use Http\Actions\GetDashboard\GetDashboardResponder as Responder;
 
 class GetDashboardAction extends Action
 {
-    protected $responder;
-    protected $output;
+    const LISTS_ITEMS = 10;
+
+    private $responder;
+    private $output = [];
 
     public function __invoke(Request $request, Response $response)
     {
-        $this->output = new Output;
+        $yesterday = new Carbon('yesterday');
+        $today = new Carbon('today');
+        $tomorrow = new Carbon('tomorrow');
 
-        $startOfToday = new Carbon('today');
-        $endOfToday = new Carbon('today');
-        $endOfToday->modify('+1 day');
-
-        $startOfYesterday = new Carbon('yesterday');
-        $endOfYesterday = new Carbon('yesterday');
-        $endOfYesterday->modify('+1 day');
-
-        $this->countPostsByDate->setStartDate($startOfToday);
-        $this->countPostsByDate->setEndDate($endOfToday);
-        $number_of_posts_today = $this->countPostsByDate->run();
-
-        $this->countPostsByDate->setStartDate($startOfYesterday);
-        $this->countPostsByDate->setEndDate($endOfYesterday);
-        $number_of_posts_yesterday = $this->countPostsByDate->run();
-
-        $this->countUsersByDate->setStartDate($startOfToday);
-        $this->countUsersByDate->setEndDate($endOfToday);
-        $number_of_users_today = $this->countUsersByDate->run();
-
-        $this->countUsersByDate->setStartDate($startOfYesterday);
-        $this->countUsersByDate->setEndDate($endOfYesterday);
-        $number_of_users_yesterday = $this->countUsersByDate->run();
-
-        $this->countCommentsByDate->setStartDate($startOfToday);
-        $this->countCommentsByDate->setEndDate($endOfToday);
-        $number_of_comments_today = $this->countCommentsByDate->run();
-
-        $this->countCommentsByDate->setStartDate($startOfYesterday);
-        $this->countCommentsByDate->setEndDate($endOfYesterday);
-        $number_of_comments_yesterday = $this->countCommentsByDate->run();
-
-        $this->output->setLastRegisteredUsers($this->lastRegisteredUsers->run());
-        $this->output->setLastPosts($this->lastPosts->run());
-        $this->output->setLastPendingPosts($this->lastPendingPosts->run());
-        $this->output->setLastDraftPosts($this->lastDraftPosts->run());
-        $this->output->setLastComments($this->lastComments->run());
-        $this->output->setNumberOfPostsToday($number_of_posts_today);
-        $this->output->setNumberOfPostsYesterday($number_of_posts_yesterday);
-        $this->output->setNumberOfUsersToday($number_of_users_today);
-        $this->output->setNumberOfUsersYesterday($number_of_users_yesterday);
-        $this->output->setNumberOfCommentsToday($number_of_comments_today);
-        $this->output->setNumberOfCommentsYesterday($number_of_comments_yesterday);
+        $this->output = [
+            'postsTodayCount' => $this->postsRepository->setPublishDateBetween($today, $tomorrow)->count(),
+            'postsYesterdayCount' => $this->postsRepository->setPublishDateBetween($yesterday, $today)->count(),
+            'usersTodayCount' => $this->usersRepository->countUsersFromDate($today, $tomorrow),
+            'usersYesterdayCount' => $this->usersRepository->countUsersFromDate($yesterday, $today),
+            'commentsTodayCount' => $this->commentsRepository->countCommentsFromDate($today, $tomorrow),
+            'commentsYesterdayCount' => $this->commentsRepository->countCommentsFromDate($yesterday, $today),
+            'lastRegisteredUsers' => $this->usersRepository
+                ->getUsersPaginated(User::DEFAULT_ORDER_FIELD, User::DEFAULT_ORDER_FIELD, self::LISTS_ITEMS),
+            'lastPosts' => $this->postsRepository->setLast(10)->get(),
+            'lastPendingPosts' => $this->postsRepository
+                ->setStatus(Post::STATUS_PUBLISHED)
+                ->setPublishDateMoreThan(Carbon::now())
+                ->setLast(self::LISTS_ITEMS)
+                ->get(),
+            'lastDraftPosts' => $this->postsRepository
+                ->setStatus(Post::STATUS_DRAFT)
+                ->setLast(self::LISTS_ITEMS)
+                ->get(),
+            'lastComments' => $this->commentsRepository
+                ->getCommentsPaginated(
+                    Comment::DEFAULT_ORDER_FIELD,
+                    Comment::DEFAULT_ORDER_DIRECTION,
+                    self::LISTS_ITEMS
+                ),
+        ];
 
         $this->responder = new Responder($this->view);
         $this->responder->setResponse($response);
