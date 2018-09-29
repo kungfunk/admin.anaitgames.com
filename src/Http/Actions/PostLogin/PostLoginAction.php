@@ -16,8 +16,15 @@ class PostLoginAction extends Action
 
         try {
             $input->validate();
-            if (!$this->checkUsernameAndPasswordCommand->setup($input->username, $input->password)->run()) {
+            $user = $this->usersRepository->getUserByUsername($input->username);
+            if (!$user) {
+                throw new UserLogonException(UserLogonException::USER_NOT_FOUND);
+            }
+            if (!password_verify($input->password, $user->password)) {
                 throw new UserLogonException(UserLogonException::INCORRECT_PASSWORD);
+            }
+            if ($user->isBanned()) {
+                throw new UserLogonException(UserLogonException::USER_IS_BANNED);
             }
         } catch (\Exception $exception) {
             $this->logger->notice($exception->getMessage());
@@ -25,7 +32,7 @@ class PostLoginAction extends Action
             return $response->withRedirect($this->router->pathFor('login'));
         }
 
-        // TODO: do actual log-in
+        $this->session->set('user_id', $user->id);
         return $response->withRedirect($this->router->pathFor('dashboard'));
     }
 }

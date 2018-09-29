@@ -1,6 +1,7 @@
 <?php
 namespace Domain\User;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model as Model;
 
 class User extends Model
@@ -41,5 +42,15 @@ class User extends Model
     public function logs()
     {
         return $this->hasMany('Domain\User\Log');
+    }
+
+    public function bans()
+    {
+        return $this->hasMany('Domain\User\Ban');
+    }
+
+    public function isBanned()
+    {
+        return $this->hasMany('Domain\User\Ban')->where('bans.to_date', '<', Carbon::now());
     }
 }
