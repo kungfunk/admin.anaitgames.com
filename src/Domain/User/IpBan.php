@@ -13,7 +13,7 @@ class IpBan extends Model
         'reason'
     ];
 
-    public function by()
+    public function bannedBy()
     {
         return $this->belongsTo('Domain\Post\User', 'banned_by_id');
     }

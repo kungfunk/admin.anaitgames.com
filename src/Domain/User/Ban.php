@@ -18,7 +18,7 @@ class Ban extends Model
         return $this->belongsTo('Domain\Post\User');
     }
 
-    public function by()
+    public function bannedBy()
     {
         return $this->belongsTo('Domain\Post\User', 'banned_by_id');
     }
