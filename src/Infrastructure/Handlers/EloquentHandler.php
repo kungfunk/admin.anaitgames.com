@@ -3,6 +3,8 @@ namespace Infrastructure\Handlers;
 
 use Interop\Container\ContainerInterface;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
 
 class EloquentHandler
 {
@@ -11,9 +13,10 @@ class EloquentHandler
         $settings = $container->settings['db'];
         $capsule = new Capsule;
         $capsule->addConnection($settings);
+        $capsule->setEventDispatcher(new Dispatcher(new Container));
         $capsule->setAsGlobal();
-        $capsule::listen(function($sql) {
-            var_dump($sql);
+        $capsule::listen(function ($data) use ($container) {
+            $container->queryLogger->debug("({$data->time} ms) {$data->sql}", $data->bindings);
         });
 
         return $capsule;

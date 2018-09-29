@@ -6,21 +6,25 @@ use Monolog\Logger;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Formatter\LineFormatter;
 
-class LoggerHandler
+class QueryLoggerHandler
 {
+    private const NAME = 'queryLogger';
+    private const FILENAME = 'sql.log';
+    private const FORMAT_STRING = "[%datetime%] [%level_name%]: %message% %context%\n";
+
     public static function handle(ContainerInterface $container)
     {
-        $settings = $container['settings']['logger'];
+        $path = $container['settings']['logger']['path'] . self::FILENAME;
 
-        $logger = new Logger($settings['name']);
+        $logger = new Logger(self::NAME);
         $formatter = new LineFormatter(
-            "[%datetime%] [%level_name%]: %message% %context%\n",
+            self::FORMAT_STRING,
             null,
             true,
             true
         );
 
-        $rotating = new RotatingFileHandler($settings['path'], 0, Logger::DEBUG);
+        $rotating = new RotatingFileHandler($path, 0, Logger::DEBUG);
         $rotating->setFormatter($formatter);
         $logger->pushHandler($rotating);
         return $logger;

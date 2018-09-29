@@ -9,8 +9,7 @@ use Throwable;
 
 final class ErrorHandler extends AbstractError
 {
-    protected $logger;
-    protected $twig;
+    private $container;
 
     private const ERROR_TEMPLATE = 'routes/error.twig';
     private const DEFAULT_ERROR_TEXT = 'Error general';
@@ -18,14 +17,13 @@ final class ErrorHandler extends AbstractError
 
     public function __construct(ContainerInterface $container)
     {
-        $this->logger = $container->logger;
-        $this->twig = $container->twig;
+        $this->container = $container;
         parent::__construct();
     }
 
     public function __invoke(Request $request, Response $response, Throwable $throwable)
     {
-        $this->logger->critical($throwable->getMessage() . "\n" . $throwable->getTraceAsString());
+        $this->container->errorLogger->critical($throwable->getMessage() . "\n" . $throwable->getTraceAsString());
         $message = self::DEFAULT_ERROR_TEXT;
 
         if ($throwable instanceof \PDOException) {
@@ -34,7 +32,7 @@ final class ErrorHandler extends AbstractError
 
         $response->withStatus(500);
 
-        return $this->twig->render(
+        return $this->container->twig->render(
             $response,
             self::ERROR_TEMPLATE,
             [

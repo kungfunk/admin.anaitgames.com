@@ -4,7 +4,8 @@ use Slim\Csrf\Guard as CsrfGuard;
 use SlimSession\Helper as SessionHelper;
 
 use Infrastructure\Handlers\ErrorHandler;
-use Infrastructure\Handlers\LoggerHandler;
+use Infrastructure\Handlers\ErrorLoggerHandler;
+use Infrastructure\Handlers\QueryLoggerHandler;
 use Infrastructure\Handlers\TwigHandler;
 use Infrastructure\Handlers\EloquentHandler;
 
@@ -12,8 +13,12 @@ global $app;
 
 $container = $app->getContainer();
 
-$container['logger'] = function ($container) {
-    return LoggerHandler::handle($container);
+$container['errorLogger'] = function ($container) {
+    return ErrorLoggerHandler::handle($container);
+};
+
+$container['queryLogger'] = function ($container) {
+    return QueryLoggerHandler::handle($container);
 };
 
 $container['session'] = function () {

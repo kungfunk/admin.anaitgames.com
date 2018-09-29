@@ -3,8 +3,7 @@ return [
     'settings' => [
         'displayErrorDetails' => getenv('DEBUG'),
         'logger' => [
-            'name' => 'logger',
-            'path' => __DIR__ . '/../logs/app.log'
+            'path' => __DIR__ . '/../logs/'
         ],
         'twig' => [
             'path' => __DIR__ . '/../resources/templates',

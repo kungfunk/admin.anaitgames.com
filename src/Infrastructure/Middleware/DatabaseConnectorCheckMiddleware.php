@@ -11,7 +11,7 @@ class DatabaseConnectorCheckMiddleware extends Middleware
         try {
             $this->container->db->bootEloquent();
         } catch (\Exception $exception) {
-            $this->container->logger->critical($exception->getMessage() . "\n" . $exception->getTraceAsString());
+            $this->container->errorLogger->critical($exception->getMessage() . "\n" . $exception->getTraceAsString());
             die('Error al conectar con la base de datos');
         }
 
