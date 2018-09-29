@@ -13,9 +13,12 @@ $config = include 'config.php';
 
 $app = new App($config);
 
+// container DI
 include 'handlers.php';
 include 'middleware.php';
-include 'commands.php';
+include 'repositories.php';
+
+// Routes files
 include 'routes.php';
 
 $app->run();
