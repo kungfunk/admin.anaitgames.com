@@ -1,15 +1,16 @@
 <?php
-namespace Infrastructure\Handlers;
+namespace Infrastructure\Providers;
 
-use Interop\Container\ContainerInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use Twig\Extensions\TextExtension;
 use Twig\Extensions\DateExtension;
 
-class TwigHandler
+class TwigServiceProvider implements ServiceProviderInterface
 {
-    public static function handle(ContainerInterface $container)
+    public function register(Container $container)
     {
         $settings = $container['settings']['twig'];
 
@@ -21,6 +22,10 @@ class TwigHandler
         $twig->addExtension(new TextExtension);
         $twig->addExtension(new DateExtension);
 
-        return $twig;
+        $container['view'] = function () use ($twig) {
+            return $twig;
+        };
+
+        $container['twig'] = $container['view']; // to show twig errors
     }
 }
