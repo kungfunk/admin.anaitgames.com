@@ -7,11 +7,16 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 SET NAMES utf8mb4;
 
+CREATE DATABASE anaitgames;
+USE anaitgames;
+
 DROP TABLE IF EXISTS `bans`;
 CREATE TABLE `bans` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
   `banned_by_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   `from_date` datetime NOT NULL,
   `to_date` datetime NOT NULL,
   `reason` varchar(255) CHARACTER SET armscii8 DEFAULT NULL,
@@ -71,14 +76,16 @@ CREATE TABLE `comment_reports` (
 DROP TABLE IF EXISTS `ip_bans`;
 CREATE TABLE `ip_bans` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
+  `banned_by_id` int(10) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
   `from_date` datetime NOT NULL,
   `to_date` datetime NOT NULL,
   `ip` varchar(45) CHARACTER SET armscii8 NOT NULL,
   `reason` varchar(255) CHARACTER SET armscii8 DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `ip_bans_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  KEY `user_id` (`banned_by_id`),
+  CONSTRAINT `ip_bans_ibfk_1` FOREIGN KEY (`banned_by_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -86,11 +93,11 @@ DROP TABLE IF EXISTS `logs`;
 CREATE TABLE `logs` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
   `user_id` int(10) unsigned NOT NULL,
-  `action` enum('register','login failed','login success','add comment','edit comment','change password','change preferences','ban user','banned') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ip` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_agent` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `level` enum('info', 'notice', 'warning', 'error') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `context` json DEFAULT NULL,
+  `extra` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `logs_user_id_foreign` (`user_id`),
   CONSTRAINT `logs_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
@@ -130,15 +137,6 @@ CREATE TABLE `messages` (
   KEY `messages_user_to_id_foreign` (`user_to_id`),
   CONSTRAINT `messages_user_from_id_foreign` FOREIGN KEY (`user_from_id`) REFERENCES `users` (`id`),
   CONSTRAINT `messages_user_to_id_foreign` FOREIGN KEY (`user_to_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-DROP TABLE IF EXISTS `migrations`;
-CREATE TABLE `migrations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -214,11 +212,16 @@ CREATE TABLE `users` (
   `patreon_level` tinyint(4) NOT NULL,
   `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rank` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `twitter_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `twitter` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`),
   UNIQUE KEY `users_username_unique` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+INSERT INTO anaitgames.categories (name, slug) VALUES ('Artículo', 'articulo');
+INSERT INTO anaitgames.categories (name, slug) VALUES ('Noticia', 'noticia');
+INSERT INTO anaitgames.categories (name, slug) VALUES ('Análisis', 'analisis');
+INSERT INTO anaitgames.categories (name, slug) VALUES ('Podcast', 'podcast');
+INSERT INTO anaitgames.categories (name, slug) VALUES ('Streaming', 'streaming');
 
 -- 2018-09-10 15:52:55
