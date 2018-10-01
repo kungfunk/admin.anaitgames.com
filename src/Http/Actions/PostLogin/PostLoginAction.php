@@ -5,7 +5,9 @@ use Http\Actions\Action;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\PostLogin\PostLoginInput as Input;
-use Infrastructure\Exceptions\UserLogonException;
+use Infrastructure\Exceptions\UserNotFoundException;
+use Infrastructure\Exceptions\BannedUserException;
+use Infrastructure\Exceptions\InvalidCredentialException;
 
 class PostLoginAction extends Action
 {
@@ -18,16 +20,18 @@ class PostLoginAction extends Action
             $input->validate();
             $user = $this->usersRepository->getUserByUsername($input->username);
             if (!$user) {
-                throw new UserLogonException(UserLogonException::USER_NOT_FOUND);
+                throw new UserNotFoundException(UserNotFoundException::USER_NOT_FOUND);
             }
             if (!password_verify($input->password, $user->password)) {
-                throw new UserLogonException(UserLogonException::INCORRECT_PASSWORD);
+                throw new InvalidCredentialException(InvalidCredentialException::INCORRECT_PASSWORD);
             }
             if ($user->isBanned()) {
-                throw new UserLogonException(UserLogonException::USER_IS_BANNED);
+                throw new BannedUserException(BannedUserException::USER_IS_BANNED);
             }
         } catch (\Exception $exception) {
-            $this->logger->notice($exception->getMessage());
+            if ($exception instanceof InvalidCredentialException || $exception instanceof BannedUserException) {
+                $this->appLogger->notice($exception->getMessage(), array_merge($input->data, ['user_id' => $user->id]));
+            }
             $this->flash->addMessage('error', $exception->getMessage());
             return $response->withRedirect($this->router->pathFor('login'));
         }

@@ -3,6 +3,7 @@ use Slim\Flash\Messages;
 use Slim\Csrf\Guard as CsrfGuard;
 use SlimSession\Helper as SessionHelper;
 use Infrastructure\Handlers\ErrorHandler;
+use Infrastructure\Handlers\LoggedUserHandler;
 
 global $app;
 
@@ -22,4 +23,8 @@ $container['flash'] = function () {
 
 $container['csrf'] = function () {
     return new CsrfGuard;
+};
+
+$container['loggedUser'] = function () {
+    return new LoggedUserHandler;
 };

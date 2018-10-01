@@ -53,4 +53,9 @@ class User extends Model
     {
         return $this->hasMany('Domain\User\Ban')->where('bans.to_date', '<', Carbon::now());
     }
+
+    public function isAdmin()
+    {
+        return in_array($this->role, [self::ROLE_EDITOR, self::ROLE_ADMIN]);
+    }
 }
