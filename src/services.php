@@ -1,6 +1,7 @@
 <?php
 use Infrastructure\Providers\ErrorLoggerServiceProvider;
 use Infrastructure\Providers\QueryLoggerServiceProvider;
+use Infrastructure\Providers\AppLoggerServiceProvider;
 use Infrastructure\Providers\EloquentServiceProvider;
 use Infrastructure\Providers\TwigServiceProvider;
 
@@ -10,5 +11,6 @@ $container = $app->getContainer();
 
 $container->register(new ErrorLoggerServiceProvider);
 $container->register(new QueryLoggerServiceProvider);
+$container->register(new AppLoggerServiceProvider);
 $container->register(new EloquentServiceProvider);
 $container->register(new TwigServiceProvider);

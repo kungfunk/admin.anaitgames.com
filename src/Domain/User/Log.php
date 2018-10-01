@@ -5,9 +5,18 @@ use Illuminate\Database\Eloquent\Model as Model;
 
 class Log extends Model
 {
-    const FIXED_ORDER = 'timestamp';
+    const UPDATED_AT = null;
 
-    public function user() {
+    protected $fillable = [
+        'user_id',
+        'level',
+        'message',
+        'context',
+        'extra'
+    ];
+
+    public function user()
+    {
         return $this->belongsTo('Domain\User\User');
     }
 }
