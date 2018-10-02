@@ -5,11 +5,12 @@ use Illuminate\Database\Eloquent\Model as Model;
 
 class Ban extends Model
 {
+    const UPDATED_AT = null;
+
     protected $fillable = [
         'user_id',
         'banned_by_id',
-        'from_date',
-        'to_date',
+        'expires',
         'reason'
     ];
 
