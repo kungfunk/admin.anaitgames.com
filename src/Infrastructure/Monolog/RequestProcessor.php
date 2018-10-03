@@ -19,7 +19,7 @@ class RequestProcessor
         $record['extra']['uri'] = $uri->getPath();
         $record['extra']['query'] = $uri->getQuery();
         $record['extra']['user_info'] = $uri->getUserInfo();
-        $record['extra']['ip'] = $this->request->getServerParams()['REMOTE_ADDR'];
+        $record['extra']['ip'] = $this->request->getServerParam('REMOTE_ADDR');
         $record['extra']['user-agent'] = $this->request->getHeaderLine('user-agent');
 
         return $record;

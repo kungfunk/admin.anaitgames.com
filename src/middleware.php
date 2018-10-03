@@ -6,6 +6,7 @@ use Infrastructure\Middleware\CsrfViewMiddleware;
 use Infrastructure\Middleware\DatabaseConnectorCheckMiddleware;
 use Infrastructure\Middleware\TwigGlobalsMiddleware;
 use Infrastructure\Middleware\LoggedUserMiddleware;
+use Infrastructure\Middleware\IpBanMiddleware;
 
 global $app;
 
@@ -18,3 +19,4 @@ $app->add($container->csrf);
 $app->add(new DatabaseConnectorCheckMiddleware($container));
 $app->add(new TwigGlobalsMiddleware($container));
 $app->add(new Session($container->settings['session']));
+$app->add(new IpBanMiddleware($container));
