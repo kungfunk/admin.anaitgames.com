@@ -8,6 +8,7 @@ use Http\Actions\PostLogin\PostLoginInput as Input;
 use Infrastructure\Exceptions\UserNotFoundException;
 use Infrastructure\Exceptions\BannedUserException;
 use Infrastructure\Exceptions\InvalidCredentialException;
+use Infrastructure\Exceptions\NotEnoughPermissionsException;
 
 class PostLoginAction extends Action
 {
@@ -28,8 +29,14 @@ class PostLoginAction extends Action
             if ($user->isBanned()) {
                 throw new BannedUserException(BannedUserException::USER_IS_BANNED);
             }
+            if (!$user->isAdmin()) {
+                throw new NotEnoughPermissionsException(NotEnoughPermissionsException::NOT_ENOUGH_PERMISSIONS);
+            }
         } catch (\Exception $exception) {
-            if ($exception instanceof InvalidCredentialException || $exception instanceof BannedUserException) {
+            if ($exception instanceof InvalidCredentialException ||
+                $exception instanceof BannedUserException ||
+                $exception instanceof NotEnoughPermissionsException
+            ) {
                 $this->appLogger->notice($exception->getMessage(), array_merge($input->data, ['user_id' => $user->id]));
             }
             $this->flash->addMessage('error', $exception->getMessage());
