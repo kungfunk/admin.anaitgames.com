@@ -31,6 +31,14 @@
     padding: 5px 10px;
 }
 
+.datatable__cell--medium {
+    width: 150px;
+}
+
+.datatable__cell--long {
+    width: 300px;
+}
+
 .datatable__cell--avatar {
     width: 24px;
 }

@@ -47,7 +47,6 @@ class GetPostsAction extends Action
 
         $writerRoles = [User::ROLE_EDITOR, User::ROLE_ADMIN, User::ROLE_SUPERADMIN];
 
-        $this->output['totalPostsNumber'] = $this->postsRepository->setFilters(...$filterParams)->count();
         $this->output['writers'] = $this->usersRepository->getUserByRoles($writerRoles);
         $this->output['categories'] = $this->categoriesRepository->addRelationShips()->get();
         $this->output['statusFilters'] = [
@@ -69,7 +68,7 @@ class GetPostsAction extends Action
         ];
 
         $this->output['pagination'] = new Pagination(
-            $this->output['totalPostsNumber'],
+            $this->postsRepository->setFilters(...$filterParams)->count(),
             self::POSTS_PER_PAGE,
             $this->input->page
         );

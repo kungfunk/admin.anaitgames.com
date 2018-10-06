@@ -2,6 +2,7 @@
 use Http\Actions\GetDashboard\GetDashboardAction as GetDashboard;
 use Http\Actions\GetPosts\GetPostsAction as GetPosts;
 use Http\Actions\GetLogin\GetLoginAction as GetLogin;
+use Http\Actions\GetComments\GetCommentsAction as GetComments;
 use Http\Actions\PostLogin\PostLoginAction as PostLogin;
 
 use Infrastructure\Middleware\AuthMiddleware;
@@ -21,6 +22,10 @@ $app->group('', function () use ($app) {
     $app->get('/', GetDashboard::class)->setName('dashboard');
     $app->get('/posts', GetPosts::class)->setName('posts');
     $app->get('/posts/{id}', '')->setName('post');
+    $app->get('/comments', GetComments::class)->setName('comments');
+    $app->get('/comments/{id}', null)->setName('comment');
+    $app->get('/users', null)->setName('users');
+    $app->get('/users/{id}', null)->setName('user');
 })
     ->add(new BanMiddleware($container))
     ->add(new AuthMiddleware($container));
