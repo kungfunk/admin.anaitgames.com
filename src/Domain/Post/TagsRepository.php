@@ -1,17 +1,18 @@
 <?php
 namespace Domain\Post;
 
-class TagsRepository
-{
-    private $tags_model;
+use Domain\Repository;
 
+class TagsRepository extends Repository
+{
     public function __construct()
     {
-        $this->tags_model = new Tag;
+        $this->model = new Tag;
+        parent::__construct();
     }
 
     public function getAll()
     {
-        return $this->tags_model->all();
+        return $this->model->all();
     }
 }

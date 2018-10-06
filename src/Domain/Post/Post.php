@@ -5,9 +5,6 @@ use Illuminate\Database\Eloquent\Model as Model;
 
 class Post extends Model
 {
-    const ID = 'id';
-    const SLUG = 'slug';
-
     const STATUS_DRAFT = 'draft';
     const STATUS_PUBLISHED = 'published';
     const STATUS_TRASH = 'trash';

@@ -2,43 +2,14 @@
 namespace Domain\Post;
 
 use Carbon\Carbon;
+use Domain\Repository;
 
-class PostsRepository
+class PostsRepository extends Repository
 {
-    private $postModel;
-    private $query;
-
     public function __construct()
     {
-        $this->postModel = new Post;
-        $this->reset();
-    }
-
-    private function reset()
-    {
-        $this->query = $this->postModel->query();
-    }
-
-    public function get($resetAfterQuery = true)
-    {
-        $result = $this->query->get();
-
-        if ($resetAfterQuery) {
-            $this->reset();
-        }
-
-        return $result;
-    }
-
-    public function count($resetAfterQuery = true)
-    {
-        $result = $this->query->count();
-
-        if ($resetAfterQuery) {
-            $this->reset();
-        }
-
-        return $result;
+        $this->model = new Post;
+        parent::__construct();
     }
 
     public function addRelationShips()

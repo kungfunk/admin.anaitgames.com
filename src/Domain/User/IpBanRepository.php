@@ -2,18 +2,18 @@
 namespace Domain\User;
 
 use Carbon\Carbon;
+use Domain\Repository;
 
-class IpBanRepository
+class IpBanRepository extends Repository
 {
-    private $ipBanModel;
-
     public function __construct()
     {
-        $this->ipBanModel = new IpBan;
+        $this->model = new IpBan;
+        parent::__construct();
     }
 
     public function getActiveByIp($ip)
     {
-        return $this->ipBanModel->where('ip', $ip)->where('expires', '>', Carbon::now())->first();
+        return $this->model->where('ip', $ip)->where('expires', '>', Carbon::now())->first();
     }
 }

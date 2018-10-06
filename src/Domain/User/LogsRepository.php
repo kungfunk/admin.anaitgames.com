@@ -1,18 +1,19 @@
 <?php
 namespace Domain\User;
 
-class LogsRepository
-{
-    private $logsModel;
+use Domain\Repository;
 
+class LogsRepository extends Repository
+{
     public function __construct()
     {
-        $this->logsModel = new Log;
+        $this->model = new Log;
+        parent::__construct();
     }
 
     public function getLogsFromUserIdPaginated($user_id, $options)
     {
-        return $this->logsModel
+        return $this->model
             ->where('user_id', $user_id)
             ->orderBy(Log::FIXED_ORDER, $options['order'])
             ->offset($options['offset'])

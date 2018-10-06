@@ -2,24 +2,24 @@
 namespace Domain\User;
 
 use Carbon\Carbon;
+use Domain\Repository;
 
-class UsersRepository
+class UsersRepository extends Repository
 {
-    private $userModel;
-
     public function __construct()
     {
-        $this->userModel = new User;
+        $this->model = new User;
+        parent::__construct();
     }
 
     public function getUserById(int $id)
     {
-        return $this->userModel->find($id);
+        return $this->model->find($id);
     }
 
     public function getUserByUsername(string $username)
     {
-        return $this->userModel->where('username', $username)->first();
+        return $this->model->where('username', $username)->first();
     }
 
     public function getUserByRoles($roles)
@@ -27,7 +27,7 @@ class UsersRepository
         if (!is_array($roles)) {
             $roles = [$roles];
         }
-        return $this->userModel
+        return $this->model
             ->withCount('posts')
             ->whereIn('role', $roles)
             ->get();
@@ -40,7 +40,7 @@ class UsersRepository
         int $limit = User::DEFAULT_LIMIT,
         int $offset = 0
     ) {
-        return $this->userModel
+        return $this->model
             ->orderBy($orderField, $orderDirection)
             ->offset($offset)
             ->limit($limit)
@@ -49,7 +49,7 @@ class UsersRepository
 
     public function countUsersFromDate(Carbon $startDate, Carbon $endDate)
     {
-        return $this->userModel
+        return $this->model
             ->whereBetween('created_at', [$startDate, $endDate])
             ->count();
     }
