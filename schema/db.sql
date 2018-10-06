@@ -7,6 +7,7 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 SET NAMES utf8mb4;
 
+DROP DATABASE anaitgames;
 CREATE DATABASE anaitgames;
 USE anaitgames;
 
@@ -204,7 +205,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` tinyint(4) NOT NULL,
+  `role` enum('user', 'moderator', 'editor', 'admin', 'superadmin') COLLATE utf8mb4_unicode_ci NOT NULL,
   `patreon_level` tinyint(4) NOT NULL,
   `avatar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rank` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
