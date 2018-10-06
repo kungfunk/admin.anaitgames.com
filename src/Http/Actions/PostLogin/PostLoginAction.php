@@ -5,10 +5,7 @@ use Http\Actions\Action;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\PostLogin\PostLoginInput as Input;
-use Infrastructure\Exceptions\UserNotFoundException;
-use Infrastructure\Exceptions\BannedUserException;
-use Infrastructure\Exceptions\InvalidCredentialException;
-use Infrastructure\Exceptions\NotEnoughPermissionsException;
+use Infrastructure\Exceptions\AuthenticationException;
 
 class PostLoginAction extends Action
 {
@@ -21,22 +18,16 @@ class PostLoginAction extends Action
             $input->validate();
             $user = $this->usersRepository->getUserByUsername($input->username);
             if (!$user) {
-                throw new UserNotFoundException(UserNotFoundException::USER_NOT_FOUND);
+                throw new AuthenticationException(AuthenticationException::INVALID_CREDENTIALS);
             }
-            if (!password_verify($input->password, $user->password)) {
-                throw new InvalidCredentialException(InvalidCredentialException::INCORRECT_PASSWORD);
+            if (!$user->checkPassword($input->password)) {
+                throw new AuthenticationException(AuthenticationException::INVALID_CREDENTIALS);
             }
             if ($user->isBanned()) {
-                throw new BannedUserException(BannedUserException::USER_IS_BANNED);
-            }
-            if (!$user->isAdmin()) {
-                throw new NotEnoughPermissionsException(NotEnoughPermissionsException::NOT_ENOUGH_PERMISSIONS);
+                throw new AuthenticationException(AuthenticationException::USER_IS_BANNED);
             }
         } catch (\Exception $exception) {
-            if ($exception instanceof InvalidCredentialException ||
-                $exception instanceof BannedUserException ||
-                $exception instanceof NotEnoughPermissionsException
-            ) {
+            if (isset($user) && $user) {
                 $this->appLogger->notice($exception->getMessage(), array_merge($input->data, ['user_id' => $user->id]));
             }
             $this->flash->addMessage('error', $exception->getMessage());

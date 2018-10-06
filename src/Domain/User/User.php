@@ -10,9 +10,11 @@ class User extends Model
     const DEFAULT_ORDER_FIELD = 'created_at';
     const DEFAULT_ORDER_DIRECTION = 'desc';
 
-    const ROLE_USER = 1;
-    const ROLE_EDITOR = 2;
-    const ROLE_ADMIN = 3;
+    const ROLE_USER = 'user';
+    const ROLE_MODERATOR = 'moderator';
+    const ROLE_EDITOR = 'editor';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_SUPERADMIN = 'superadmin';
 
     const PATREON_BRONZE_LEVEL = 1;
     const PATREON_SILVER_LEVEL = 2;
@@ -49,13 +51,29 @@ class User extends Model
         return $this->hasMany('Domain\User\Ban');
     }
 
-    public function isBanned()
+    public function isBanned(): bool
     {
-        return $this->hasMany('Domain\User\Ban')->where('bans.to_date', '<', Carbon::now());
+        return (bool) $this->hasMany('Domain\User\Ban')
+            ->where('bans.expires', '<', Carbon::now())
+            ->count();
     }
 
-    public function isAdmin()
+    public function getActiveBan()
     {
-        return in_array($this->role, [self::ROLE_EDITOR, self::ROLE_ADMIN]);
+        return (bool) $this->hasMany('Domain\User\Ban')
+            ->where('bans.expires', '<', Carbon::now())
+            ->first();
+    }
+
+    public function checkPassword($password): bool
+    {
+        // TODO: add old phpBB password check logic
+        return password_verify($password, $this->password);
+    }
+
+    public function setPassword($string): void
+    {
+        $hash = password_hash($string, PASSWORD_DEFAULT);
+        $this->password = $hash;
     }
 }

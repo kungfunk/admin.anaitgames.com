@@ -6,6 +6,7 @@ use Http\Actions\PostLogin\PostLoginAction as PostLogin;
 
 use Infrastructure\Middleware\AuthMiddleware;
 use Infrastructure\Middleware\GuestMiddleware;
+use Infrastructure\Middleware\BanMiddleware;
 
 global $app;
 
@@ -20,7 +21,9 @@ $app->group('', function () use ($app) {
     $app->get('/', GetDashboard::class)->setName('dashboard');
     $app->get('/posts', GetPosts::class)->setName('posts');
     $app->get('/posts/{id}', '')->setName('post');
-})->add(new AuthMiddleware($container));
+})
+    ->add(new BanMiddleware($container))
+    ->add(new AuthMiddleware($container));
 
 // $app->get('/posts', \Http\Actions\GetPosts\GetPostsAction::class);
 // $app->get('/posts/{id}', \Http\Actions\GetPostById\GetPostByIdAction::class);

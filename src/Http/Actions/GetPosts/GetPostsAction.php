@@ -45,8 +45,10 @@ class GetPostsAction extends Action
             ->addRelationShips()
             ->get();
 
+        $writerRoles = [User::ROLE_EDITOR, User::ROLE_ADMIN, User::ROLE_SUPERADMIN];
+
         $this->output['totalPostsNumber'] = $this->postsRepository->setFilters(...$filterParams)->count();
-        $this->output['writers'] = $this->usersRepository->getUserByRoles([User::ROLE_EDITOR, User::ROLE_ADMIN]);
+        $this->output['writers'] = $this->usersRepository->getUserByRoles($writerRoles);
         $this->output['categories'] = $this->categoriesRepository->addRelationShips()->get();
         $this->output['statusFilters'] = [
             [
