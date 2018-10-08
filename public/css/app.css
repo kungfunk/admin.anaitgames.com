@@ -17,7 +17,6 @@
 @import url('components/tag.css');
 @import url('components/form.css');
 @import url('components/message.css');
+@import url('components/layout.css');
 
 @import url('routes/dashboard.css');
-@import url('routes/posts.css');
-@import url('routes/comments.css');

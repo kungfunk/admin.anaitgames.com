@@ -12,6 +12,67 @@ class UsersRepository extends Repository
         parent::__construct();
     }
 
+    public function setOrderAndPagination(
+        string $orderField = User::DEFAULT_ORDER_FIELD,
+        string $orderDirection = User::DEFAULT_ORDER_DIRECTION,
+        int $limit = User::DEFAULT_LIMIT,
+        int $offset = 0
+    ) {
+        $this->query
+            ->orderBy($orderField, $orderDirection)
+            ->offset($offset)
+            ->limit($limit);
+
+        return $this;
+    }
+
+    public function setFilters(
+        string $search = null,
+        string $role = null,
+        int $patreon_level = null
+    ) {
+        if (!is_null($search)) {
+            $this->setSearch($search);
+        }
+
+        if (!is_null($role)) {
+            $this->setRole($role);
+        }
+
+        if (!is_null($patreon_level)) {
+            $this->setPatreonLevel($patreon_level);
+        }
+
+        return $this;
+    }
+
+    public function setSearch($search)
+    {
+        $this->query->where(
+            'name',
+            'like',
+            '%' . $search . '%'
+        )->orWhere(
+            'username',
+            'like',
+            '%' . $search . '%'
+        );
+
+        return $this;
+    }
+
+    public function setRole($role)
+    {
+        $this->query->where('role', $role);
+        return $this;
+    }
+
+    public function setPatreonLevel($patreonLevel)
+    {
+        $this->query->where('patreon_level', $patreonLevel);
+        return $this;
+    }
+
     public function getUserById(int $id)
     {
         return $this->model->find($id);

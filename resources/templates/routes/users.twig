@@ -1,0 +1,140 @@
+{% extends '/shared/layout.twig' %}
+
+{% block title %}Usuarios{% endblock %}
+
+{% block content %}
+    <div class="main__container">
+        <section class="statistics">
+            <div class="statistics-box">
+                <h3 class="statistics-box__big-number">0
+                    <sup class="statistics-box__small-number statistics-box__small-number--color-positive">(0)</sup>
+                </h3>
+                <span class="statistics-box__sub-text">Publicados hoy</span>
+            </div>
+            <div class="statistics-box">
+                <h3 class="statistics-box__big-number">0
+                    <sup class="statistics-box__small-number statistics-box__small-number--color-positive">(0)</sup>
+                </h3>
+                <span class="statistics-box__sub-text">Publicados esta semana</span>
+            </div>
+            <div class="statistics-box">
+                <h3 class="statistics-box__big-number">0
+                    <sup class="statistics-box__small-number statistics-box__small-number--color-negative">(0)</sup>
+                </h3>
+                <span class="statistics-box__sub-text">Publicados este mes</span>
+            </div>
+        </section>
+        <div class="layout">
+            <div class="filters-pannel">
+                <div class="filters">
+                    <h4 class="filters__title">
+                        Filtrar por rol
+                        <svg class="c-filters__title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </h4>
+                    <ul class="filters__list">
+                        {% for role in roleFilters %}
+                            {% set isSelected = queryStringParams.role == role.slug %}
+                            {% set parameter = isSelected ? null : role.slug %}
+                            <li class="filter {% if isSelected %}filter--selected{% endif %}">
+                                <a class="filter__name" href="{{ path_for('users', {}, queryStringParams|merge({'role' : parameter})) }}">{{ role.name }}</a>
+                                <span class="filter__number">{{ role.count }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <hr class="filters-pannel__separator">
+                <div class="filters">
+                    <h4 class="filters__title">
+                        Filtrar por patreon
+                        <svg class="c-filters__title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="7"></circle>
+                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                        </svg>
+                    </h4>
+                    <ul class="filters__list">
+                        {% for patreon in patreonFilters %}
+                            {% set isSelected = queryStringParams.patreon_level == patreon.slug %}
+                            {% set parameter = isSelected ? null : patreon.slug %}
+                            <li class="filter {% if isSelected %}filter--selected{% endif %}">
+                                <a class="filter__name" href="{{ path_for('users', {}, queryStringParams|merge({'patreon_level' : parameter})) }}">{{ patreon.name }}</a>
+                                <span class="filter__number">{{ patreon.count }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="layout__results">
+                <div class="box">
+                    <div class="box__header">
+                        <h3 class="box__title">Mostrando {{ users|length }} de {{ pagination.getTotalItems() }} resultados</h3>
+                        <div class="box__action">
+                            <a href="" class="button">
+                                <svg class="button__icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                Busqueda avanzada
+                            </a>
+                        </div>
+                    </div>
+                    <div class="box__body">
+                        <table class="datatable">
+                            <thead class="datatable__header">
+                            <tr class="datatable__row">
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">
+                                        Nombre
+                                        <svg class="datatable__sort-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Usuario</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Email</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Rol</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Patreon</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Alta</a>
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users %}
+                                    <tr class="datatable__row">
+                                        <td class="datatable__cell">
+                                            <a class="datatable__link" href="{{ path_for('user', { 'id': user.id }) }}">{{ user.name }}</a>
+                                            {% if user.isBanned() %}<span class="label label--negative">Baneado</span>{% endif %}
+                                        </td>
+                                        <td class="datatable__cell">{{ user.username }}</td>
+                                        <td class="datatable__cell">{{ user.email }}</td>
+                                        <td class="datatable__cell">{{ user.getRoleName() }}</td>
+                                        <td class="datatable__cell">{{ user.getPatreonLevelName() }}</td>
+                                        <td class="datatable__cell">{{ user.created_at }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="box__footer">
+                        {{ include('components/pagination.twig', { 'pagination': pagination, 'url': 'users', 'queryStringParams': queryStringParams }, with_context = false) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

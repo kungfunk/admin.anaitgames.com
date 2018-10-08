@@ -1,0 +1,8 @@
+.layout {
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+.layout__results {
+    padding: 30px;
+}
