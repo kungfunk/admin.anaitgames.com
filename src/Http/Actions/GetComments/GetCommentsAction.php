@@ -11,7 +11,7 @@ use Http\Actions\GetComments\GetCommentsResponder as Responder;
 
 class GetCommentsAction extends Action
 {
-    public const POSTS_PER_PAGE = 20;
+    public const ITEMS_PER_PAGE = 20;
 
     private $responder;
     private $input;
@@ -31,8 +31,8 @@ class GetCommentsAction extends Action
         $orderAndPaginationParams = [
             $this->input->order_field,
             $this->input->order_direction,
-            self::POSTS_PER_PAGE,
-            $this->input->page
+            self::ITEMS_PER_PAGE,
+            self::ITEMS_PER_PAGE * ($this->input->page - 1)
         ];
 
         $this->output['comments'] = $this->commentsRepository
@@ -43,7 +43,7 @@ class GetCommentsAction extends Action
 
         $this->output['pagination'] = new Pagination(
             $this->commentsRepository->setFilters(...$filterParams)->count(),
-            self::POSTS_PER_PAGE,
+            self::ITEMS_PER_PAGE,
             $this->input->page
         );
 

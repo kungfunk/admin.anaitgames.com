@@ -1,8 +1,0 @@
-.posts {
-    display: grid;
-    grid-template-columns: auto 1fr;
-}
-
-.posts__results {
-    padding: 30px;
-}
