@@ -45,9 +45,7 @@ class GetPostsAction extends Action
             ->addRelationShips()
             ->get();
 
-        $writerRoles = [User::ROLE_EDITOR, User::ROLE_ADMIN, User::ROLE_SUPERADMIN];
-
-        $this->output['writers'] = $this->usersRepository->getUserByRoles($writerRoles);
+        $this->output['writers'] = $this->usersRepository->getWriters();
         $this->output['categories'] = $this->categoriesRepository->addRelationShips()->get();
         $this->output['statusFilters'] = [
             [

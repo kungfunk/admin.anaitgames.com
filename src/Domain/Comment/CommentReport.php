@@ -12,6 +12,10 @@ class CommentReport extends Model
         'checked'
     ];
 
+    protected $casts = [
+        'checked' => 'boolean',
+    ];
+
     public function comment()
     {
         return $this->belongsTo('Domain\Comment\Comment');

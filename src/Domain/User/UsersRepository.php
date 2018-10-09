@@ -83,14 +83,11 @@ class UsersRepository extends Repository
         return $this->model->where('username', $username)->first();
     }
 
-    public function getUserByRoles($roles)
+    public function getWriters()
     {
-        if (!is_array($roles)) {
-            $roles = [$roles];
-        }
         return $this->model
+            ->writers()
             ->withCount('posts')
-            ->whereIn('role', $roles)
             ->get();
     }
 

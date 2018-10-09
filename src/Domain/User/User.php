@@ -30,6 +30,12 @@ class User extends Model
     const PATREON_SILVER_LEVEL_NAME = 'Plata';
     const PATREON_GOLD_LEVEL_NAME = 'Oro';
 
+    const WRITES_ROLES = [
+        self::ROLE_EDITOR,
+        self::ROLE_ADMIN,
+        self::ROLE_SUPERADMIN
+    ];
+
     const ORDER_FIELD_WHITELIST = [
         'created_at',
         'role',
@@ -71,14 +77,14 @@ class User extends Model
 
     public function isBanned(): bool
     {
-        return (bool) $this->hasMany('Domain\User\Ban')
+        return $this->hasMany('Domain\User\Ban')
             ->where('bans.expires', '<', Carbon::now())
-            ->count();
+            ->exists();
     }
 
     public function getActiveBan()
     {
-        return (bool) $this->hasMany('Domain\User\Ban')
+        return $this->hasMany('Domain\User\Ban')
             ->where('bans.expires', '<', Carbon::now())
             ->first();
     }
@@ -135,9 +141,19 @@ class User extends Model
         return password_verify($password, $this->password);
     }
 
-    public function setPassword($string): void
+    public function setPasswordAttribute($value)
     {
-        $hash = password_hash($string, PASSWORD_DEFAULT);
-        $this->password = $hash;
+        $this->attributes['password'] = password_hash($value, PASSWORD_DEFAULT);
+    }
+
+    /**
+     * Scope a query to only include active users.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWriters($query)
+    {
+        return $query->whereIn('role', self::WRITES_ROLES);
     }
 }
