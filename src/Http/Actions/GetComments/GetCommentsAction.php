@@ -2,7 +2,7 @@
 namespace Http\Actions\GetComments;
 
 use Http\Actions\Action;
-use Http\Helpers\Pagination;
+use Domain\Comment\Comment;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -21,31 +21,20 @@ class GetCommentsAction extends Action
     {
         $data = $request->getQueryParams();
         $this->input = new Input($data);
+        $this->input->validate();
 
-        $filterParams  = [
-            $this->input->search,
-            $this->input->user_id,
-            $this->input->post_id
-        ];
-
-        $orderAndPaginationParams = [
-            $this->input->order_field,
-            $this->input->order_direction,
-            self::ITEMS_PER_PAGE,
-            self::ITEMS_PER_PAGE * ($this->input->page - 1)
-        ];
-
-        $this->output['comments'] = $this->commentsRepository
-            ->setFilters(...$filterParams)
-            ->setOrderAndPagination(...$orderAndPaginationParams)
-            ->addRelationShips()
-            ->get();
-
-        $this->output['pagination'] = new Pagination(
-            $this->commentsRepository->setFilters(...$filterParams)->count(),
-            self::ITEMS_PER_PAGE,
-            $this->input->page
-        );
+        $this->output['comments'] = Comment::filters([
+            'user_id' => $this->input->user_id,
+            'post_id' => $this->input->post_id
+        ])
+            ->search($this->input->search)
+            ->withCount('reports')
+            ->with('user')
+            ->with('post')
+            ->orderBy(...$this->input->getOrderFields())
+            ->paginate(self::ITEMS_PER_PAGE)
+            ->withPath($this->router->pathFor('comments'))
+            ->appends($this->input->getFilledData());
 
         $this->responder = new Responder($this->view);
         $this->responder->setResponse($response);

@@ -16,13 +16,27 @@ abstract class Input
         'asc'
     ];
 
-    const DEFAULT_LIMIT = 100;
     const DEFAULT_ORDER_DIRECTION = 'desc';
 
     public $data = [];
 
+    public function __construct($data)
+    {
+        $this->data = array_replace($this->defaults, array_intersect_key($data, $this->defaults));
+    }
+
     public function __get($name)
     {
         return $this->data[$name];
+    }
+
+    public function getFilledData()
+    {
+        return array_filter($this->data, 'strlen');
+    }
+
+    public function getOrderFields()
+    {
+        return [$this->order_field, $this->order_direction];
     }
 }

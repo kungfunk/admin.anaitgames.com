@@ -2,6 +2,7 @@
 namespace Domain\Comment;
 
 use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Builder as Query;
 
 class Comment extends Model
 {
@@ -46,5 +47,25 @@ class Comment extends Model
     public function isEdited(): bool
     {
         return $this->updated_at->gt($this->created_at);
+    }
+
+    public function scopeFilters(Query $query, array $filters)
+    {
+        foreach ($filters as $name => $value) {
+            if (!empty($value)) {
+                $query->where($name, $value);
+            }
+        }
+
+        return $query;
+    }
+
+    public function scopeSearch(Query $query, $search)
+    {
+        if (!empty($search)) {
+            $query->where('body', 'like', "%{$search}%");
+        }
+
+        return $query;
     }
 }

@@ -31,6 +31,12 @@ $app->group('', function () use ($app) {
     ->add(new BanMiddleware($container))
     ->add(new AuthMiddleware($container));
 
+$request = $container->get('request');
+
+\Illuminate\Pagination\Paginator::currentPageResolver(function () use ($request) {
+    return $request->getParam('page');
+});
+
 // $app->get('/posts', \Http\Actions\GetPosts\GetPostsAction::class);
 // $app->get('/posts/{id}', \Http\Actions\GetPostById\GetPostByIdAction::class);
 // $app->get('/posts/{id}/comments', \Http\Actions\GetCommentsFromPost\GetCommentsFromPostAction::class);

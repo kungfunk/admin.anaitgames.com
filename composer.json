@@ -16,9 +16,9 @@
         "bryanjhv/slim-session": "~3.0",
         "illuminate/database": "^5.6",
         "illuminate/events": "^5.7",
+        "illuminate/pagination": "^5.7",
         "vlucas/phpdotenv": "^2.5",
         "monolog/monolog": "^1.23",
-        "jasongrimes/paginator": "~1.0",
         "respect/validation": "^1.1"
     },
     "autoload": {

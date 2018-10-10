@@ -16,14 +16,9 @@ class GetCommentsInput extends Input
         self::PARAM_ORDER_DIRECTION => self::DEFAULT_ORDER_DIRECTION,
     ];
 
-    public function __construct($data)
-    {
-        $this->data = array_merge($this->defaults, $data);
-    }
-
     public function validate()
     {
-        $this->isValidOrder($this->orderDirection, $this->orderField);
+        $this->isValidOrder($this->order_direction, $this->order_field);
     }
 
     private function isValidOrder($orderDirection, $orderField)
