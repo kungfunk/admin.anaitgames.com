@@ -9,6 +9,8 @@ use Http\Actions\GetPosts\GetPostsInput as Input;
 use Http\Actions\GetPosts\GetPostsResponder as Responder;
 
 use Domain\Post\Post;
+use Domain\Post\Category;
+use Domain\User\User;
 
 class GetPostsAction extends Action
 {
@@ -39,8 +41,8 @@ class GetPostsAction extends Action
             ->withPath($this->router->pathFor('posts'))
             ->appends($this->input->getFilledData());
 
-        $this->output['writers'] = $this->usersRepository->getWriters();
-        $this->output['categories'] = $this->categoriesRepository->addRelationShips()->get();
+        $this->output['writers'] = User::writers()->withCount('posts')->get();
+        $this->output['categories'] = Category::withCount('posts')->get();
         $this->output['statusFilters'] = [
             $this->getStatusFilter(Post::STATUS_PUBLISHED_NAME, Post::STATUS_PUBLISHED),
             $this->getStatusFilter(Post::STATUS_DRAFT_NAME, Post::STATUS_DRAFT),
