@@ -2,14 +2,12 @@
 namespace Http\Actions\GetPosts;
 
 use Http\Actions\Action;
-use Http\Helpers\Pagination;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetPosts\GetPostsInput as Input;
 use Http\Actions\GetPosts\GetPostsResponder as Responder;
 
-use Domain\User\User;
 use Domain\Post\Post;
 
 class GetPostsAction extends Action
@@ -24,26 +22,22 @@ class GetPostsAction extends Action
     {
         $data = $request->getQueryParams();
         $this->input = new Input($data);
+        $this->input->validate();
 
-        $filterParams  = [
-            $this->input->search,
-            $this->input->category_id,
-            $this->input->user_id,
-            $this->input->status
-        ];
-
-        $orderAndPaginationParams = [
-            $this->input->order_field,
-            $this->input->order_direction,
-            self::ITEMS_PER_PAGE,
-            self::ITEMS_PER_PAGE * ($this->input->page - 1)
-        ];
-
-        $this->output['posts'] = $this->postsRepository
-            ->setFilters(...$filterParams)
-            ->setOrderAndPagination(...$orderAndPaginationParams)
-            ->addRelationShips()
-            ->get();
+        $this->output['posts'] = Post::filters([
+            'category_id' => $this->input->category_id,
+            'user_id' => $this->input->user_id,
+            'status' => $this->input->status
+        ])
+            ->search($this->input->search)
+            ->withCount('comments')
+            ->with('category')
+            ->with('user')
+            ->with('tags')
+            ->orderBy(...$this->input->getOrderFields())
+            ->paginate(self::ITEMS_PER_PAGE)
+            ->withPath($this->router->pathFor('posts'))
+            ->appends($this->input->getFilledData());
 
         $this->output['writers'] = $this->usersRepository->getWriters();
         $this->output['categories'] = $this->categoriesRepository->addRelationShips()->get();
@@ -51,25 +45,31 @@ class GetPostsAction extends Action
             [
                 'name' => Post::STATUS_PUBLISHED_NAME,
                 'slug' => Post::STATUS_PUBLISHED,
-                'count' => $this->postsRepository->setStatus(Post::STATUS_PUBLISHED)->count()
+                'count' => Post::filters([
+                    'category_id' => $this->input->category_id,
+                    'user_id' => $this->input->user_id,
+                    'status' => Post::STATUS_PUBLISHED
+                ])->count()
             ],
             [
                 'name' => Post::STATUS_DRAFT_NAME,
                 'slug' => Post::STATUS_DRAFT,
-                'count' => $this->postsRepository->setStatus(Post::STATUS_DRAFT)->count()
+                'count' => Post::filters([
+                    'category_id' => $this->input->category_id,
+                    'user_id' => $this->input->user_id,
+                    'status' => Post::STATUS_DRAFT
+                ])->count()
             ],
             [
                 'name' => Post::STATUS_TRASH_NAME,
                 'slug' => Post::STATUS_TRASH,
-                'count' => $this->postsRepository->setStatus(Post::STATUS_TRASH)->count()
+                'count' => Post::filters([
+                    'category_id' => $this->input->category_id,
+                    'user_id' => $this->input->user_id,
+                    'status' => Post::STATUS_TRASH
+                ])->count()
             ]
         ];
-
-        $this->output['pagination'] = new Pagination(
-            $this->postsRepository->setFilters(...$filterParams)->count(),
-            self::ITEMS_PER_PAGE,
-            $this->input->page
-        );
 
         $this->responder = new Responder($this->view);
         $this->responder->setResponse($response);

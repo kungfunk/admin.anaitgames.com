@@ -2,6 +2,7 @@
 namespace Domain\Post;
 
 use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Builder as Query;
 
 class Post extends Model
 {
@@ -83,6 +84,27 @@ class Post extends Model
         }
 
         return $statusName;
+    }
+
+    public function scopeFilters(Query $query, array $filters)
+    {
+        foreach ($filters as $name => $value) {
+            if (!empty($value)) {
+                $query->where($name, $value);
+            }
+        }
+
+        return $query;
+    }
+
+    public function scopeSearch(Query $query, $search)
+    {
+        if (!empty($search)) {
+            $query->where('title', 'like', "%{$search}%")
+                ->orWhere('body', 'like', "%{$search}%");
+        }
+
+        return $query;
     }
 
 //    protected $dispatchesEvents = [
