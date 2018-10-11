@@ -7,6 +7,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\PostLogin\PostLoginInput as Input;
 use Infrastructure\Exceptions\AuthenticationException;
 
+use Domain\User\User;
+
 class PostLoginAction extends Action
 {
     public function __invoke(Request $request, Response $response)
@@ -16,7 +18,7 @@ class PostLoginAction extends Action
 
         try {
             $input->validate();
-            $user = $this->usersRepository->getUserByUsername($input->username);
+            $user = User::whereUsername($input->username)->first();
             if (!$user) {
                 throw new AuthenticationException(AuthenticationException::INVALID_CREDENTIALS);
             }
