@@ -42,38 +42,27 @@ class GetPostsAction extends Action
         $this->output['writers'] = $this->usersRepository->getWriters();
         $this->output['categories'] = $this->categoriesRepository->addRelationShips()->get();
         $this->output['statusFilters'] = [
-            [
-                'name' => Post::STATUS_PUBLISHED_NAME,
-                'slug' => Post::STATUS_PUBLISHED,
-                'count' => Post::filters([
-                    'category_id' => $this->input->category_id,
-                    'user_id' => $this->input->user_id,
-                    'status' => Post::STATUS_PUBLISHED
-                ])->count()
-            ],
-            [
-                'name' => Post::STATUS_DRAFT_NAME,
-                'slug' => Post::STATUS_DRAFT,
-                'count' => Post::filters([
-                    'category_id' => $this->input->category_id,
-                    'user_id' => $this->input->user_id,
-                    'status' => Post::STATUS_DRAFT
-                ])->count()
-            ],
-            [
-                'name' => Post::STATUS_TRASH_NAME,
-                'slug' => Post::STATUS_TRASH,
-                'count' => Post::filters([
-                    'category_id' => $this->input->category_id,
-                    'user_id' => $this->input->user_id,
-                    'status' => Post::STATUS_TRASH
-                ])->count()
-            ]
+            $this->getStatusFilter(Post::STATUS_PUBLISHED_NAME, Post::STATUS_PUBLISHED),
+            $this->getStatusFilter(Post::STATUS_DRAFT_NAME, Post::STATUS_DRAFT),
+            $this->getStatusFilter(Post::STATUS_TRASH_NAME, Post::STATUS_TRASH)
         ];
 
         $this->responder = new Responder($this->view);
         $this->responder->setResponse($response);
         $this->responder->setOutput($this->output);
         return $this->responder->toHtml();
+    }
+
+    private function getStatusFilter($filterName, $filterSlug)
+    {
+        return [
+            'name' => $filterName,
+            'slug' => $filterSlug,
+            'count' => Post::filters([
+                'category_id' => $this->input->category_id,
+                'user_id' => $this->input->user_id,
+                'status' => $filterSlug
+            ])->count()
+        ];
     }
 }
