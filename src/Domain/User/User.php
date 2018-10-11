@@ -3,6 +3,7 @@ namespace Domain\User;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Builder as Query;
 
 class User extends Model
 {
@@ -146,13 +147,28 @@ class User extends Model
         $this->attributes['password'] = password_hash($value, PASSWORD_DEFAULT);
     }
 
-    /**
-     * Scope a query to only include active users.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWriters($query)
+    public function scopeFilters(Query $query, array $filters)
+    {
+        foreach ($filters as $name => $value) {
+            if (!empty($value)) {
+                $query->where($name, $value);
+            }
+        }
+
+        return $query;
+    }
+
+    public function scopeSearch(Query $query, $search)
+    {
+        if (!empty($search)) {
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('username', 'like', "%{$search}%");
+        }
+
+        return $query;
+    }
+
+    public function scopeWriters(Query $query)
     {
         return $query->whereIn('role', self::WRITES_ROLES);
     }

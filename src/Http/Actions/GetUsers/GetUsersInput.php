@@ -30,16 +30,11 @@ class GetUsersInput extends Input
         self::PARAM_ORDER_DIRECTION => self::DEFAULT_ORDER_DIRECTION,
     ];
 
-    public function __construct($data)
-    {
-        $this->data = array_merge($this->defaults, $data);
-    }
-
     public function validate()
     {
         $this->isValidRole($this->role);
         $this->isValidPatreonLevel($this->patreon_level);
-        $this->isValidOrder($this->orderDirection, $this->orderField);
+        $this->isValidOrder($this->order_direction, $this->order_field);
     }
 
     private function isValidRole($role)
@@ -51,7 +46,7 @@ class GetUsersInput extends Input
 
     private function isValidPatreonLevel($patreonLevel)
     {
-        if ($role && !in_array($patreonLevel, $this::PATREON_LEVEL_WHITELIST)) {
+        if ($patreonLevel && !in_array($patreonLevel, $this::PATREON_LEVEL_WHITELIST)) {
             throw new BadInputException(BadInputException::BAD_QUERY_VALUE);
         }
     }

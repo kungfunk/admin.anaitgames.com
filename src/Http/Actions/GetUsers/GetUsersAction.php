@@ -2,7 +2,6 @@
 namespace Http\Actions\GetUsers;
 
 use Http\Actions\Action;
-use Http\Helpers\Pagination;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -23,80 +22,59 @@ class GetUsersAction extends Action
     {
         $data = $request->getQueryParams();
         $this->input = new Input($data);
+        $this->input->validate();
 
-        $filterParams  = [
-            $this->input->search,
-            $this->input->role,
-            $this->input->patreon_level
-        ];
-
-        $orderAndPaginationParams = [
-            $this->input->order_field,
-            $this->input->order_direction,
-            self::ITEMS_PER_PAGE,
-            self::ITEMS_PER_PAGE * ($this->input->page - 1)
-        ];
-
-        $this->output['users'] = $this->usersRepository
-            ->setFilters(...$filterParams)
-            ->setOrderAndPagination(...$orderAndPaginationParams)
-            ->get();
+        $this->output['users'] = User::filters([
+            'role' => $this->input->role,
+            'patreon_level' => $this->input->patreon_level
+        ])
+            ->search($this->input->search)
+            ->orderBy(...$this->input->getOrderFields())
+            ->paginate(self::ITEMS_PER_PAGE)
+            ->withPath($this->router->pathFor('users'))
+            ->appends($this->input->getFilledData());
 
         $this->output['roleFilters'] = [
-            [
-                'name' => User::ROLE_USER_NAME,
-                'slug' => User::ROLE_USER,
-                'count' => $this->usersRepository->setRole(User::ROLE_USER)->count()
-            ],
-            [
-                'name' => User::ROLE_MODERATOR_NAME,
-                'slug' => User::ROLE_MODERATOR,
-                'count' => $this->usersRepository->setRole(User::ROLE_MODERATOR)->count()
-            ],
-            [
-                'name' => User::ROLE_EDITOR_NAME,
-                'slug' => User::ROLE_EDITOR,
-                'count' => $this->usersRepository->setRole(User::ROLE_EDITOR)->count()
-            ],
-            [
-                'name' => User::ROLE_ADMIN_NAME,
-                'slug' => User::ROLE_ADMIN,
-                'count' => $this->usersRepository->setRole(User::ROLE_ADMIN)->count()
-            ],
-            [
-                'name' => User::ROLE_SUPERADMIN_NAME,
-                'slug' => User::ROLE_SUPERADMIN,
-                'count' => $this->usersRepository->setRole(User::ROLE_SUPERADMIN)->count()
-            ]
+            $this->getRoleFilter(User::ROLE_USER_NAME, User::ROLE_USER),
+            $this->getRoleFilter(User::ROLE_MODERATOR_NAME, User::ROLE_MODERATOR),
+            $this->getRoleFilter(User::ROLE_EDITOR_NAME, User::ROLE_EDITOR),
+            $this->getRoleFilter(User::ROLE_ADMIN_NAME, User::ROLE_ADMIN),
+            $this->getRoleFilter(User::ROLE_SUPERADMIN_NAME, User::ROLE_SUPERADMIN)
         ];
 
         $this->output['patreonFilters'] = [
-            [
-                'name' => User::PATREON_BRONZE_LEVEL_NAME,
-                'slug' => User::PATREON_BRONZE_LEVEL,
-                'count' => $this->usersRepository->setPatreonLevel(User::PATREON_BRONZE_LEVEL)->count()
-            ],
-            [
-                'name' => User::PATREON_SILVER_LEVEL_NAME,
-                'slug' => User::PATREON_SILVER_LEVEL,
-                'count' => $this->usersRepository->setPatreonLevel(User::PATREON_SILVER_LEVEL)->count()
-            ],
-            [
-                'name' => User::PATREON_GOLD_LEVEL_NAME,
-                'slug' => User::PATREON_GOLD_LEVEL,
-                'count' => $this->usersRepository->setPatreonLevel(User::PATREON_GOLD_LEVEL)->count()
-            ]
+            $this->getPatreonLevelFilter(User::PATREON_BRONZE_LEVEL_NAME, User::PATREON_BRONZE_LEVEL),
+            $this->getPatreonLevelFilter(User::PATREON_SILVER_LEVEL_NAME, User::PATREON_SILVER_LEVEL),
+            $this->getPatreonLevelFilter(User::PATREON_GOLD_LEVEL_NAME, User::PATREON_GOLD_LEVEL),
         ];
-
-        $this->output['pagination'] = new Pagination(
-            $this->usersRepository->setFilters(...$filterParams)->count(),
-            self::ITEMS_PER_PAGE,
-            $this->input->page
-        );
 
         $this->responder = new Responder($this->view);
         $this->responder->setResponse($response);
         $this->responder->setOutput($this->output);
         return $this->responder->toHtml();
+    }
+
+    private function getRoleFilter($filterName, $filterSlug)
+    {
+        return [
+            'name' => $filterName,
+            'slug' => $filterSlug,
+            'count' => User::filters([
+                'role' => $filterSlug,
+                'patreon_level' => $this->input->patreon_level
+            ])->count()
+        ];
+    }
+
+    private function getPatreonLevelFilter($filterName, $filterSlug)
+    {
+        return [
+            'name' => $filterName,
+            'slug' => $filterSlug,
+            'count' => User::filters([
+                'role' => $this->input->role,
+                'patreon_level' => $filterSlug
+            ])->count()
+        ];
     }
 }
