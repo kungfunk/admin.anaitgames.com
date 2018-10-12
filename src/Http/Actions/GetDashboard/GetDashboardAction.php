@@ -4,8 +4,8 @@ namespace Http\Actions\GetDashboard;
 use Carbon\Carbon;
 
 use Http\Actions\Action;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Http\Actions\GetDashboard\GetDashboardResponder as Responder;
 
 use Models\Comment;

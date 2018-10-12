@@ -2,8 +2,8 @@
 namespace Infrastructure\Handlers;
 
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Slim\Handlers\AbstractError;
 use Throwable;
 
@@ -23,7 +23,10 @@ final class ErrorHandler extends AbstractError
 
     public function __invoke(Request $request, Response $response, Throwable $throwable)
     {
-        $this->container->errorLogger->critical($throwable->getMessage() . "\n" . $throwable->getTraceAsString());
+        $this->container
+            ->get('errorLogger')
+            ->critical($throwable->getMessage() . "\n" . $throwable->getTraceAsString());
+
         $message = self::DEFAULT_ERROR_TEXT;
 
         if ($throwable instanceof \PDOException) {
@@ -32,7 +35,7 @@ final class ErrorHandler extends AbstractError
 
         $response->withStatus(500);
 
-        return $this->container->twig->render(
+        return $this->container->get('twig')->render(
             $response,
             self::ERROR_TEMPLATE,
             [

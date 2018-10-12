@@ -20,7 +20,7 @@ $app->group('', function () use ($app) {
 })->add(new GuestMiddleware($container));
 
 $app->group('', function () use ($app) {
-    $app->get('/', function ($request, $response) use ($app) {
+    $app->get('/', function ($request, Slim\Http\Response $response) use ($app) {
         return $response->withRedirect($this->router->pathFor('dashboard'));
     });
     $app->get('/dashboard', GetDashboard::class)->setName('dashboard');

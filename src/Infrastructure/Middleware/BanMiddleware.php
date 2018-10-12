@@ -1,8 +1,8 @@
 <?php
 namespace Infrastructure\Middleware;
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class BanMiddleware extends Middleware
 {
@@ -10,11 +10,11 @@ class BanMiddleware extends Middleware
 
     public function __invoke(Request $request, Response $response, $next)
     {
-        $user = $this->container->loggedUser->get();
+        $user = $this->container->get('loggedUser')->get();
         if ($user->isBanned()) {
-            $this->container->session->clear();
+            $this->container->get('session')->clear();
             $ban = $user->getActiveBan();
-            return $this->container->twig->render(
+            return $this->container->get('twig')->render(
                 $response,
                 static::TEMPLATE,
                 [

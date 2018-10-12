@@ -3,8 +3,8 @@ namespace Http\Actions\GetUsers;
 
 use Http\Actions\Action;
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Http\Actions\GetUsers\GetUsersInput as Input;
 use Http\Actions\GetUsers\GetUsersResponder as Responder;
 

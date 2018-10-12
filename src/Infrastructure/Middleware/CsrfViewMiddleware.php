@@ -1,8 +1,8 @@
 <?php
 namespace Infrastructure\Middleware;
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class CsrfViewMiddleware extends Middleware
 {
@@ -15,12 +15,12 @@ class CsrfViewMiddleware extends Middleware
 
     public function __invoke(Request $request, Response $response, $next)
     {
-        $this->tokenName = $this->container->csrf->getTokenName();
-        $this->tokenNameKey = $this->container->csrf->getTokenNameKey();
-        $this->tokenValue = $this->container->csrf->getTokenValue();
-        $this->tokenValueKey = $this->container->csrf->getTokenValueKey();
+        $this->tokenName = $this->container->get('csrf')->getTokenName();
+        $this->tokenNameKey = $this->container->get('csrf')->getTokenNameKey();
+        $this->tokenValue = $this->container->get('csrf')->getTokenValue();
+        $this->tokenValueKey = $this->container->get('csrf')->getTokenValueKey();
 
-        $this->container->view->getEnvironment()->addGlobal(self::INDEX_NAME, $this->generateInputFields());
+        $this->container->get('view')->getEnvironment()->addGlobal(self::INDEX_NAME, $this->generateInputFields());
 
         return $next($request, $response);
     }

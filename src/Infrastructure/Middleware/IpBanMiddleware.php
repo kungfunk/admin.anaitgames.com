@@ -1,8 +1,8 @@
 <?php
 namespace Infrastructure\Middleware;
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 use Models\IpBan;
 
@@ -16,7 +16,7 @@ class IpBanMiddleware extends Middleware
         $ban = IpBan::whereIp($ip)->active()->first();
 
         if ($ban) {
-            return $this->container->twig->render(
+            return $this->container->get('twig')->render(
                 $response,
                 static::TEMPLATE,
                 [

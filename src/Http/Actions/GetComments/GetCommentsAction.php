@@ -4,8 +4,8 @@ namespace Http\Actions\GetComments;
 use Http\Actions\Action;
 use Models\Comment;
 
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Request;
+use Slim\Http\Response;
 use Http\Actions\GetComments\GetCommentsInput as Input;
 use Http\Actions\GetComments\GetCommentsResponder as Responder;
 

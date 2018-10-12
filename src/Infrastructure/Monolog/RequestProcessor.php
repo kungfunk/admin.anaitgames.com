@@ -1,13 +1,13 @@
 <?php
 namespace Infrastructure\Monolog;
 
-use Psr\Http\Message\ServerRequestInterface;
+use Slim\Http\Request;
 
 class RequestProcessor
 {
     private $request;
 
-    public function __construct(ServerRequestInterface $request)
+    public function __construct(Request $request)
     {
         $this->request = $request;
     }
