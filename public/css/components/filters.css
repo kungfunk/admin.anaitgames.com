@@ -43,6 +43,10 @@
     text-decoration: none;
 }
 
+.filter__name--uppercase {
+    text-transform: uppercase;
+}
+
 .filter__number {
     float: right;
 }

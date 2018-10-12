@@ -1,9 +1,12 @@
 <?php
+use Slim\Http\Response;
+
 use Http\Actions\GetDashboard\GetDashboardAction as GetDashboard;
 use Http\Actions\GetPosts\GetPostsAction as GetPosts;
 use Http\Actions\GetLogin\GetLoginAction as GetLogin;
 use Http\Actions\GetComments\GetCommentsAction as GetComments;
 use Http\Actions\GetUsers\GetUsersAction as GetUsers;
+use Http\Actions\GetLogs\GetLogsAction as GetLogs;
 use Http\Actions\PostLogin\PostLoginAction as PostLogin;
 
 use Infrastructure\Middleware\AuthMiddleware;
@@ -20,16 +23,18 @@ $app->group('', function () use ($app) {
 })->add(new GuestMiddleware($container));
 
 $app->group('', function () use ($app) {
-    $app->get('/', function ($request, Slim\Http\Response $response) use ($app) {
+    $app->get('/', function ($request, Response $response) use ($app) {
         return $response->withRedirect($this->router->pathFor('dashboard'));
     });
     $app->get('/dashboard', GetDashboard::class)->setName('dashboard');
     $app->get('/posts', GetPosts::class)->setName('posts');
-    $app->get('/posts/{id}', '')->setName('post');
+    $app->get('/posts/{id}', null)->setName('post');
     $app->get('/comments', GetComments::class)->setName('comments');
     $app->get('/comments/{id}', null)->setName('comment');
     $app->get('/users', GetUsers::class)->setName('users');
     $app->get('/users/{id}', null)->setName('user');
+    $app->get('/logs', GetLogs::class)->setName('logs');
+    $app->get('/logs/{id}', null)->setName('log');
 })
     ->add(new BanMiddleware($container))
     ->add(new AuthMiddleware($container));
