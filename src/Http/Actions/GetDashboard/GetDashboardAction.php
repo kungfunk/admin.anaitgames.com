@@ -36,12 +36,12 @@ class GetDashboardAction extends Action
                 ->limit(self::LISTS_ITEMS)->get(),
             'lastPosts' => Post::orderBy(Post::DEFAULT_ORDER_FIELD, Post::DEFAULT_ORDER_DIRECTION)
                 ->limit(self::LISTS_ITEMS)->get(),
-            'lastPendingPosts' => Post::withStatus(Post::STATUS_PUBLISHED)
+            'lastPendingPosts' => Post::whereStatus(Post::STATUS_PUBLISHED)
                 ->where('publish_date', '>', Carbon::now())
                 ->orderBy(Post::DEFAULT_ORDER_FIELD, Post::DEFAULT_ORDER_DIRECTION)
                 ->limit(self::LISTS_ITEMS)
                 ->get(),
-            'lastDraftPosts' => Post::withStatus(Post::STATUS_DRAFT)
+            'lastDraftPosts' => Post::whereStatus(Post::STATUS_DRAFT)
                 ->orderBy(Post::DEFAULT_ORDER_FIELD, Post::DEFAULT_ORDER_DIRECTION)
                 ->limit(self::LISTS_ITEMS)
                 ->get(),
