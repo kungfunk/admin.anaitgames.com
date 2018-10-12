@@ -42,49 +42,49 @@
                 <div class="box__body">
                     <table class="datatable">
                         <thead class="datatable__header">
-                        <tr class="datatable__row">
-                            <td class="datatable__cell datatable__cell--medium">
-                                <a class="datatable__link" href="">Usuario</a>
-                            </td>
-                            <td class="datatable__cell datatable__cell--long">
-                                <a class="datatable__link" href="">Post</a>
-                            </td>
-                            <td class="datatable__cell">
-                                <a class="datatable__link" href="">Texto</a>
-                            </td>
-                            <td class="datatable__cell">
-                                <a class="datatable__link" href="">Reportes</a>
-                            </td>
-                            <td class="datatable__cell">
-                                <a class="datatable__link" href="">Editado</a>
-                            </td>
-                            <td class="datatable__cell">
-                                <a class="datatable__link" href="">Creado
-                                    <svg class="datatable__sort-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                         stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="6 9 12 15 18 9"></polyline>
-                                    </svg>
-                                </a>
-                            </td>
-                        </tr>
+                            <tr class="datatable__row">
+                                <td class="datatable__cell datatable__cell--medium">
+                                    <a class="datatable__link" href="">Usuario</a>
+                                </td>
+                                <td class="datatable__cell datatable__cell--long">
+                                    <a class="datatable__link" href="">Post</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Texto</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Reportes</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Editado</a>
+                                </td>
+                                <td class="datatable__cell">
+                                    <a class="datatable__link" href="">Creado
+                                        <svg class="datatable__sort-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                             stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr>
                         </thead>
                         <tbody>
-                        {% for comment in comments %}
-                            <tr class="datatable__row">
-                                <td class="datatable__cell">
-                                    <a class="datatable__link" href="{{ path_for('user', { 'id': comment.user.id }) }}">{{ comment.user.name }}</a>
-                                </td>
-                                <td class="datatable__cell">
-                                    <a class="datatable__link" href="{{ path_for('post', { 'id': comment.post.id }) }}">{{ comment.post.title }}</a>
-                                </td>
-                                <td class="datatable__cell">
-                                    <a class="datatable__link" href="{{ path_for('comment', { 'id': comment.id }) }}">{{ comment.body }}</a>
-                                </td>
-                                <td class="datatable__cell">{{ comment.reports_count }}</td>
-                                <td class="datatable__cell">{% if comment.isEdited() %}Si{% else %}No{% endif %}</td>
-                                <td class="datatable__cell">{{ comment.created_at }}</td>
-                            </tr>
-                        {% endfor %}
+                            {% for comment in comments %}
+                                <tr class="datatable__row">
+                                    <td class="datatable__cell">
+                                        <a class="datatable__link" href="{{ path_for('user', { 'id': comment.user.id }) }}">{{ comment.user.name }}</a>
+                                    </td>
+                                    <td class="datatable__cell">
+                                        <a class="datatable__link" href="{{ path_for('post', { 'id': comment.post.id }) }}">{{ comment.post.title }}</a>
+                                    </td>
+                                    <td class="datatable__cell">
+                                        <a class="datatable__link" href="{{ path_for('comment', { 'id': comment.id }) }}">{{ comment.body }}</a>
+                                    </td>
+                                    <td class="datatable__cell">{{ comment.reports_count }}</td>
+                                    <td class="datatable__cell">{% if comment.isEdited() %}Si{% else %}No{% endif %}</td>
+                                    <td class="datatable__cell">{{ comment.created_at }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
