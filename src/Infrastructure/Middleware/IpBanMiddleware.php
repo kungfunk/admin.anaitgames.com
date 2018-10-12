@@ -1,9 +1,10 @@
 <?php
 namespace Infrastructure\Middleware;
 
-use Domain\User\IpBanRepository;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+
+use Domain\User\IpBan;
 
 class IpBanMiddleware extends Middleware
 {
@@ -12,8 +13,7 @@ class IpBanMiddleware extends Middleware
     public function __invoke(Request $request, Response $response, $next)
     {
         $ip = $request->getServerParam('REMOTE_ADDR');
-        $ipBanRepository = new IpBanRepository;
-        $ban = $ipBanRepository->getActiveByIp($ip);
+        $ban = IpBan::whereIp($ip)->active()->first();
 
         if ($ban) {
             return $this->container->twig->render(
