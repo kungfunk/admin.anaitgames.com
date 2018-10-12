@@ -3,13 +3,14 @@ namespace Http\Actions\GetDashboard;
 
 use Carbon\Carbon;
 
-use Domain\Comment\Comment;
-use Domain\Post\Post;
-use Domain\User\User;
 use Http\Actions\Action;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetDashboard\GetDashboardResponder as Responder;
+
+use Domain\Comment\Comment;
+use Domain\Post\Post;
+use Domain\User\User;
 
 class GetDashboardAction extends Action
 {
@@ -25,30 +26,28 @@ class GetDashboardAction extends Action
         $tomorrow = new Carbon('tomorrow');
 
         $this->output = [
-            'postsTodayCount' => $this->postsRepository->setPublishDateBetween($today, $tomorrow)->count(),
-            'postsYesterdayCount' => $this->postsRepository->setPublishDateBetween($yesterday, $today)->count(),
-            'usersTodayCount' => $this->usersRepository->countUsersFromDate($today, $tomorrow),
-            'usersYesterdayCount' => $this->usersRepository->countUsersFromDate($yesterday, $today),
-            'commentsTodayCount' => $this->commentsRepository->countCommentsFromDate($today, $tomorrow),
-            'commentsYesterdayCount' => $this->commentsRepository->countCommentsFromDate($yesterday, $today),
-            'lastRegisteredUsers' => $this->usersRepository
-                ->getUsersPaginated(User::DEFAULT_ORDER_FIELD, User::DEFAULT_ORDER_FIELD, self::LISTS_ITEMS),
-            'lastPosts' => $this->postsRepository->setLast(10)->get(),
-            'lastPendingPosts' => $this->postsRepository
-                ->setStatus(Post::STATUS_PUBLISHED)
-                ->setPublishDateMoreThan(Carbon::now())
-                ->setLast(self::LISTS_ITEMS)
+            'postsTodayCount' => Post::whereBetween('publish_date', [$today, $tomorrow])->count(),
+            'postsYesterdayCount' => Post::whereBetween('publish_date', [$yesterday, $today])->count(),
+            'usersTodayCount' => User::whereBetween('created_at', [$today, $tomorrow])->count(),
+            'usersYesterdayCount' => User::whereBetween('created_at', [$yesterday, $today])->count(),
+            'commentsTodayCount' => Comment::whereBetween('created_at', [$today, $tomorrow])->count(),
+            'commentsYesterdayCount' => Comment::whereBetween('created_at', [$yesterday, $today])->count(),
+            'lastRegisteredUsers' => User::orderBy(User::DEFAULT_ORDER_FIELD, User::DEFAULT_ORDER_DIRECTION)
+                ->limit(self::LISTS_ITEMS)->get(),
+            'lastPosts' => Post::orderBy(Post::DEFAULT_ORDER_FIELD, Post::DEFAULT_ORDER_DIRECTION)
+                ->limit(self::LISTS_ITEMS)->get(),
+            'lastPendingPosts' => Post::withStatus(Post::STATUS_PUBLISHED)
+                ->where('publish_date', '>', Carbon::now())
+                ->orderBy(Post::DEFAULT_ORDER_FIELD, Post::DEFAULT_ORDER_DIRECTION)
+                ->limit(self::LISTS_ITEMS)
                 ->get(),
-            'lastDraftPosts' => $this->postsRepository
-                ->setStatus(Post::STATUS_DRAFT)
-                ->setLast(self::LISTS_ITEMS)
+            'lastDraftPosts' => Post::withStatus(Post::STATUS_DRAFT)
+                ->orderBy(Post::DEFAULT_ORDER_FIELD, Post::DEFAULT_ORDER_DIRECTION)
+                ->limit(self::LISTS_ITEMS)
                 ->get(),
-            'lastComments' => $this->commentsRepository
-                ->getCommentsPaginated(
-                    Comment::DEFAULT_ORDER_FIELD,
-                    Comment::DEFAULT_ORDER_DIRECTION,
-                    self::LISTS_ITEMS
-                ),
+            'lastComments' => Comment::orderBy(Comment::DEFAULT_ORDER_FIELD, Comment::DEFAULT_ORDER_DIRECTION)
+                ->limit(self::LISTS_ITEMS)
+                ->get(),
         ];
 
         $this->responder = new Responder($this->view);

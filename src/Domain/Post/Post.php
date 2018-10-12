@@ -86,6 +86,11 @@ class Post extends Model
         return $statusName;
     }
 
+    public function scopeWithStatus(Query $query, $status)
+    {
+        return $query->where('status', $status);
+    }
+
     public function scopeFilters(Query $query, array $filters)
     {
         foreach ($filters as $name => $value) {
