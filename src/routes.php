@@ -20,7 +20,10 @@ $app->group('', function () use ($app) {
 })->add(new GuestMiddleware($container));
 
 $app->group('', function () use ($app) {
-    $app->get('/', GetDashboard::class)->setName('dashboard');
+    $app->get('/', function ($request, $response) use ($app) {
+        return $response->withRedirect($this->router->pathFor('dashboard'));
+    });
+    $app->get('/dashboard', GetDashboard::class)->setName('dashboard');
     $app->get('/posts', GetPosts::class)->setName('posts');
     $app->get('/posts/{id}', '')->setName('post');
     $app->get('/comments', GetComments::class)->setName('comments');
