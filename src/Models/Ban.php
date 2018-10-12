@@ -1,5 +1,5 @@
 <?php
-namespace Domain\User;
+namespace Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
 
@@ -16,11 +16,11 @@ class Ban extends Model
 
     public function user()
     {
-        return $this->belongsTo('Domain\Post\User');
+        return $this->belongsTo('Models\User');
     }
 
     public function bannedBy()
     {
-        return $this->belongsTo('Domain\Post\User', 'banned_by_id');
+        return $this->belongsTo('Models\User', 'banned_by_id');
     }
 }

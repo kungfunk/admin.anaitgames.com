@@ -1,5 +1,5 @@
 <?php
-namespace Domain\Post;
+namespace Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\Builder as Query;
@@ -48,22 +48,22 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->hasMany('Domain\Comment\Comment');
+        return $this->hasMany('Models\Comment');
     }
 
     public function user()
     {
-        return $this->belongsTo('Domain\User\User');
+        return $this->belongsTo('Models\User');
     }
 
     public function category()
     {
-        return $this->belongsTo('Domain\Post\Category');
+        return $this->belongsTo('Models\Category');
     }
 
     public function tags()
     {
-        return $this->belongsToMany('Domain\Post\Tag', Tag::JUNCTION_TABLE_NAME);
+        return $this->belongsToMany('Models\Tag', Tag::JUNCTION_TABLE_NAME);
     }
 
     public function getStatusName()

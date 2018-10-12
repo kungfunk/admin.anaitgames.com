@@ -4,7 +4,7 @@ namespace Infrastructure\Middleware;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-use Domain\User\IpBan;
+use Models\IpBan;
 
 class IpBanMiddleware extends Middleware
 {

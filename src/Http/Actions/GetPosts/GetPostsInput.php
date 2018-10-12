@@ -3,7 +3,7 @@ namespace Http\Actions\GetPosts;
 
 use Http\Actions\Input;
 use Infrastructure\Exceptions\BadInputException;
-use Domain\Post\Post;
+use Models\Post;
 
 class GetPostsInput extends Input
 {

@@ -2,7 +2,7 @@
 namespace Infrastructure\Monolog;
 
 use Monolog\Handler\AbstractProcessingHandler;
-use Domain\User\Log;
+use Models\Log;
 use Monolog\Logger;
 use SlimSession\Helper as SessionHelper;
 

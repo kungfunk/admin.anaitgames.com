@@ -3,7 +3,7 @@ namespace Http\Actions\GetComments;
 
 use Http\Actions\Input;
 use Infrastructure\Exceptions\BadInputException;
-use Domain\Comment\Comment;
+use Models\Comment;
 
 class GetCommentsInput extends Input
 {

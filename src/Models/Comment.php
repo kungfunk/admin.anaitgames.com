@@ -1,5 +1,5 @@
 <?php
-namespace Domain\Comment;
+namespace Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\Builder as Query;
@@ -26,17 +26,17 @@ class Comment extends Model
 
     public function post()
     {
-        return $this->belongsTo('Domain\Post\Post');
+        return $this->belongsTo('Models\Post');
     }
 
     public function user()
     {
-        return $this->belongsTo('Domain\User\User');
+        return $this->belongsTo('Models\User');
     }
 
     public function reports()
     {
-        return $this->hasMany('Domain\Comment\CommentReport');
+        return $this->hasMany('Models\CommentReport');
     }
 
     public function isReported(): bool

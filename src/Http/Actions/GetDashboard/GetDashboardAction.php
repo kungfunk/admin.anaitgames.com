@@ -8,9 +8,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetDashboard\GetDashboardResponder as Responder;
 
-use Domain\Comment\Comment;
-use Domain\Post\Post;
-use Domain\User\User;
+use Models\Comment;
+use Models\Post;
+use Models\User;
 
 class GetDashboardAction extends Action
 {

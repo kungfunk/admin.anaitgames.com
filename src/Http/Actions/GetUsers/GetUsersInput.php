@@ -3,7 +3,7 @@ namespace Http\Actions\GetUsers;
 
 use Http\Actions\Input;
 use Infrastructure\Exceptions\BadInputException;
-use Domain\User\User;
+use Models\User;
 
 class GetUsersInput extends Input
 {

@@ -1,5 +1,5 @@
 <?php
-namespace Domain\Post;
+namespace Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
 

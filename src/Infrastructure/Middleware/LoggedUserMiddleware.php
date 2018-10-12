@@ -5,7 +5,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Infrastructure\Exceptions\AuthenticationException;
 
-use Domain\User\User;
+use Models\User;
 
 class LoggedUserMiddleware extends Middleware
 {

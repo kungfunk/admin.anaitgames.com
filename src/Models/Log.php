@@ -1,5 +1,5 @@
 <?php
-namespace Domain\User;
+namespace Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
 
@@ -17,6 +17,6 @@ class Log extends Model
 
     public function user()
     {
-        return $this->belongsTo('Domain\User\User');
+        return $this->belongsTo('Models\User');
     }
 }

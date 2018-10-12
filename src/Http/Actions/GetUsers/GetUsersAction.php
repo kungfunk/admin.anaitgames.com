@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetUsers\GetUsersInput as Input;
 use Http\Actions\GetUsers\GetUsersResponder as Responder;
 
-use Domain\User\User;
+use Models\User;
 
 class GetUsersAction extends Action
 {

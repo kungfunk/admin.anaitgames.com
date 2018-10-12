@@ -1,5 +1,5 @@
 <?php
-namespace Domain\Comment;
+namespace Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
 
@@ -18,11 +18,11 @@ class CommentReport extends Model
 
     public function comment()
     {
-        return $this->belongsTo('Domain\Comment\Comment');
+        return $this->belongsTo('Models\Comment');
     }
 
     public function user()
     {
-        return $this->belongsTo('Domain\Comment\User');
+        return $this->belongsTo('Models\User');
     }
 }

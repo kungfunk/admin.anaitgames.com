@@ -1,5 +1,5 @@
 <?php
-namespace Domain\User;
+namespace Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model as Model;
@@ -63,29 +63,29 @@ class User extends Model
 
     public function posts()
     {
-        return $this->hasMany('Domain\Post\Post');
+        return $this->hasMany('Models\Post');
     }
 
     public function logs()
     {
-        return $this->hasMany('Domain\User\Log');
+        return $this->hasMany('Models\Log');
     }
 
     public function bans()
     {
-        return $this->hasMany('Domain\User\Ban');
+        return $this->hasMany('Models\Ban');
     }
 
     public function isBanned(): bool
     {
-        return $this->hasMany('Domain\User\Ban')
+        return $this->hasMany('Models\Ban')
             ->where('bans.expires', '<', Carbon::now())
             ->exists();
     }
 
     public function getActiveBan()
     {
-        return $this->hasMany('Domain\User\Ban')
+        return $this->hasMany('Models\Ban')
             ->where('bans.expires', '<', Carbon::now())
             ->first();
     }

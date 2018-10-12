@@ -1,5 +1,5 @@
 <?php
-namespace Domain\User;
+namespace Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
 use Illuminate\Database\Eloquent\Builder as Query;
@@ -19,7 +19,7 @@ class IpBan extends Model
 
     public function bannedBy()
     {
-        return $this->belongsTo('Domain\Post\User', 'banned_by_id');
+        return $this->belongsTo('Models\User', 'banned_by_id');
     }
 
     public function scopeActive(Query $query)

@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\PostLogin\PostLoginInput as Input;
 use Infrastructure\Exceptions\AuthenticationException;
 
-use Domain\User\User;
+use Models\User;
 
 class PostLoginAction extends Action
 {

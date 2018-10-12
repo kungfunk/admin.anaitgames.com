@@ -1,5 +1,5 @@
 <?php
-namespace Domain\Comment;
+namespace Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
 
@@ -14,16 +14,16 @@ class Mention extends Model
 
     public function comment()
     {
-        return $this->belongsTo('Domain\Post\Comment');
+        return $this->belongsTo('Models\Comment');
     }
 
     public function from()
     {
-        return $this->belongsTo('Domain\Post\User', 'user_from_id');
+        return $this->belongsTo('Models\User', 'user_from_id');
     }
 
     public function to()
     {
-        return $this->belongsTo('Domain\Post\User', 'user_to_id');
+        return $this->belongsTo('Models\User', 'user_to_id');
     }
 }

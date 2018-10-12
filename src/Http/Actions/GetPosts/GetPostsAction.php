@@ -8,9 +8,9 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Http\Actions\GetPosts\GetPostsInput as Input;
 use Http\Actions\GetPosts\GetPostsResponder as Responder;
 
-use Domain\Post\Post;
-use Domain\Post\Category;
-use Domain\User\User;
+use Models\Post;
+use Models\Category;
+use Models\User;
 
 class GetPostsAction extends Action
 {

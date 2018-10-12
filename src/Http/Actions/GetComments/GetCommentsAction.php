@@ -2,7 +2,7 @@
 namespace Http\Actions\GetComments;
 
 use Http\Actions\Action;
-use Domain\Comment\Comment;
+use Models\Comment;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
