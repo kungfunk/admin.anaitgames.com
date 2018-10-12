@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder as Query;
 
 class Comment extends Model
 {
-    const DEFAULT_LIMIT = 10;
     const DEFAULT_ORDER_FIELD = 'created_at';
     const DEFAULT_ORDER_DIRECTION = 'desc';
 
