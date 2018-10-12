@@ -18,7 +18,6 @@ $app = new App($config);
 include 'handlers.php';
 include 'middleware.php';
 include 'services.php';
-include 'repositories.php';
 
 // Routes files
 include 'routes.php';
