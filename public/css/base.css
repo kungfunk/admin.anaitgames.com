@@ -82,7 +82,7 @@ a {
     align-items: center;
 }
 
-.top-search__icon {
+.top-search__icon > svg {
     color: var(--color-hardgrey);
 }
 

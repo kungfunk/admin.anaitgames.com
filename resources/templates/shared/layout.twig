@@ -7,8 +7,8 @@
     <meta name="robots" content="noindex, nofollow">
     <title>{% block title %}{% endblock %} — Anaitgames CMS</title>
 
-    <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="/css/app.css" />
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/css/app.css" />
 </head>
 <body>
     <div class="content">
@@ -16,18 +16,11 @@
         <section class="main">
             <nav class="nav-bar">
                 <div class="top-search">
-                    <svg class="top-search__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
+                    <span class="top-search__icon">{{ source('icons/search.svg') }}</span>
                     <input type="text" class="top-search__field" placeholder="Buscar titular, usuario...">
                 </div>
                 <button class="nav-bar__logoff">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                        <polyline points="16 17 21 12 16 7"></polyline>
-                        <line x1="21" y1="12" x2="9" y2="12"></line>
-                    </svg>
+                    {{ source('icons/exit.svg') }}
                 </button>
             </nav>
             {% block content %}{% endblock %}

@@ -29,9 +29,7 @@
                 <div class="filters">
                     <h4 class="filters__title">
                         Filtrar por tipo
-                        <svg class="filters__title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                        </svg>
+                        <span class="filters__title-icon">{{ source('icons/archive.svg') }}</span>
                     </h4>
                     <ul class="filters__list">
                         {% for category in categories %}
@@ -48,9 +46,7 @@
                 <div class="filters">
                     <h4 class="filters__title">
                         Filtrar por estado
-                        <svg class="filters__title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                        </svg>
+                        <span class="filters__title-icon">{{ source('icons/pulse.svg') }}</span>
                     </h4>
                     <ul class="filters__list">
                         {% for status in statusFilters %}
@@ -67,10 +63,7 @@
                 <div class="filters">
                     <h4 class="filters__title">
                         Filtrar por autor
-                        <svg class="filters__title-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
+                        <span class="filters__title-icon">{{ source('icons/user.svg') }}</span>
                     </h4>
                     <ul class="filters__list">
                         {% for writer in writers %}
@@ -90,11 +83,7 @@
                         <h3 class="box__title">Mostrando {{ posts.count() }} de {{ pagination.total() }} resultados</h3>
                         <div class="box__action">
                             <a href="" class="button">
-                                <svg class="button__icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                </svg>
+                                <span class="button__icon">{{ source('icons/search.svg') }}</span>
                                 Busqueda avanzada
                             </a>
                         </div>
@@ -106,10 +95,7 @@
                                     <td class="datatable__cell">
                                         <a class="datatable__link" href="">
                                             Titular
-                                            <svg class="datatable__sort-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                 stroke-linecap="round" stroke-linejoin="round">
-                                                <polyline points="6 9 12 15 18 9"></polyline>
-                                            </svg>
+                                            <span class="datatable__sort-icon">{{ source('icons/chevron.svg') }}</span>
                                         </a>
                                     </td>
                                     <td class="datatable__cell">

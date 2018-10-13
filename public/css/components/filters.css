@@ -18,7 +18,9 @@
     font-weight: bold;
 }
 
-.filters__title-icon {
+.filters__title-icon > svg {
+    width: 16px;
+    height: 16px;
     float: right;
     margin-bottom: -2px;
 }

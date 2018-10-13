@@ -29,7 +29,9 @@
     box-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 }
 
-.button__icon {
+.button__icon > svg {
+    width: 16px;
+    height: 16px;
     margin: 0 1px -2px 0;
     color: var(--color-hardgrey)
 }
