@@ -1,0 +1,20 @@
+<td class="datatable__cell">
+    {% if header.sortable %}
+        {% if queryStringParams.order_direction == 'asc' %}
+            {% set direction = 'desc' %}
+        {% else %}
+            {% set direction = 'asc' %}
+        {% endif %}
+        {% set params = queryStringParams|merge({'order_field': header.field, 'order_direction': direction}) %}
+        <a class="datatable__link" href="{{ path_for(url, {}, params) }}">
+            {{ header.name }}
+            {% if queryStringParams.order_field == header.field %}
+                <span class="datatable__sort-icon {% if queryStringParams.order_direction == 'asc' %}datatable__sort-icon--asc{% endif %}">
+                    {{ source('icons/chevron.svg') }}
+                </span>
+            {% endif %}
+        </a>
+    {% else %}
+        {{ header.name }}
+    {% endif %}
+</td>

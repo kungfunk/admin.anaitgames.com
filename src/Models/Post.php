@@ -18,10 +18,12 @@ class Post extends Model
     const DEFAULT_ORDER_DIRECTION = 'desc';
 
     const ORDER_FIELD_WHITELIST = [
+        'category_id',
         'created_at',
         'publish_date',
         'title',
-        'num_views'
+        'num_views',
+        'status'
     ];
 
     protected $fillable = [

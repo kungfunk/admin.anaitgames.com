@@ -137,7 +137,7 @@
                 <div class="box__content">
                     <ul class="comments">
                         {% for comment in lastComments %}
-                            {{ include('components/comment.twig', { 'comment': comment }, with_context = false) }}
+                            {{ include('shared/comment.twig', { 'comment': comment }, with_context = false) }}
                         {% endfor %}
                     </ul>
                 </div>

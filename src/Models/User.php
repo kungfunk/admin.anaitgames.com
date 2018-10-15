@@ -41,6 +41,7 @@ class User extends Model
         'role',
         'name',
         'username',
+        'email',
         'patreon_level'
     ];
 

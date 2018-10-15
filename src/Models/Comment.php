@@ -11,9 +11,7 @@ class Comment extends Model
 
     const ORDER_FIELD_WHITELIST = [
         'created_at',
-        'publish_date',
-        'title',
-        'num_views'
+        'body'
     ];
 
     protected $fillable = [

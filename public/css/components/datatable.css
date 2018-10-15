@@ -51,6 +51,10 @@
     text-decoration: underline;
 }
 
-.datatable__sort-icon {
+.datatable__sort-icon > svg {
     margin-bottom: -3px;
+}
+
+.datatable__sort-icon--asc > svg {
+    transform: rotate(180deg);
 }

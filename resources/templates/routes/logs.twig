@@ -38,21 +38,15 @@
                         <table class="datatable">
                             <thead class="datatable__header">
                                 <tr class="datatable__row">
-                                    <td class="datatable__cell">
-                                        <a class="datatable__link" href="">
-                                            Nivel
-                                            <span class="datatable__sort-icon">{{ source('icons/chevron.svg') }}</span>
-                                        </a>
-                                    </td>
-                                    <td class="datatable__cell">
-                                        <a class="datatable__link" href="">Usuario</a>
-                                    </td>
-                                    <td class="datatable__cell">
-                                        <a class="datatable__link" href="">Mensaje</a>
-                                    </td>
-                                    <td class="datatable__cell">
-                                        <a class="datatable__link" href="">Creada</a>
-                                    </td>
+                                    {% set headers = [
+                                        { 'name': 'Nivel', 'sortable': true, 'field': 'level' },
+                                        { 'name': 'Usuario', 'sortable': false },
+                                        { 'name': 'Mensaje', 'sortable': false },
+                                        { 'name': 'Creado', 'sortable': true, 'field': 'created_at' }
+                                    ] %}
+                                    {% for header in headers %}
+                                        {{ include('shared/datatable-header.twig', { 'header': header, 'url': 'logs' }) }}
+                                    {% endfor %}
                                 </tr>
                             </thead>
                             <tbody>
@@ -72,7 +66,7 @@
                         </table>
                     </div>
                     <div class="box__footer">
-                        {{ include('components/pagination.twig', { 'pagination': logs }, with_context = false) }}
+                        {{ include('shared/pagination.twig', { 'pagination': logs }, with_context = false) }}
                     </div>
                 </div>
             </div>
