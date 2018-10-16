@@ -7,6 +7,7 @@ use Http\Actions\GetLogin\GetLoginAction as GetLogin;
 use Http\Actions\GetComments\GetCommentsAction as GetComments;
 use Http\Actions\GetUsers\GetUsersAction as GetUsers;
 use Http\Actions\GetLogs\GetLogsAction as GetLogs;
+use Http\Actions\GetBans\GetBansAction as GetBans;
 use Http\Actions\PostLogin\PostLoginAction as PostLogin;
 
 use Infrastructure\Middleware\AuthMiddleware;
@@ -35,6 +36,8 @@ $app->group('', function () use ($app) {
     $app->get('/users/{id}', null)->setName('user');
     $app->get('/logs', GetLogs::class)->setName('logs');
     $app->get('/logs/{id}', null)->setName('log');
+    $app->get('/bans', GetBans::class)->setName('bans');
+    $app->get('/bans/{id}', null)->setName('ban');
 })
     ->add(new BanMiddleware($container))
     ->add(new AuthMiddleware($container));
