@@ -53,7 +53,7 @@
                                 {% for log in logs %}
                                     <tr class="datatable__row">
                                         <td class="datatable__cell">
-                                            <span class="label label--uppercase">{{ log.level }}</span>
+                                            <span class="label">{{ log.level|capitalize }}</span>
                                         </td>
                                         <td class="datatable__cell">{{ log.user.name }}</td>
                                         <td class="datatable__cell">
