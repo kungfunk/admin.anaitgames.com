@@ -63,12 +63,13 @@ for ($i = 1; $i <= $post_number; $i++) {
         'user_id' => $faker->randomElement($user_ids),
         'category_id' => $faker->numberBetween(1, 5),
         'status' => $faker->randomElement(['draft', 'published', 'trash']),
-        'publish_date' => $faker->dateTimeBetween($startDate = '-10 years', $endDate = '+1 year')->format('Y-m-d H:i:s'),
+        'publish_date' => $faker
+            ->dateTimeBetween($startDate = '-10 years', $endDate = '+1 year')
+            ->format('Y-m-d H:i:s'),
         'title' => $faker->sentence(5),
         'subtitle' => $faker->sentence(8),
         'slug' => $faker->slug(5),
         'body' => $faker->text(500),
-        'formatted_body' => '',
         'excerpt' => $faker->text(50),
         'original_author' => null,
         'score' => null,
@@ -99,8 +100,7 @@ for ($i = 1; $i <= $comments_number; $i++) {
     Comment::create(array(
         'post_id' => $faker->randomElement($post_ids),
         'user_id' => $faker->randomElement($user_ids),
-        'body' => $faker->text(500),
-        'formatted_body' => ''
+        'body' => $faker->text(500)
     ));
 }
 
