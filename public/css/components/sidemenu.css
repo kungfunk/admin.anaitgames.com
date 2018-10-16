@@ -28,7 +28,7 @@
   color: var(--color-white);
 }
 
-.side-menu__link svg {
+.side-menu__link > svg {
   border-radius: 50%;
   border: 2px solid var(--color-whitefade);
   padding: 5px;

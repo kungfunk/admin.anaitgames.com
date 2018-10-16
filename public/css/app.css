@@ -18,5 +18,7 @@
 @import url('components/form.css');
 @import url('components/message.css');
 @import url('components/layout.css');
+@import url('components/navbar.css');
 
 @import url('routes/dashboard.css');
+@import url('routes/login.css');
