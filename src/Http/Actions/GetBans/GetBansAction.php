@@ -2,7 +2,7 @@
 namespace Http\Actions\GetBans;
 
 use Http\Actions\Action;
-use Models\Bans;
+use Models\Ban;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -23,7 +23,7 @@ class GetBansAction extends Action
         $this->input = new Input($data);
         $this->input->validate();
 
-        $this->output['bans'] = Bans::filters([
+        $this->output['bans'] = Ban::filters([
             'user_id' => $this->input->user_id
         ])
             ->with(['user', 'bannedBy'])

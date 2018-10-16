@@ -2,6 +2,7 @@
 namespace Models;
 
 use Illuminate\Database\Eloquent\Model as Model;
+use Illuminate\Database\Eloquent\Builder as Query;
 
 class Ban extends Model
 {
@@ -31,5 +32,16 @@ class Ban extends Model
     public function bannedBy()
     {
         return $this->belongsTo('Models\User', 'banned_by_id');
+    }
+
+    public function scopeFilters(Query $query, array $filters)
+    {
+        foreach ($filters as $name => $value) {
+            if (!empty($value)) {
+                $query->where($name, $value);
+            }
+        }
+
+        return $query;
     }
 }
