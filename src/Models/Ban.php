@@ -5,6 +5,15 @@ use Illuminate\Database\Eloquent\Model as Model;
 
 class Ban extends Model
 {
+    const DEFAULT_ORDER_FIELD = 'created_at';
+    const DEFAULT_ORDER_DIRECTION = 'desc';
+
+    const ORDER_FIELD_WHITELIST = [
+        'created_at',
+        'expires',
+        'reason'
+    ];
+
     const UPDATED_AT = null;
 
     protected $fillable = [
