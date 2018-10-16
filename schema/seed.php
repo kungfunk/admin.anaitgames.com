@@ -1,14 +1,14 @@
 <?php
 use Dotenv\Dotenv as Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
-use Domain\User\User;
-use Domain\User\Ban;
-use Domain\User\IpBan;
-use Domain\Post\Post;
-use Domain\Post\Tag;
-use Domain\Comment\Comment;
-use Domain\Comment\CommentReport;
-use Domain\Comment\Mention;
+use Models\User;
+use Models\Ban;
+use Models\IpBan;
+use Models\Post;
+use Models\Tag;
+use Models\Comment;
+use Models\CommentReport;
+use Models\Mention;
 
 require __DIR__ . '/../vendor/autoload.php';
 
