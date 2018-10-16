@@ -1,0 +1,11 @@
+{% extends '/shared/base.twig' %}
+
+{% block title %}Error{% endblock %}
+
+{% block body %}
+    <p class="general-error">Error general</p>
+    {% if isDebug == true %}
+        <h4>{{ error }}</h4>
+        <pre>{{ stack }}</pre>
+    {% endif %}
+{% endblock %}

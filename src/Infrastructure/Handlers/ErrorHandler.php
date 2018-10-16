@@ -11,9 +11,8 @@ final class ErrorHandler extends AbstractError
 {
     private $container;
 
-    private const ERROR_TEMPLATE = 'routes/error.twig';
-    private const DEFAULT_ERROR_TEXT = 'Error general';
-    private const DATABASE_ERROR_TEXT = 'Error al conectar con la base de datos';
+    private const GENERAL_ERROR_TEMPLATE = 'errors/general.twig';
+    private const DATABASE_ERROR_TEMPLATE = 'errors/database.twig';
 
     public function __construct(ContainerInterface $container)
     {
@@ -27,19 +26,16 @@ final class ErrorHandler extends AbstractError
             ->get('errorLogger')
             ->critical($throwable->getMessage() . "\n" . $throwable->getTraceAsString());
 
-        $message = self::DEFAULT_ERROR_TEXT;
-
-        if ($throwable instanceof \PDOException) {
-            $message = self::DATABASE_ERROR_TEXT;
-        }
+        $template = ($throwable instanceof \PDOException)
+            ? self::DATABASE_ERROR_TEMPLATE
+            : self::GENERAL_ERROR_TEMPLATE;
 
         $response->withStatus(500);
 
         return $this->container->get('twig')->render(
             $response,
-            self::ERROR_TEMPLATE,
+            $template,
             [
-                'message' => $message,
                 'error' => $throwable->getMessage(),
                 'stack' => $throwable->getTraceAsString(),
                 'isDebug' => getenv('DEBUG')

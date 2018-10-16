@@ -6,7 +6,7 @@ use Slim\Http\Response;
 
 class BanMiddleware extends Middleware
 {
-    private const TEMPLATE = 'routes/ban.twig';
+    private const TEMPLATE = 'errors/ban.twig';
 
     public function __invoke(Request $request, Response $response, $next)
     {
@@ -14,6 +14,9 @@ class BanMiddleware extends Middleware
         if ($user->isBanned()) {
             $this->container->get('session')->clear();
             $ban = $user->getActiveBan();
+
+            $response->withStatus(403);
+
             return $this->container->get('twig')->render(
                 $response,
                 static::TEMPLATE,

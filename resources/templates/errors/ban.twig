@@ -1,0 +1,7 @@
+{% extends '/shared/base.twig' %}
+
+{% block title %}Error{% endblock %}
+
+{% block body %}
+    <p class="general-error">La ip {{ ip }} esta baneada de este domino hasta el {{ expires }}. Razón: {{ message }}.</p>
+{% endblock %}
