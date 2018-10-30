@@ -11,6 +11,8 @@ class Log extends Model
     const LEVEL_WARNING = 'warning';
     const LEVEL_ERROR = 'error';
 
+    const MSG_USER_LOGGED_IN_ADMIN = 'El usuario se logueo con exito en el CMS';
+
     const DEFAULT_ORDER_FIELD = 'created_at';
     const DEFAULT_ORDER_DIRECTION = 'desc';
 

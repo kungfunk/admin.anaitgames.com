@@ -6,8 +6,10 @@ use Slim\Http\Request;
 use Slim\Http\Response as Response;
 use Http\Actions\PostLogin\PostLoginInput as Input;
 use Infrastructure\Exceptions\AuthenticationException;
+use Infrastructure\Authentication\Auth;
 
 use Models\User;
+use Models\Log;
 
 class PostLoginAction extends Action
 {
@@ -15,6 +17,7 @@ class PostLoginAction extends Action
     {
         $data = $request->getParsedBody();
         $input = new Input($data);
+        $auth = new Auth;
 
         try {
             $input->validate();
@@ -22,21 +25,29 @@ class PostLoginAction extends Action
             if (!$user) {
                 throw new AuthenticationException(AuthenticationException::INVALID_CREDENTIALS);
             }
-            if (!$user->checkPassword($input->password)) {
+            if (!$auth->passwordVerify($input->password, $user->password)) {
                 throw new AuthenticationException(AuthenticationException::INVALID_CREDENTIALS);
+            }
+            if ($auth->isRehashNeeded()) {
+                $user->password = $auth->passwordHash($input->password);
+                $user->save();
             }
             if ($user->isBanned()) {
                 throw new AuthenticationException(AuthenticationException::USER_IS_BANNED);
             }
         } catch (\Exception $exception) {
             if (isset($user) && $user) {
-                $this->appLogger->notice($exception->getMessage(), array_merge($input->data, ['user_id' => $user->id]));
+                $this->appLogger->warning(
+                    $exception->getMessage(),
+                    array_merge($input->data, ['user_id' => $user->id])
+                );
             }
             $this->flash->addMessage('error', $exception->getMessage());
             return $response->withRedirect($this->router->pathFor('login'));
         }
 
         $this->session->set('user_id', $user->id);
+        $this->appLogger->notice(Log::MSG_USER_LOGGED_IN_ADMIN);
         return $response->withRedirect($this->router->pathFor('dashboard'));
     }
 }

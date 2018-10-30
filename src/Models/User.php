@@ -136,17 +136,6 @@ class User extends Model
         return $patreonLevelName;
     }
 
-    public function checkPassword($password): bool
-    {
-        // TODO: add old phpBB password check logic
-        return password_verify($password, $this->password);
-    }
-
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = password_hash($value, PASSWORD_DEFAULT);
-    }
-
     public function scopeFilters(Query $query, array $filters)
     {
         foreach ($filters as $name => $value) {
