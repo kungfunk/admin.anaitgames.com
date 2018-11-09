@@ -5,14 +5,12 @@ use Infrastructure\Middleware\PreviousInputMiddleware;
 use Infrastructure\Middleware\CsrfViewMiddleware;
 use Infrastructure\Middleware\DatabaseConnectorCheckMiddleware;
 use Infrastructure\Middleware\TwigGlobalsMiddleware;
-use Infrastructure\Middleware\LoggedUserMiddleware;
 use Infrastructure\Middleware\IpBanMiddleware;
 
 global $app;
 
 $container = $app->getContainer();
 
-$app->add(new LoggedUserMiddleware($container));
 $app->add(new PreviousInputMiddleware($container));
 $app->add(new CsrfViewMiddleware($container));
 $app->add($container->get('csrf'));

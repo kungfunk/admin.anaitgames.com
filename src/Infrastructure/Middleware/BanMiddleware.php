@@ -10,9 +10,11 @@ class BanMiddleware extends Middleware
 
     public function __invoke(Request $request, Response $response, $next)
     {
-        $user = $this->container->get('loggedUser')->get();
+        $user = $this->container->get('user');
+        $session = $this->container->get('session');
+
         if ($user->isBanned()) {
-            $this->container->get('session')->clear();
+            $session->get('session')->clear();
             $ban = $user->getActiveBan();
 
             $response->withStatus(403);

@@ -10,7 +10,7 @@ class GuestMiddleware extends Middleware
 
     public function __invoke(Request $request, Response $response, $next)
     {
-        if ($this->container->get('loggedUser')->isAuth()) {
+        if ($this->container->has('user')) {
             $this->container->get('flash')->addMessage('error', self::ERROR_MESSAGE);
             return $response->withRedirect($this->container->get('router')->pathFor('dashboard'));
         }
