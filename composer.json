@@ -35,7 +35,6 @@
     },
     "scripts": {
         "start": "@php -S localhost:9000 -t public/",
-        "hydrate-db": "@php schema/seed.php",
         "phpmd": "phpmd src text cleancode,codesize,design,unusedcode,naming",
         "phpstan": "phpstan analyse -l 4 src"
     }

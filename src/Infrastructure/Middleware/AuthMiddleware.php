@@ -13,20 +13,21 @@ class AuthMiddleware extends Middleware
     {
         $session = $this->container->get('session');
 
-        if ($session->exists('user_id')) {
-            try {
-                $user = User::find($session->get('user_id'));
-                if (!$user) {
-                    throw new AuthenticationException(AuthenticationException::INVALID_CREDENTIALS);
-                }
-                if ($user->remember_token !== $session->get('token')) {
-                    throw new AuthenticationException(AuthenticationException::REMEMBER_TOKEN_MISMATCH);
-                }
-                $this->container['user'] = $user;
-            } catch (\Exception $exception) {
-                $this->container->get('flash')->addMessage('error', $exception->getMessage());
-                return $response->withRedirect($this->container->get('router')->pathFor('login'));
+        try {
+            if (!$session->exists('user_id')) {
+                throw new AuthenticationException(AuthenticationException::LOGIN_NEEDED);
             }
+            $user = User::find($session->get('user_id'));
+            if (!$user) {
+                throw new AuthenticationException(AuthenticationException::INVALID_CREDENTIALS);
+            }
+            if ($user->remember_token !== $session->get('token')) {
+                throw new AuthenticationException(AuthenticationException::REMEMBER_TOKEN_MISMATCH);
+            }
+            $this->container['user'] = $user;
+        } catch (\Exception $exception) {
+            $this->container->get('flash')->addMessage('error', $exception->getMessage());
+            return $response->withRedirect($this->container->get('router')->pathFor('login'));
         }
 
         return $next($request, $response);

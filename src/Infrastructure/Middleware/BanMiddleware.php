@@ -10,24 +10,26 @@ class BanMiddleware extends Middleware
 
     public function __invoke(Request $request, Response $response, $next)
     {
-        $user = $this->container->get('user');
-        $session = $this->container->get('session');
+        if ($this->container->has('user')) {
+            $user = $this->container->get('user');
+            $session = $this->container->get('session');
 
-        if ($user->isBanned()) {
-            $session->get('session')->clear();
-            $ban = $user->getActiveBan();
+            if ($user->isBanned()) {
+                $session->clear();
+                $ban = $user->getActiveBan();
 
-            $response->withStatus(403);
+                $response->withStatus(403);
 
-            return $this->container->get('twig')->render(
-                $response,
-                static::TEMPLATE,
-                [
-                    'ip' => $ban->ip,
-                    'message' => $ban->reason,
-                    'expires' => $ban->expires
-                ]
-            );
+                return $this->container->get('twig')->render(
+                    $response,
+                    static::TEMPLATE,
+                    [
+                        'ip' => $ban->ip,
+                        'message' => $ban->reason,
+                        'expires' => $ban->expires
+                    ]
+                );
+            }
         }
 
         return $next($request, $response);

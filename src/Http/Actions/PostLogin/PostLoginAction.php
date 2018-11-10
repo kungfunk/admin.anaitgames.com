@@ -49,9 +49,9 @@ class PostLoginAction extends Action
         $user->remember_token = $auth->generateRememberToken(60);
         $user->save();
 
+        $this->session->id(true);
         $this->session->set('user_id', $user->id);
         $this->session->set('token', $user->remember_token);
-        session_regenerate_id();
 
         $this->appLogger->notice(Log::MSG_USER_LOGGED_IN_ADMIN);
         return $response->withRedirect($this->router->pathFor('dashboard'));

@@ -43,7 +43,11 @@ class Comment extends Model
 
     public function isEdited(): bool
     {
-        return $this->updated_at->gt($this->created_at);
+        if ($this->updated_at != null) {
+            return $this->updated_at->gt($this->created_at);
+        }
+
+        return false;
     }
 
     public function scopeFilters(Query $query, array $filters)

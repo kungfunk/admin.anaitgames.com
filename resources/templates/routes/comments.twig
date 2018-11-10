@@ -62,7 +62,7 @@
                                         <a class="datatable__link" href="{{ path_for('post', { 'id': comment.post.id }) }}">{{ comment.post.title }}</a>
                                     </td>
                                     <td class="datatable__cell">
-                                        <a class="datatable__link" href="{{ path_for('comment', { 'id': comment.id }) }}">{{ comment.body }}</a>
+                                        <a class="datatable__link" href="{{ path_for('comment', { 'id': comment.id }) }}">{{ comment.body|truncate(220, true) }}</a>
                                     </td>
                                     <td class="datatable__cell">{{ comment.reports_count }}</td>
                                     <td class="datatable__cell">{% if comment.isEdited() %}Si{% else %}No{% endif %}</td>

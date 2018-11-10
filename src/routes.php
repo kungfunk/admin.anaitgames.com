@@ -9,6 +9,7 @@ use Http\Actions\GetUsers\GetUsersAction as GetUsers;
 use Http\Actions\GetLogs\GetLogsAction as GetLogs;
 use Http\Actions\GetBans\GetBansAction as GetBans;
 use Http\Actions\PostLogin\PostLoginAction as PostLogin;
+use Http\Actions\GetLogout\GetLogoutAction as GetLogout;
 
 use Infrastructure\Middleware\AuthMiddleware;
 use Infrastructure\Middleware\GuestMiddleware;
@@ -24,6 +25,8 @@ $app->group('', function () use ($app) {
 })->add(new GuestMiddleware($container));
 
 $app->group('', function () use ($app) {
+    $app->get('/logout', GetLogout::class)->setName('logout');
+
     $app->get('/', function ($request, Response $response) use ($app) {
         return $response->withRedirect($this->router->pathFor('dashboard'));
     });

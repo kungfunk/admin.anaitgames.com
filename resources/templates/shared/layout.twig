@@ -11,9 +11,9 @@
                     <span class="top-search__icon">{{ source('icons/search.svg') }}</span>
                     <input type="text" class="top-search__field" placeholder="Buscar titular, usuario...">
                 </div>
-                <button class="nav-bar__logoff">
+                <a href="{{ path_for('logout') }}" class="nav-bar__logoff">
                     {{ source('icons/exit.svg') }}
-                </button>
+                </a>
             </nav>
             {% block content %}{% endblock %}
         </section>
