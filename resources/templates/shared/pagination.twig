@@ -6,11 +6,53 @@
             </li>
         {% endif %}
 
-        {% for page in 1..pagination.lastPage() %}
-            <li class="pagination__page {% if page == pagination.currentPage() %}pagination__page--selected{% endif %}">
-                <a href="{{ pagination.url(page) }}" class="pagination__link">{{ page }}</a>
+        {% set maxPages = 9 %}
+
+        {% if pagination.lastPage() < maxPages %}
+            {% for page in 1..pagination.lastPage() %}
+                <li class="pagination__page {% if page == pagination.currentPage() %}pagination__page--selected{% endif %}">
+                    <a href="{{ pagination.url(page) }}" class="pagination__link">{{ page }}</a>
+                </li>
+            {% endfor %}
+        {% else %}
+            {% if pagination.currentPage() + pagination.onEachSide > pagination.lastPage() %}
+                {% set pageStart = pagination.lastPage() - maxPages + 2 %}
+            {% else %}
+                {% set pageStart = pagination.currentPage() - pagination.onEachSide %}
+            {% endif %}
+            {% if pageStart < 2 %}
+                {% set pageStart = 2 %}
+            {% endif %}
+
+            {% set pageEnd = pageStart + maxPages - 3 %}
+            {%  if pageEnd >= pagination.lastPage() %}
+                {% set pageEnd = pagination.lastPage() - 1 %}
+            {% endif %}
+
+            <li class="pagination__page {% if 1 == pagination.currentPage() %}pagination__page--selected{% endif %}">
+                <a href="{{ pagination.url(1) }}" class="pagination__link">{{ 1 }}</a>
             </li>
-        {% endfor %}
+            {% if pageStart > 2 %}
+                <li class="pagination__gap">
+                    <span>...</span>
+                </li>
+            {% endif %}
+
+            {% for page in pageStart..pageEnd %}
+                <li class="pagination__page {% if page == pagination.currentPage() %}pagination__page--selected{% endif %}">
+                    <a href="{{ pagination.url(page) }}" class="pagination__link">{{ page }}</a>
+                </li>
+            {% endfor %}
+
+            {% if pageEnd < pagination.lastPage() - 1 %}
+                <li class="pagination__gap">
+                    <span>...</span>
+                </li>
+            {% endif %}
+            <li class="pagination__page {% if pagination.lastPage() == pagination.currentPage() %}pagination__page--selected{% endif %}">
+                <a href="{{ pagination.url(pagination.lastPage()) }}" class="pagination__link">{{ pagination.lastPage() }}</a>
+            </li>
+        {% endif %}
 
         {% if pagination.hasMorePages() %}
             <li class="pagination__page">
