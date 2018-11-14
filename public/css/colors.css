@@ -1,12 +1,13 @@
 :root {
     --color-white: rgb(255, 255, 255);
-    --color-whitefade: rgba(255, 255, 255, 0.3);
+    --color-whitefade: rgba(255, 255, 255, 0.5);
     --color-lightgrey: rgb(219, 223, 234);
     --color-hardgrey: rgb(123, 133, 148);
     --color-background: rgb(229, 229, 231);
     --color-text: rgb(78, 81, 94);
     --color-subtext: rgb(160, 163, 177);
     --color-primary: rgb(228, 68, 69);
+    --color-secondary: rgb(40, 44, 55);
     --color-darkprimary: rgb(215, 51, 51);
     --color-positive: green;
     --color-negative: red;

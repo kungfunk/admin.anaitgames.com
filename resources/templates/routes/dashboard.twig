@@ -65,9 +65,7 @@
                     <ul class="simplelist">
                         {% for user in lastRegisteredUsers %}
                             <li class="simplelist__item simplelist__item--three-colums">
-                                <span class="avatar">
-                                    <img src="{{ user.avatar }}" alt="Avatar de {{ user.name }}">
-                                </span>
+                                {{ include('shared/avatar.twig', { 'image': user.avatar, 'name': user.name }, with_context = false) }}
                                 <a href="" class="simplelist__item-link">
                                     {{ user.name }}
                                 </a>

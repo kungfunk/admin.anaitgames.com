@@ -25,6 +25,9 @@ class AuthMiddleware extends Middleware
                 throw new AuthenticationException(AuthenticationException::REMEMBER_TOKEN_MISMATCH);
             }
             $this->container['user'] = $user;
+
+            $environment = $this->container->get('twig')->getEnvironment();
+            $environment->addGlobal('loggedUser', $this->container->get('user'));
         } catch (\Exception $exception) {
             $this->container->get('flash')->addMessage('error', $exception->getMessage());
             return $response->withRedirect($this->container->get('router')->pathFor('login'));

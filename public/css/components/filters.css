@@ -1,5 +1,5 @@
 .filters-pannel {
-    background-color: rgb(40, 44, 55);
+    background-color: var(--color-secondary);
     padding: 40px;
 }
 

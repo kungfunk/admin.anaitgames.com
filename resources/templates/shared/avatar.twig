@@ -1,0 +1,7 @@
+<span class="avatar {% if isBig == true %}avatar--big{% endif %}">
+    {% if image is empty %}
+        <img src="/img/default-avatar.jpg" alt="Avatar de {{ name }}">
+    {% else %}
+        <img src="https://www.anaitgames.com/images/avatar/{{ image }}" alt="Avatar de {{ name }}">
+    {% endif %}
+</span>

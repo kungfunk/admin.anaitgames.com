@@ -1,7 +1,5 @@
 <li class="comment {{ comment.isReported() ? 'comment--reported' : '' }}">
-    <span class="avatar avatar--big">
-        <img src="{{ comment.user.avatar }}" alt="">
-    </span>
+    {{ include('shared/avatar.twig', { 'image': comment.user.avatar, 'name': comment.user.name, 'isBig': true }, with_context = false) }}
     <div class="comment__container">
         <div class="comment__header">
             <div class="comment__identity">

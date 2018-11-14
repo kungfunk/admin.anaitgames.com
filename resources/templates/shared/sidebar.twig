@@ -1,41 +1,45 @@
 <nav class="side-menu">
-    <div class="side-menu__logo">
-        {{ source('icons/circle.svg') }}
+    <div class="side-menu__profile">
+        {{ include('shared/avatar.twig', { 'image': loggedUser.avatar, 'name': loggedUser.name, 'isBig': true }, with_context = false) }}
+        <div class="side-menu__data">
+            <div class="side-menu__data-name">{{ loggedUser.name }}</div>
+            <div class="side-menu__data-username">@{{ loggedUser.username }}</div>
+        </div>
     </div>
     <ul class="side-menu__items">
         <li class="side-menu__item {% if is_current_path('dashboard') %}side-menu__item--selected{% endif %}">
             <a href="{{ path_for('dashboard') }}" class="side-menu__link">
-                {{ source('icons/graph.svg') }}
+                {{ source('icons/graph.svg') }} Dashboard
             </a>
         </li>
         <li class="side-menu__item">
             <a href="" class="side-menu__link">
-                {{ source('icons/grid.svg') }}
+                {{ source('icons/grid.svg') }} Portada
             </a>
         </li>
         <li class="side-menu__item {% if is_current_path('posts') or is_current_path('post', {'id': '*'}) %}side-menu__item--selected{% endif %}">
             <a href="{{ path_for('posts') }}" class="side-menu__link">
-                {{ source('icons/file.svg') }}
+                {{ source('icons/file.svg') }} Entradas
             </a>
         </li>
         <li class="side-menu__item {% if is_current_path('users') or is_current_path('user', {'id': '*'}) %}side-menu__item--selected{% endif %}">
             <a href="{{ path_for('users') }}" class="side-menu__link">
-                {{ source('icons/users.svg') }}
+                {{ source('icons/users.svg') }} Usuarios
             </a>
         </li>
         <li class="side-menu__item {% if is_current_path('comments') or is_current_path('comment', {'id': '*'}) %}side-menu__item--selected{% endif %}">
             <a href="{{ path_for('comments') }}" class="side-menu__link">
-                {{ source('icons/comment.svg') }}
+                {{ source('icons/comment.svg') }} Comentarios
             </a>
         </li>
         <li class="side-menu__item {% if is_current_path('bans') or is_current_path('ban', {'id': '*'}) %}side-menu__item--selected{% endif %}">
             <a href="{{ path_for('bans') }}" class="side-menu__link">
-                {{ source('icons/flag.svg') }}
+                {{ source('icons/flag.svg') }} Baneos
             </a>
         </li>
         <li class="side-menu__item {% if is_current_path('logs') or is_current_path('logs', {'id': '*'}) %}side-menu__item--selected{% endif %}">
             <a href="{{ path_for('logs') }}" class="side-menu__link">
-                {{ source('icons/database.svg') }}
+                {{ source('icons/database.svg') }} Logs
             </a>
         </li>
     </ul>

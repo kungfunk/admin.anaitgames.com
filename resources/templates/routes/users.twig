@@ -5,41 +5,6 @@
 {% block content %}
     <div class="main__container">
         <div class="layout">
-            <div class="filters-pannel">
-                <div class="filters">
-                    <h4 class="filters__title">
-                        Filtrar por rol
-                        <span class="filters__title-icon">{{ source('icons/users.svg') }}</span>
-                    </h4>
-                    <ul class="filters__list">
-                        {% for role in roleFilters %}
-                            {% set isSelected = queryStringParams.role == role.slug %}
-                            {% set parameter = isSelected ? null : role.slug %}
-                            <li class="filter {% if isSelected %}filter--selected{% endif %}">
-                                <a class="filter__name" href="{{ path_for('users', {}, queryStringParams|merge({'role' : parameter})) }}">{{ role.name }}</a>
-                                <span class="filter__number">{{ role.count }}</span>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                <hr class="filters-pannel__separator">
-                <div class="filters">
-                    <h4 class="filters__title">
-                        Filtrar por patreon
-                        <span class="filters__title-icon">{{ source('icons/badge.svg') }}</span>
-                    </h4>
-                    <ul class="filters__list">
-                        {% for patreon in patreonFilters %}
-                            {% set isSelected = queryStringParams.patreon_level == patreon.slug %}
-                            {% set parameter = isSelected ? null : patreon.slug %}
-                            <li class="filter {% if isSelected %}filter--selected{% endif %}">
-                                <a class="filter__name" href="{{ path_for('users', {}, queryStringParams|merge({'patreon_level' : parameter})) }}">{{ patreon.name }}</a>
-                                <span class="filter__number">{{ patreon.count }}</span>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
             <div class="layout__results">
                 <div class="box">
                     <div class="box__header">
@@ -88,6 +53,41 @@
                     <div class="box__footer">
                         {{ include('shared/pagination.twig', { 'pagination': users }, with_context = false) }}
                     </div>
+                </div>
+            </div>
+            <div class="filters-pannel">
+                <div class="filters">
+                    <h4 class="filters__title">
+                        Filtrar por rol
+                        <span class="filters__title-icon">{{ source('icons/users.svg') }}</span>
+                    </h4>
+                    <ul class="filters__list">
+                        {% for role in roleFilters %}
+                            {% set isSelected = queryStringParams.role == role.slug %}
+                            {% set parameter = isSelected ? null : role.slug %}
+                            <li class="filter {% if isSelected %}filter--selected{% endif %}">
+                                <a class="filter__name" href="{{ path_for('users', {}, queryStringParams|merge({'role' : parameter})) }}">{{ role.name }}</a>
+                                <span class="filter__number">{{ role.count }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <hr class="filters-pannel__separator">
+                <div class="filters">
+                    <h4 class="filters__title">
+                        Filtrar por patreon
+                        <span class="filters__title-icon">{{ source('icons/badge.svg') }}</span>
+                    </h4>
+                    <ul class="filters__list">
+                        {% for patreon in patreonFilters %}
+                            {% set isSelected = queryStringParams.patreon_level == patreon.slug %}
+                            {% set parameter = isSelected ? null : patreon.slug %}
+                            <li class="filter {% if isSelected %}filter--selected{% endif %}">
+                                <a class="filter__name" href="{{ path_for('users', {}, queryStringParams|merge({'patreon_level' : parameter})) }}">{{ patreon.name }}</a>
+                                <span class="filter__number">{{ patreon.count }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
